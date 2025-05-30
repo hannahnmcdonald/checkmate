@@ -11,3 +11,5 @@ const pool = new Pool({
     port: 5432,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   });
+
+export { pool };
