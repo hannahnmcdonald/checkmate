@@ -1,11 +1,7 @@
 // server/index.ts
 import express from 'express';
 import cors from 'cors';
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
 import router from './router';
-
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -13,15 +9,6 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use('/', router);
-
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 5432,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-});
 
 app.get('/api/users', async (req, res) => {
   try {

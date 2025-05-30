@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import searchRoute from './src/routes/search.route';
-import gameRoute from './src/routes/game.route';
+import searchRoute from './routes/bbg/search.route';
+import gameRoute from './routes/bbg/game.route';
 
 const router = Router();
 
