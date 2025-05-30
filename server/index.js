@@ -3,12 +3,14 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 require('dotenv').config();
+const searchRoute = require('./src/routes/search.route'); // Assuming you have a search route defined in routes/search.js
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use('/search', searchRoute);
 
 const pool = new Pool({
   host: process.env.DB_HOST,
