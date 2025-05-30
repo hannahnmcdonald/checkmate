@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-import searchRoute from './src/routes/search.route';
+import router from './router';
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('/search', searchRoute);
+app.use('/', router);
 
 const pool = new Pool({
   host: process.env.DB_HOST,
