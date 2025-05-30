@@ -1,9 +1,11 @@
-// server/index.js
-const express = require('express');
-const { Pool } = require('pg');
-const cors = require('cors');
-require('dotenv').config();
-const searchRoute = require('./src/routes/search.route'); // Assuming you have a search route defined in routes/search.js
+// server/index.ts
+import express from 'express';
+import cors from 'cors';
+import { Pool } from 'pg';
+import dotenv from 'dotenv';
+import searchRoute from './src/routes/search.route';
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;

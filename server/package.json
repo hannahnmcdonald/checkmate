@@ -5,16 +5,25 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "npx ts-node index.ts",
+    "migrate": "npx knex migrate:latest",
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^5.0.2",
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "knex": "^3.1.0",
-    "pg": "^8.16.0"
+    "pg": "^8.16.0",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/pg": "^8.15.2",
+    "@types/xml2js": "^0.4.14"
   }
 }
