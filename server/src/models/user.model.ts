@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     email: string;
     password: string;
     created_at: Date;
@@ -7,10 +7,10 @@ export interface User {
     first_name: string;
     last_name: string;
     username: string;
-    avatar: string;
-    friends: number[];
-    games: number[];
-    wins: object;
-    losses: object;
-    ties: object;
+    avatar?: string;
+    friends?: number[];
+    games?: number[];
+    wins?: object;
+    losses?: object;
+    ties?: object;
   }
