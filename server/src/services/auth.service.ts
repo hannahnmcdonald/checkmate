@@ -66,6 +66,11 @@ export async function registerUser({
 
         return user;
   });
+
+  // TODO: if email already exists, throw an error
+  // if username already exists, throw an error
+  // password validation (length, complexity, etc.)
+  // return success;
 }
 
 
