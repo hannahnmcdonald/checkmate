@@ -17,22 +17,22 @@ export async function registerUser({
   lastName,
   firstName,
   username,
-}: RegisterPayload): Promise<User> {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const id = uuidv4();
+  }: RegisterPayload): Promise<User> {
+   const hashedPassword = await bcrypt.hash(password, 10);
+    const id = uuidv4();
 
   
 
-interface InsertUserPayload {
+  interface InsertUserPayload {
     id: string;
     email: string;
     password: string;
     last_name: string;
     first_name: string;
     username: string;
-}
+  }
 
-interface ReturnedUser {
+  interface ReturnedUser {
     id: string;
     email: string;
     username: string;
@@ -41,9 +41,9 @@ interface ReturnedUser {
     created_at: Date;
     updated_at: Date;
     password: string;
-}
+  }
 
-return await db.transaction(async (trx): Promise<User> => {
+  return await db.transaction(async (trx): Promise<User> => {
         const [user]: ReturnedUser[] = await trx<InsertUserPayload>('users')
                 .insert({
                         id,
@@ -65,7 +65,7 @@ return await db.transaction(async (trx): Promise<User> => {
                 ]);
 
         return user;
-});
+  });
 }
 
 
