@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { registerUser } from '../../services/auth.service';
+import { DuplicateEmailError, DuplicateUsernameError } from '../../errors/register.errors';
 
 const register = Router();
 
@@ -11,11 +12,23 @@ register.post('/register', async (req, res) => {
   }
 
   try {
-    const user = await registerUser({email, password, lastName, firstName, username});
-    res.status(201).json({ message: 'User registered', user });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Registration failed' });
+    const user = await registerUser(req.body);
+    
+    if (!user) {
+      return res.status(500).json({ message: 'User registration failed' });
+    }
+
+    return res.status(201).json(user);
+  } catch (err: any) {
+
+    const isDuplicateEmail = err instanceof DuplicateEmailError || err.name === 'DuplicateEmailError';
+    const isDuplicateUsername = err instanceof DuplicateUsernameError || err.name === 'DuplicateUsernameError';
+  
+    if (isDuplicateEmail || isDuplicateUsername) {
+      return res.status(409).json({ error: err.message });
+    }
+  
+    return res.status(500).json({ error: 'Unexpected error' });
   }
 });
 

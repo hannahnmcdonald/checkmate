@@ -1,4 +1,3 @@
-// src/db/withTransaction.ts
 import { db } from './knex';
 import { Knex } from 'knex';
 
@@ -7,11 +6,11 @@ export async function withTransaction<T>(
 ): Promise<T> {
   return await db.transaction(async (trx) => {
     try {
-      const result = await callback(trx);
-      return result;
+      return await callback(trx);
     } catch (err) {
-      await trx.rollback();
+      console.error('withTransaction error:', err);
       throw err;
     }
   });
 }
+

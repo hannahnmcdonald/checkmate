@@ -24,7 +24,8 @@ export async function insertUser(
   user: InsertUserPayload,
   trx: Knex.Transaction
 ): Promise<User> {
-  const [createdUser] = await useDb(trx)<InsertUserPayload>('users')
+  try {
+    const [createdUser] = await useDb(trx)<InsertUserPayload>('users')
     .insert(user)
     .returning([
       'id',
@@ -37,4 +38,18 @@ export async function insertUser(
       'password',
     ]);
   return createdUser as User;
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
+  
 }
+
+export async function findUserByUsername(
+  username: string,
+  trx?: Knex.Transaction
+): Promise<User | null> {
+  const user = await useDb(trx)<User>('users').where({ username }).first();
+  return user ?? null;
+}
+

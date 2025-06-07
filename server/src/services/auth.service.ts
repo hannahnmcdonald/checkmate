@@ -2,10 +2,11 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../models/user.model';
-import { insertUser, findUserByEmail } from '../db/repos/userRepo';
+import { insertUser, findUserByEmail, findUserByUsername } from '../db/repos/userRepo';
 import { withTransaction } from '../db/withTransaction';
 import { signAccessToken } from './authentication/jwt.service';
 import { db } from '../db/knex';
+import { DuplicateEmailError, DuplicateUsernameError } from '../errors/register.errors';
 // import sgMail from '@sendgrid/mail';
 
 interface RegisterPayload {
@@ -20,19 +21,39 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
   const id = uuidv4();
 
-  return withTransaction(async (trx) => {
-    const user = await insertUser({
-      id,
-      email: payload.email,
-      password: hashedPassword,
-      first_name: payload.firstName,
-      last_name: payload.lastName,
-      username: payload.username,
-    }, trx);
+  try {
+    return withTransaction(async (trx) => {
+      // Check if email is already in use
+      const existingUser = await findUserByEmail(payload.email, trx);
+      if (existingUser) {
+        throw new DuplicateEmailError();
+      }
+    
+      // Check if username is already in use
+      const existingUsername = await findUserByUsername(payload.username, trx);
+      if (existingUsername) {
+        throw new DuplicateUsernameError();
+      }
+  
+      const user = await insertUser({
+        id,
+        email: payload.email,
+        password: hashedPassword,
+        first_name: payload.firstName,
+        last_name: payload.lastName,
+        username: payload.username,
+      }, trx);
+  
+      if (!user) {
+        throw new Error('User registration failed');
+      }
 
-    // TODO: add email validation and uniqueness check
-
-    // TODO: validate the user data before inserting
+      return user;
+    });
+  } catch (error) {
+    console.error('Error during user registration:', error);
+    throw error;
+  };
 
     // TODO: Send a welcome email
     // SendGrid looks best for this
@@ -55,10 +76,7 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
 
     //   await sgMail.send(msg);
     // }
-
-    return user;
-  });
-}
+};
 
 
 
@@ -70,7 +88,6 @@ export async function loginUser(email: string, password: string): Promise<{
     const user = await findUserByEmail(email, trx);
     if (!user || !(await bcrypt.compare(password, user.password))) return null;
 
-    // Issue 
     const token = signAccessToken({ id: user.id, email: user.email });
     return { user, token, email: user.email, id: user.id };
   });
