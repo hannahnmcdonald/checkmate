@@ -27,6 +27,3 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
     return res.status(403).json({ message: 'Invalid or expired token' });
   }
 }
-
-// add 'authenticateJWT' to the request object
-// EXAMPLE: router.get('/protected', authenticateJWT, (req, res)

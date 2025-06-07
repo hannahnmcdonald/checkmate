@@ -29,13 +29,17 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
       username: payload.username,
     }, trx);
 
-    // e.g., audit log insert or welcome email queue could go here
+    // TODO: add email validation and uniqueness check
+
+    // TODO: validate the user data before inserting
+
+    // TODO: consider sending a welcome email or logging the registration
 
     return user;
   });
 }
 
-// TODO: add email validation and uniqueness check
+
 
 export async function loginUser(email: string, password: string): Promise<{
   email: any;
