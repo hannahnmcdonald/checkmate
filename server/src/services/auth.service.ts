@@ -6,6 +6,7 @@ import { insertUser, findUserByEmail } from '../db/repos/userRepo';
 import { withTransaction } from '../db/withTransaction';
 import { signAccessToken } from './authentication/jwt.service';
 import { db } from '../db/knex';
+// import sgMail from '@sendgrid/mail';
 
 interface RegisterPayload {
   email: string;
@@ -33,7 +34,27 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
 
     // TODO: validate the user data before inserting
 
-    // TODO: consider sending a welcome email or logging the registration
+    // TODO: Send a welcome email
+    // SendGrid looks best for this
+    // URL: https://sendgrid.com/en-us/solutions/email-api
+    // TIP: Use domain verification (DKIM, SPF) if going to production
+    // TIP: Use a dedicated email domain (noreply@checkmate.app)
+    // TIP: Queue emails (e.g., with bullmq or rabbitmq) for scale (Look into SQS from AWS maybe???)
+    // sendWelcomeEmail fx Here
+
+    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    // export async function sendWelcomeEmail(email: string, username: string) {
+    //   const msg = {
+    //     to: email,
+    //     from: 'your@email.com',
+    //     subject: 'Welcome to CheckMate!',
+    //     text: `Hi ${username}, thanks for joining CheckMate.`,
+    //     html: `<strong>Hi ${username}</strong>,<br/>Thanks for signing up for CheckMate!`,
+    //   };
+
+    //   await sgMail.send(msg);
+    // }
 
     return user;
   });
