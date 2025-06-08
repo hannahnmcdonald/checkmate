@@ -10,19 +10,20 @@ interface MatchPlayer {
 export async function getMatchFriends(userId: string, gameId: string) {
 
     try {
-        const friends = await db('friendships')
+        const friends = await db('friendships as f')
         .where(function () {
-          this.where({ user_id: userId }).orWhere({ friend_id: userId });
+          this.where('f.user_id_1', userId).orWhere('f.user_id_2', userId);
         })
-        .andWhere({ status: 'accepted' })
-        .join('users', function () {
-          this.on('users.id', '=', db.raw(
-            'CASE WHEN friendships.user_id = ? THEN friendships.friend_id ELSE friendships.user_id END',
+        .andWhere('f.status', 'accepted')
+        .join('users as u', function () {
+          this.on('u.id', '=', db.raw(
+            'CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END',
             [userId]
           ));
         })
-        .distinctOn('users.id') // Ensures we only get 1 row, since friendships generates 2 rows
-        .select('users.id', 'users.username', 'users.avatar');
+        .select('u.id', 'u.username', 'u.avatar')
+        .distinctOn('u.id');
+    
 
         console.log('Friends:', friends);
 
