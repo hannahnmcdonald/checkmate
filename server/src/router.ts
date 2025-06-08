@@ -5,7 +5,7 @@ import register from './routes/auth/register.route';
 import login from './routes/auth/login.route';
 import logout from '../src/routes/auth/logout.route';
 import matchRoute from './routes/match.route';
-import friendRoute from './routes/friends.routet';
+import friendRoute from './routes/friends.route';
 
 const router = Router();
 
