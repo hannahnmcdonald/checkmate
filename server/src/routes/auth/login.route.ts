@@ -6,21 +6,17 @@ const login = Router();
 
 login.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log('LOGIN ATTEMPT:', { email, password });
 
   try {
     const result = await loginUser(email, password);
-    console.log('loginUser result:', result);
 
     if (!result) {
-      console.log('Login failed: result is null');
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     const { user, token, id, email: userEmail } = result;
 
     if (!user || !token || !id) {
-      console.log('Login failed: malformed result object', { user, token, id });
       return res.status(500).json({ message: 'Malformed user data' });
     }
 
@@ -42,6 +38,5 @@ login.post('/login', async (req, res) => {
     return res.status(500).json({ message: 'Unexpected error during login' });
   }
 });
-
 
 export default login;
