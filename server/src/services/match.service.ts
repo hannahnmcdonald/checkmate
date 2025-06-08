@@ -11,11 +11,17 @@ export async function getMatchFriends(userId: string, gameId: string) {
 
     try {
         const friends = await db('friendships')
-        .where({ user_id: userId, status: 'accepted' })
-        .orWhere({ friend_id: userId, status: 'accepted' })
-        .join('users', function () {
-        this.on('users.id', '=', db.raw('CASE WHEN friendships.user_id = ? THEN friendships.friend_id ELSE friendships.user_id END', [userId]));
+        .where(function () {
+          this.where({ user_id: userId }).orWhere({ friend_id: userId });
         })
+        .andWhere({ status: 'accepted' })
+        .join('users', function () {
+          this.on('users.id', '=', db.raw(
+            'CASE WHEN friendships.user_id = ? THEN friendships.friend_id ELSE friendships.user_id END',
+            [userId]
+          ));
+        })
+        .distinctOn('users.id') // Ensures we only get 1 row, since friendships generates 2 rows
         .select('users.id', 'users.username', 'users.avatar');
 
         console.log('Friends:', friends);
