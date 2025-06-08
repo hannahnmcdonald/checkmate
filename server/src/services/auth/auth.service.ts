@@ -89,6 +89,7 @@ export async function loginUser(email: string, password: string): Promise<{
     if (!user || !(await bcrypt.compare(password, user.password))) return null;
 
     const token = signAccessToken({ id: user.id, email: user.email });
+    console.log('TOKEN', token)
     return { user, token, email: user.email, id: user.id };
   });
 }
