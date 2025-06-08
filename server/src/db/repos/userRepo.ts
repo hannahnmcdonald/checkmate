@@ -11,6 +11,7 @@ export async function findUserByEmail(
   trx?: Knex.Transaction
 ): Promise<User | null> {
   const user = await useDb(trx)<User>('users').where({ email }).first();
+  console.log('findUserByEmail', user)
   return user ?? null;
 }
 

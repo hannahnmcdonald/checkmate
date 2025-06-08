@@ -8,15 +8,22 @@ interface MatchPlayer {
 }
 
 export async function getMatchFriends(userId: string) {
-  const friends = await db('friendships')
-    .where({ user_id: userId, status: 'accepted' })
-    .orWhere({ friend_id: userId, status: 'accepted' })
-    .join('users', function () {
-      this.on('users.id', '=', db.raw('CASE WHEN friendships.user_id = ? THEN friendships.friend_id ELSE friendships.user_id END', [userId]));
-    })
-    .select('users.id', 'users.username', 'users.avatar');
 
-  return friends;
+    try {
+        const friends = await db('friendships')
+        .where({ user_id: userId, status: 'accepted' })
+        .orWhere({ friend_id: userId, status: 'accepted' })
+        .join('users', function () {
+        this.on('users.id', '=', db.raw('CASE WHEN friendships.user_id = ? THEN friendships.friend_id ELSE friendships.user_id END', [userId]));
+        })
+        .select('users.id', 'users.username', 'users.avatar');
+
+    return friends;
+    } catch (error) {
+        console.error('Error retrieving friends:', error);
+        throw error;
+    }
+
 }
 
 export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {

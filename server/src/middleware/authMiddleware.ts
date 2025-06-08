@@ -1,29 +1,45 @@
-import { Request, Response, NextFunction } from 'express';
-
-// Extend the Request interface to include the 'user' property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
-    }
-  }
-}
+// src/middleware/authMiddleware.ts
 import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
+dotenv.config();
 
-export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
-  const token = req.cookies?.access_token;
+interface AuthenticatedRequest extends Request {
+  user?: any;
+}
+
+export function authenticateJWT(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  console.log("JWT Middleware running");
+  console.log('cookies:', req.cookies);
+  console.log('auth header:', req.headers.authorization);
+
+  const authHeader = req.headers.authorization;
+  const bearerToken = authHeader?.startsWith('Bearer ')
+    ? authHeader.split(' ')[1]
+    : authHeader;
+
+  const token = req.cookies?.token || bearerToken;
+  console.log('Extracted token:', token);
+  console.log("Raw token:", JSON.stringify(token));
+  console.log("Is valid JWT:", typeof token === 'string' && token.split('.').length === 3);
+
+
 
   if (!token) {
-    return res.status(401).json({ message: 'Missing auth token' });
+    return res.status(401).json({ message: 'Missing token' });
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    req.user = payload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    console.log('DECODED:', decoded)
+    req.user = decoded; // 🔴 This line is essential
+    console.log('middleware', req.user)
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
+    console.error("JWT verify error:", err);
+    return res.status(403).json({ message: 'Invalid token' });
   }
 }
+
+export const protectedRoute = authenticateJWT;

@@ -1,12 +1,12 @@
 // src/services/auth.service.ts
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { User } from '../models/user.model';
-import { insertUser, findUserByEmail, findUserByUsername } from '../db/repos/userRepo';
-import { withTransaction } from '../db/withTransaction';
-import { signAccessToken } from './authentication/jwt.service';
-import { db } from '../db/knex';
-import { DuplicateEmailError, DuplicateUsernameError } from '../errors/register.errors';
+import { User } from '../../models/user.model';
+import { insertUser, findUserByEmail, findUserByUsername } from '../../db/repos/userRepo';
+import { withTransaction } from '../../db/withTransaction';
+import { signAccessToken } from './jwt.service';
+import { db } from '../../db/knex';
+import { DuplicateEmailError, DuplicateUsernameError } from '../../errors/register.errors';
 // import sgMail from '@sendgrid/mail';
 
 interface RegisterPayload {
@@ -86,9 +86,11 @@ export async function loginUser(email: string, password: string): Promise<{
 } | null> {
   return withTransaction(async (trx) => {
     const user = await findUserByEmail(email, trx);
+    console.log(user)
     if (!user || !(await bcrypt.compare(password, user.password))) return null;
 
     const token = signAccessToken({ id: user.id, email: user.email });
+    console.log(token)
     return { user, token, email: user.email, id: user.id };
   });
 }

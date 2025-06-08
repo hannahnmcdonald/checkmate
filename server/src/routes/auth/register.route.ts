@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerUser } from '../../services/auth.service';
+import { registerUser } from '../../services/auth/auth.service';
 import { DuplicateEmailError, DuplicateUsernameError } from '../../errors/register.errors';
 
 const register = Router();

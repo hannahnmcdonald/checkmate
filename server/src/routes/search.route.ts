@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { searchBoardGames } from '../../services/bbg/search.service';
+import { searchBoardGames } from '../services/search.service';
 
 const search = Router();
 
