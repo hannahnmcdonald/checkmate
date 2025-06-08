@@ -7,7 +7,7 @@ interface MatchPlayer {
   result: 'win' | 'tie' | 'loss';
 }
 
-export async function getMatchFriends(userId: string) {
+export async function getMatchFriends(userId: string, gameId: string) {
 
     try {
         const friends = await db('friendships')
@@ -18,7 +18,20 @@ export async function getMatchFriends(userId: string) {
         })
         .select('users.id', 'users.username', 'users.avatar');
 
-    return friends;
+        console.log('Friends:', friends);
+
+        const session_id = uuidv4();
+
+        await withTransaction(async (trx) => {
+          await trx('game_sessions').insert({
+            id: session_id,
+            started_at: trx.fn.now(),
+            game_id: gameId
+          });
+        });
+    
+    return { friends, session_id };
+
     } catch (error) {
         console.error('Error retrieving friends:', error);
         throw error;
@@ -27,7 +40,9 @@ export async function getMatchFriends(userId: string) {
 }
 
 export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
-  await withTransaction(async (trx) => {
+  // TODO: TRY/Catch block here then catch errors
+  
+    await withTransaction(async (trx) => {
     await trx('game_sessions')
       .where({ id: sessionId })
       .update({ ended_at: trx.fn.now() });

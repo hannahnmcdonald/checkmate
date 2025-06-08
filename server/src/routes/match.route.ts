@@ -18,8 +18,8 @@ matchRoute.get('/game/:id/match', protectedRoute, async (req: AuthenticatedReque
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
-    const friends = await getMatchFriends(userId);
-    res.json({ friends });
+    const { friends, session_id } = await getMatchFriends(userId, gameId);
+    res.json({ friends, session_id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch friends' });
@@ -28,6 +28,7 @@ matchRoute.get('/game/:id/match', protectedRoute, async (req: AuthenticatedReque
 
 matchRoute.post('/game/:id/match', protectedRoute, async (req, res) => {
   const { session_id, players } = req.body;
+  console.log(session_id, players)
 
   if (!session_id || !players || !Array.isArray(players)) {
     return res.status(400).json({ error: 'Missing session_id or players' });
