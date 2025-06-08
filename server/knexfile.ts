@@ -1,4 +1,5 @@
 import type { Knex } from 'knex';
+import path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,8 +17,11 @@ const config: { [key: string]: Knex.Config } = {
     },
     pool: { min: 2, max: 10 },
     migrations: {
-      directory: './db/migrations',
+      directory: path.join(__dirname, 'db', 'migrations'),
       extension: 'ts',
+    },
+    seeds: {
+      directory: path.join(__dirname, 'db', 'seeds'),
     },
   },
 };
