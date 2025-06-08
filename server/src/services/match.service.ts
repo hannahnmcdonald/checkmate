@@ -30,7 +30,7 @@ export async function getMatchFriends(userId: string, gameId: string) {
           });
         });
     
-    return { friends, session_id };
+        return { friends, session_id };
 
     } catch (error) {
         console.error('Error retrieving friends:', error);
@@ -40,34 +40,51 @@ export async function getMatchFriends(userId: string, gameId: string) {
 }
 
 export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
-  // TODO: TRY/Catch block here then catch errors
-  
+  try {
     await withTransaction(async (trx) => {
-    await trx('game_sessions')
-      .where({ id: sessionId })
-      .update({ ended_at: trx.fn.now() });
+        await trx('game_sessions')
+          .where({ id: sessionId })
+          .update({ ended_at: trx.fn.now() });
+    
+        for (const player of players) {
+          await trx('user_game_session').insert({
+            id: uuidv4(),
+            session_id: sessionId,
+            user_id: player.user_id,
+            result: player.result,
+            created_at: trx.fn.now(),
+            updated_at: trx.fn.now(),
+          });
+    
+          const fieldToUpdate =
+            player.result === 'win' ? 'wins' :
+            player.result === 'tie' ? 'ties' :
+            player.result === 'loss' ? 'losses' : null;
 
-    for (const player of players) {
-      await trx('user_game_session').insert({
-        id: uuidv4(),
-        session_id: sessionId,
-        user_id: player.user_id,
-        result: player.result,
-        created_at: trx.fn.now(),
-        updated_at: trx.fn.now(),
+            console.log('Field to Update:', fieldToUpdate)
+    
+          if (!fieldToUpdate) throw new Error(`Invalid result: ${player.result}`);
+    
+          await trx('user_stats')
+          .insert({
+            id: uuidv4(),
+            user_id: player.user_id,
+            wins: fieldToUpdate === 'wins' ? 1 : 0,
+            losses: fieldToUpdate === 'losses' ? 1 : 0,
+            ties: fieldToUpdate === 'ties' ? 1 : 0,
+            updated_at: trx.fn.now()
+          })
+          .onConflict('user_id')
+          .merge({
+            [fieldToUpdate]: trx.raw(`"user_stats"."${fieldToUpdate}" + 1`),
+            updated_at: trx.fn.now()
+          });
+        }
       });
-
-      const fieldToUpdate =
-        player.result === 'win' ? 'wins' :
-        player.result === 'tie' ? 'ties' :
-        player.result === 'loss' ? 'losses' : null;
-
-      if (!fieldToUpdate) throw new Error(`Invalid result: ${player.result}`);
-
-      await trx('user_stats')
-        .where({ user_id: player.user_id })
-        .increment(fieldToUpdate, 1)
-        .update({ updated_at: trx.fn.now() });
+    } catch (error) {
+        console.error('Error saving game session:', error);
+        throw error;
     }
-  });
-}
+  }
+  
+    
