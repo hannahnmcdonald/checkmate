@@ -1,5 +1,6 @@
 import { db } from '../db/knex';
 import withPrivacy from '../utils/withPrivacy.util';
+import getBoardGameDetails from './game.service';
 
 export async function getUserFriends(userId: string) {
     return await db('friendships as f')
@@ -18,11 +19,40 @@ export async function getUserFriends(userId: string) {
 };
 
 export async function getUserSessions(userId: string) {
-    return await db('user_game_session')
-        .where('user_id', userId)
-        .select('*')
-        .orderBy('updated_at', 'desc')
-        .limit(5)
+    const recentSessionsRaw = await db('user_game_session as ugs')
+        .where('ugs.user_id', userId)
+        .join('game_sessions as gs', 'gs.id', 'ugs.session_id')
+        .select(
+            'gs.id as session_id',
+            'gs.game_id',
+            'gs.started_at',
+            'ugs.result as result'
+        )
+        .orderBy('gs.started_at', 'desc')
+        .limit(10);
+
+    const recentSessions = await Promise.all(
+        recentSessionsRaw.map(async (session) => {
+            const gameData = await getBoardGameDetails(session.game_id);
+
+            const players = await db('user_game_session as ugs')
+                .join('users as u', 'u.id', 'ugs.user_id')
+                .where('ugs.session_id', session.session_id)
+                .andWhereNot('ugs.user_id', userId)
+                .select('u.id as user_id', 'u.username', 'u.avatar');
+
+            return {
+                session_id: session.session_id,
+                started_at: session.started_at,
+                game_id: session.game_id,
+                title: gameData?.name || 'Unknown',
+                image: gameData?.image || null,
+                result: session.result || null,
+                players
+            };
+        })
+    );
+    return recentSessions;
 };
 
 export async function getUserProfile(targetId: string) {
@@ -58,16 +88,10 @@ export async function getUserProfile(targetId: string) {
 
 
 export async function getFullUserProfile(userId: string) {
-    const [user, stats, games, sessions, friends] = await Promise.all([
+    const [user, stats, games, friends] = await Promise.all([
         db('users').where('id', userId).select('username', 'first_name', 'last_name', 'avatar').first(),
         db('user_stats').where('user_id', userId).first(),
         db('user_games').where('user_id', userId),
-        db('user_game_session as ugs')
-            .where('ugs.user_id', userId)
-            .join('game_sessions as gs', 'gs.id', 'ugs.session_id')
-            .select('gs.id as session_id', 'gs.game_id', 'gs.started_at')
-            .orderBy('gs.started_at', 'desc')
-            .limit(10),
         db('friendships as f')
             .where(function () {
                 this.where('f.user_id_1', userId).orWhere('f.user_id_2', userId);
@@ -81,6 +105,8 @@ export async function getFullUserProfile(userId: string) {
             .select('u.id', 'u.username', 'u.first_name', 'u.last_name'),
     ]);
 
+    const userRecentSessions = getUserSessions(user.id)
+
     return {
         user,
         stats: stats || { wins: 0, losses: 0, ties: 0 },
@@ -88,7 +114,7 @@ export async function getFullUserProfile(userId: string) {
             wishlist: games.filter(g => g.category === 'wishlist'),
             collection: games.filter(g => g.category === 'collection'),
         },
-        recentSessions: sessions,
+        recentSessions: userRecentSessions,
         friends,
     };
 }
