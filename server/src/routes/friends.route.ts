@@ -27,7 +27,7 @@ friendRoute.get('/friend', protectedRoute, async (req: AuthenticatedRequest, res
 });
 
 friendRoute.post('/friend', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || '';
   const { friendId } = req.body;
 
   if (!userId || !friendId) {
@@ -53,7 +53,7 @@ friendRoute.post('/friend', protectedRoute, async (req: AuthenticatedRequest, re
 // TODO: Need to account on FE for friendship already existing
 
 friendRoute.post('/friend/accept', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || '';
   const { friendId } = req.body;
 
   if (!userId || !friendId) {
@@ -78,7 +78,7 @@ friendRoute.post('/friend/accept', protectedRoute, async (req: AuthenticatedRequ
 });
 
 friendRoute.post('/friend/decline', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || '';
   const { friendId } = req.body;
 
   if (!userId || !friendId) {
@@ -104,7 +104,7 @@ friendRoute.post('/friend/decline', protectedRoute, async (req: AuthenticatedReq
 });
 
 friendRoute.get('/friends/incoming', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || '';
 
   try {
     const requests = await getIncomingFriendRequests(userId);
@@ -116,7 +116,7 @@ friendRoute.get('/friends/incoming', protectedRoute, async (req: AuthenticatedRe
 });
 
 friendRoute.get('/friends/outgoing', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || '';
 
   try {
     const requests = await getOutgoingFriendRequests(userId);
