@@ -8,15 +8,15 @@ A board game stats app with a social component, mobile and web friendly. A great
 
 #### Web
 
-* React Frontend
+* React
 * Webpack
-* Material UI
+* Tamagui
 *
 
 #### Mobile
 
 * React Native
-*
+* Tamagui
 
 #### Backend
 
