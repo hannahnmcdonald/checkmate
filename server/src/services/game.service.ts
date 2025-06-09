@@ -42,3 +42,5 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
     throw new Error('Failed to fetch game details from BoardGameGeek');
   }
 }
+
+export default getBoardGameDetails;
