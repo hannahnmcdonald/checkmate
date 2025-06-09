@@ -1,17 +1,16 @@
 import { Router } from 'express';
 import { getMatchFriends, finalizeMatch } from '../services/match.service';
-// import protectedRoute from './auth/protected.route';
 import { protectedRoute } from '../middleware/authMiddleware';
 import { Request } from 'express';
 
 interface AuthenticatedRequest extends Request {
-  user?: { id: string; [key: string]: any };
+  user?: { id: string;[key: string]: any };
 }
 
 const matchRoute = Router();
 
 matchRoute.get('/game/:id/match', protectedRoute, async (req: AuthenticatedRequest, res) => {
-    console.log('match GET', req.user, req.params)
+  console.log('match GET', req.user, req.params)
   const userId = req.user?.id;
   const gameId = req.params.id;
 
