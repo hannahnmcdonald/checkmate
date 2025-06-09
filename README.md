@@ -20,7 +20,7 @@ A board game stats app with a social component, mobile and web friendly. A great
 
 #### Backend
 
-* Node/Typescript Backend that utilizes Axios to make requests to Board Game Geek API. 
+* Node/Typescript Backend that utilizes Axios to make requests to [Board Game Geek API](https://boardgamegeek.com/wiki/page/BGG_XML_API2). 
 * Database is Postgres with Knex, hosted through AWS RDS
 * Backend utilizes `Jest` and `Supertest` for acceptance tests along with a Test Database
 *
