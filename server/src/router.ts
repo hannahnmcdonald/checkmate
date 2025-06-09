@@ -7,6 +7,7 @@ import logout from '../src/routes/auth/logout.route';
 import matchRoute from './routes/match.route';
 import friendRoute from './routes/friends.route';
 import profileRoute from './routes/profile.route';
+import meRoute from './routes/me.route';
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.use('/', gameRoute);
 router.use('/', matchRoute)
 router.use('/', friendRoute);
 router.use('/', profileRoute);
+router.use('/', meRoute);
 router.use('/auth', register);
 router.use('/auth', login);
 router.use('/auth', logout);

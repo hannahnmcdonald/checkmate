@@ -9,12 +9,11 @@ interface AuthenticatedRequest extends Request {
 
 const profileRoute = Router();
 
-profileRoute.get(['/profile', '/profile/:userId'], protectedRoute, async (req: AuthenticatedRequest, res) => {
-    const viewerId = req.user?.id || '';
-    const targetUserId = req.params.userId || viewerId;
+profileRoute.get('/profile/:userId', protectedRoute, async (req: AuthenticatedRequest, res) => {
+    const targetUserId = req.params.userId;
 
     try {
-        const profile = await getUserProfile(targetUserId, viewerId);
+        const profile = await getUserProfile(targetUserId);
         res.json({ profile });
     } catch (err) {
         console.error('Error fetching profile:', err);
