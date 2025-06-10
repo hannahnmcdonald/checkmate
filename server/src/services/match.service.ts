@@ -73,29 +73,28 @@ export async function respondToMatch(sessionId: string, userId: string, accept: 
         updated_at: trx.fn.now(),
       });
 
-    const allAccepted = await trx('game_session_participants')
+    const [allAcceptedRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
       .whereNotNull('user_id')
-      .andWhere('approved', '!=', false)
+      .andWhere('is_external', false)
+      .andWhere('approved', true)
       .count('* as count');
 
-    const totalParticipants = await trx('game_session_participants')
+    const [totalParticipantsRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
       .whereNotNull('user_id')
+      .andWhere('is_external', false)
       .count('* as count');
 
-    // IF the game is complete and the final user accepts the match, this will certify the results and publish to the user_stats table
-    if (allAccepted[0].count === totalParticipants[0].count) {
+    if (allAcceptedRow.count === totalParticipantsRow.count) {
       const match = await trx('game_sessions').where({ id: sessionId }).first();
 
       if (match.status === 'completed') {
-        // Backfill stats
         const participants = await trx('game_session_participants')
-          .where({ game_session_id: sessionId, approved: true })
+          .where({ game_session_id: sessionId, approved: true, is_external: false })
           .select('user_id', 'result');
 
         for (const p of participants) {
-          // :O Gross, might need to refactor this
           const field = p.result === 'win' ? 'wins' : p.result === 'loss' ? 'losses' : 'ties';
 
           await trx('user_stats')
@@ -144,22 +143,23 @@ export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
         });
     }
 
-    // If all participants have approved, update stats
-    const approved = await trx('game_session_participants')
+    // Fetch total and approved member users only (exclude guests)
+    const [approvedCountRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
       .whereNotNull('user_id')
+      .andWhere('is_external', false)
       .andWhere('approved', true)
       .count('* as count');
 
-    const total = await trx('game_session_participants')
+    const [totalMembersRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
       .whereNotNull('user_id')
+      .andWhere('is_external', false)
       .count('* as count');
 
-    // Compare counts, see if *all* users have accepted the match before certifying the results
-    if (approved[0].count === total[0].count) {
+    if (approvedCountRow.count === totalMembersRow.count) {
       const confirmedPlayers = await trx('game_session_participants')
-        .where({ game_session_id: sessionId, approved: true })
+        .where({ game_session_id: sessionId, approved: true, is_external: false })
         .select('user_id', 'result');
 
       for (const p of confirmedPlayers) {
@@ -181,5 +181,6 @@ export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
     }
   });
 }
+
 
 export default { createMatch, respondToMatch, finalizeMatch }
