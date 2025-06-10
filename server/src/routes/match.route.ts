@@ -1,45 +1,101 @@
-import { Router } from 'express';
-import { getMatchFriends, finalizeMatch } from '../services/match.service';
+import { Router, Request } from 'express';
+import {
+  createMatch,
+  respondToMatch,
+  finalizeMatch
+} from '../services/match.service';
 import { protectedRoute } from '../middleware/authMiddleware';
-import { Request } from 'express';
+import { db } from '../db/knex';
 
 interface AuthenticatedRequest extends Request {
   user?: { id: string;[key: string]: any };
 }
 
-const matchRoute = Router();
+const router = Router();
 
-matchRoute.get('/game/:id/match', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  console.log('match GET', req.user, req.params)
-  const userId = req.user?.id;
-  const gameId = req.params.id;
+// POST /match - Create match, invite users
+router.post('/match', protectedRoute, async (req: AuthenticatedRequest, res) => {
+  const { game_id, invited_user_ids } = req.body;
+  const creatorId = req.user?.id;
 
-  if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+  console.log('creatorId:', creatorId, 'game_id:', game_id, 'invited_user_ids:', invited_user_ids)
+
+  if (!creatorId || !game_id || !Array.isArray(invited_user_ids)) {
+    return res.status(400).json({ message: 'Invalid payload' });
+  }
 
   try {
-    const { friends, session_id } = await getMatchFriends(userId, gameId);
-    res.json({ friends, session_id });
+    const sessionId = await createMatch(creatorId, game_id, invited_user_ids);
+    res.status(201).json({ session_id: sessionId });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch friends' });
+    res.status(500).json({ message: 'Failed to create match' });
   }
 });
 
-matchRoute.post('/game/:id/match', protectedRoute, async (req, res) => {
-  const { session_id, players } = req.body;
-  console.log(session_id, players)
+// POST /match/:id/respond - Accept/decline match
+router.post('/match/:id/respond', protectedRoute, async (req: AuthenticatedRequest, res) => {
+  const { accept }: { accept: boolean } = req.body;
+  const userId = req.user?.id;
+  const sessionId = req.params.id;
 
-  if (!session_id || !players || !Array.isArray(players)) {
-    return res.status(400).json({ error: 'Missing session_id or players' });
+  if (!accept || typeof accept !== 'boolean' || !userId) {
+    return res.status(400).json({ message: 'Invalid payload' });
   }
 
   try {
-    await finalizeMatch(session_id, players);
-    res.status(200).json({ message: 'Match results recorded successfully' });
+    await respondToMatch(sessionId, userId, accept);
+    res.status(204).send();
   } catch (err) {
-    console.error('POST /game/:id/match error:', err);
-    res.status(500).json({ error: 'Failed to record match results' });
+    console.error(err);
+    res.status(500).json({ message: 'Failed to respond to match' });
   }
 });
 
-export default matchRoute;
+// GET /match/:id - Get match info + participants
+router.get('/match/:id', protectedRoute, async (req, res) => {
+  const sessionId = req.params.id;
+
+  try {
+    const match = await db('game_sessions').where({ id: sessionId }).first();
+    const participants = await db('game_session_participants')
+      .leftJoin('users', 'users.id', 'game_session_participants.user_id')
+      .where('game_session_id', sessionId)
+      .select(
+        'game_session_participants.id',
+        'user_id',
+        'users.username',
+        'users.avatar',
+        'approved',
+        'result',
+        'is_external',
+        'name',
+        'responded_at'
+      );
+
+    res.json({ match, participants });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch match info' });
+  }
+});
+
+// POST /match/:id/finalize - Submit results
+router.post('/match/:id/finalize', protectedRoute, async (req: AuthenticatedRequest, res) => {
+  const sessionId = req.params.id;
+  const { results } = req.body;
+
+  if (!Array.isArray(results)) {
+    return res.status(400).json({ message: 'Invalid results format' });
+  }
+
+  try {
+    await finalizeMatch(sessionId, results);
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to finalize match' });
+  }
+});
+
+export default router;

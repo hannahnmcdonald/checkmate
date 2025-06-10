@@ -2,6 +2,7 @@ import { db } from '../db/knex';
 import withPrivacy from '../utils/withPrivacy.util';
 import getBoardGameDetails from './game.service';
 
+// TODO: this is a duplicate of the one in the friends service 
 export async function getUserFriends(userId: string) {
     return await db('friendships as f')
         .where(function () {
@@ -19,26 +20,27 @@ export async function getUserFriends(userId: string) {
 };
 
 export async function getUserSessions(userId: string) {
-    const recentSessionsRaw = await db('user_game_session as ugs')
-        .where('ugs.user_id', userId)
-        .join('game_sessions as gs', 'gs.id', 'ugs.session_id')
+    const recentSessionsRaw = await db('game_session_participants as gsp')
+        .where('gsp.user_id', userId)
+        .join('game_sessions as gs', 'gs.id', 'gsp.game_session_id')
         .select(
             'gs.id as session_id',
             'gs.game_id',
             'gs.started_at',
-            'ugs.result as result'
+            'gsp.result as result'
         )
         .orderBy('gs.started_at', 'desc')
         .limit(10);
 
+    // get gme details from recent sessions using BGG
     const recentSessions = await Promise.all(
         recentSessionsRaw.map(async (session) => {
             const gameData = await getBoardGameDetails(session.game_id);
 
-            const players = await db('user_game_session as ugs')
-                .join('users as u', 'u.id', 'ugs.user_id')
-                .where('ugs.session_id', session.session_id)
-                .andWhereNot('ugs.user_id', userId)
+            const players = await db('game_session_participants as gsp')
+                .join('users as u', 'u.id', 'gsp.user_id')
+                .where('gsp.game_session_id', session.session_id)
+                .andWhereNot('gsp.user_id', userId)
                 .select('u.id as user_id', 'u.username', 'u.avatar');
 
             return {
@@ -68,6 +70,7 @@ export async function getUserProfile(targetId: string) {
 
     const isFriend = getUserFriends !== null;
     console.log('isFriend', isFriend);
+    console.log('user', user)
 
     return {
         user: {

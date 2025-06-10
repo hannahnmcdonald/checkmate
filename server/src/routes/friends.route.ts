@@ -1,29 +1,53 @@
 import { Router } from 'express';
 import { protectedRoute } from '../middleware/authMiddleware';
-import { searchUsersByUsername, addFriendRequest, acceptFriendRequest, declineFriendRequest, getIncomingFriendRequests, getOutgoingFriendRequests } from '../services/friends.service';
+import {
+  getAllFriends,
+  searchUsersByUsername,
+  addFriendRequest,
+  acceptFriendRequest,
+  declineFriendRequest,
+  getIncomingFriendRequests,
+  getOutgoingFriendRequests
+} from '../services/friends.service';
 import { Request } from 'express';
 
 const friendRoute = Router();
 
 interface AuthenticatedRequest extends Request {
-    user?: { id: string; [key: string]: any };
+  user?: { id: string;[key: string]: any };
 }
 
+friendRoute.get('/friends', protectedRoute, async (req: AuthenticatedRequest, res) => {
+  const userId = req.user?.id;
+
+  console.log('userId', userId)
+
+  if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+  try {
+    const friendsList = await getAllFriends(userId);
+    res.json({ friendsList })
+  } catch (error) {
+    console.log('Error retrieving friends list:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 friendRoute.get('/friend', protectedRoute, async (req: AuthenticatedRequest, res) => {
-    const query = req.query.query as string;
-    const userId = req.user?.id || '';
-  
-    if (!query || query.trim().length < 2) {
-      return res.status(400).json({ message: 'Search query must be at least 2 characters' });
-    }
-  
-    try {
-      const results = await searchUsersByUsername(query, userId);
-      res.json({ results });
-    } catch (err) {
-      console.error('Error searching users:', err);
-      res.status(500).json({ message: 'Internal server error' });
-    }
+  const query = req.query.query as string;
+  const userId = req.user?.id || '';
+
+  if (!query || query.trim().length < 2) {
+    return res.status(400).json({ message: 'Search query must be at least 2 characters' });
+  }
+
+  try {
+    const results = await searchUsersByUsername(query, userId);
+    res.json({ results });
+  } catch (err) {
+    console.error('Error searching users:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 friendRoute.post('/friend', protectedRoute, async (req: AuthenticatedRequest, res) => {
@@ -127,7 +151,4 @@ friendRoute.get('/friends/outgoing', protectedRoute, async (req: AuthenticatedRe
   }
 });
 
-
-
 export default friendRoute;
-  

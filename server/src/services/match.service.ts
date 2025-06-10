@@ -1,4 +1,3 @@
-import { db } from '../db/knex';
 import { v4 as uuidv4 } from 'uuid';
 import { withTransaction } from '../db/withTransaction';
 
@@ -7,91 +6,180 @@ interface MatchPlayer {
   result: 'win' | 'tie' | 'loss';
 }
 
-export async function getMatchFriends(userId: string, gameId: string) {
+/**
+ * Create a match with invited players
+ * 
+ * @param creatorId - ID of the match creator
+ * @param gameId - Game identifier
+ * @param invitedUserIds - List of user IDs to invite
+ * @returns Session ID of the newly created match
+ */
+export async function createMatch(creatorId: string, gameId: string, invitedUserIds: string[]) {
+  const sessionId = uuidv4();
 
-  try {
-    // TODO: export to separate fx - we are re-using this in multiple places
-    const friends = await db('friendships as f')
-      .where(function () {
-        this.where('f.user_id_1', userId).orWhere('f.user_id_2', userId);
-      })
-      .andWhere('f.status', 'accepted')
-      .join('users as u', function () {
-        this.on('u.id', '=', db.raw(
-          'CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END',
-          [userId]
-        ));
-      })
-      .select('u.id', 'u.username', 'u.avatar')
-      .distinctOn('u.id');
-
-
-    console.log('Friends:', friends);
-
-    const session_id = uuidv4();
-
-    await withTransaction(async (trx) => {
-      await trx('game_sessions').insert({
-        id: session_id,
-        started_at: trx.fn.now(),
-        game_id: gameId
-      });
+  await withTransaction(async (trx) => {
+    await trx('game_sessions').insert({
+      id: sessionId,
+      game_id: gameId,
+      status: 'pending',
+      started_at: trx.fn.now(),
     });
 
-    return { friends, session_id };
+    // Auto-accept creator
+    await trx('game_session_participants').insert({
+      id: uuidv4(),
+      game_session_id: sessionId,
+      user_id: creatorId,
+      is_external: false,
+      approved: true,
+      invited_by: creatorId,
+      responded_at: trx.fn.now(),
+      created_at: trx.fn.now(),
+      updated_at: trx.fn.now(),
+    });
 
-  } catch (error) {
-    console.error('Error retrieving friends:', error);
-    throw error;
-  }
+    // Insert invited users
+    for (const userId of invitedUserIds) {
+      await trx('game_session_participants').insert({
+        id: uuidv4(),
+        game_session_id: sessionId,
+        user_id: userId,
+        is_external: false,
+        approved: null,
+        invited_by: creatorId,
+        created_at: trx.fn.now(),
+        updated_at: trx.fn.now(),
+      });
+    }
+  });
 
+  return sessionId;
 }
 
-export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
-  try {
-    await withTransaction(async (trx) => {
-      await trx('game_sessions')
-        .where({ id: sessionId })
-        .update({ ended_at: trx.fn.now() });
+/**
+ *  User can certify if they accept a match
+ * 
+ * @param sessionId : game session identifier
+ * @param userId : user that is accepting/decling match
+ * @param accept : Boolean if user agrees to match
+ */
+export async function respondToMatch(sessionId: string, userId: string, accept: boolean) {
+  await withTransaction(async (trx) => {
+    await trx('game_session_participants')
+      .where({ game_session_id: sessionId, user_id: userId })
+      .update({
+        approved: accept,
+        responded_at: trx.fn.now(),
+        updated_at: trx.fn.now(),
+      });
 
-      for (const player of players) {
-        await trx('user_game_session').insert({
-          id: uuidv4(),
-          session_id: sessionId,
-          user_id: player.user_id,
+    const allAccepted = await trx('game_session_participants')
+      .where({ game_session_id: sessionId })
+      .whereNotNull('user_id')
+      .andWhere('approved', '!=', false)
+      .count('* as count');
+
+    const totalParticipants = await trx('game_session_participants')
+      .where({ game_session_id: sessionId })
+      .whereNotNull('user_id')
+      .count('* as count');
+
+    // IF the game is complete and the final user accepts the match, this will certify the results and publish to the user_stats table
+    if (allAccepted[0].count === totalParticipants[0].count) {
+      const match = await trx('game_sessions').where({ id: sessionId }).first();
+
+      if (match.status === 'completed') {
+        // Backfill stats
+        const participants = await trx('game_session_participants')
+          .where({ game_session_id: sessionId, approved: true })
+          .select('user_id', 'result');
+
+        for (const p of participants) {
+          // :O Gross, might need to refactor this
+          const field = p.result === 'win' ? 'wins' : p.result === 'loss' ? 'losses' : 'ties';
+
+          await trx('user_stats')
+            .insert({
+              id: uuidv4(),
+              user_id: p.user_id,
+              [field]: 1,
+              updated_at: trx.fn.now(),
+            })
+            .onConflict('user_id')
+            .merge({
+              [field]: trx.raw(`"user_stats"."${field}" + 1`),
+              updated_at: trx.fn.now(),
+            });
+        }
+      } else {
+        await trx('game_sessions')
+          .where({ id: sessionId })
+          .update({ status: 'in_progress' });
+      }
+    }
+  });
+}
+
+/**
+ * Finalizes the results of the game match
+ * 
+ * @param sessionId : game session in question
+ * @param players : users in the match
+ */
+export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
+  await withTransaction(async (trx) => {
+    await trx('game_sessions')
+      .where({ id: sessionId })
+      .update({
+        ended_at: trx.fn.now(),
+        status: 'completed',
+      });
+
+    for (const player of players) {
+      await trx('game_session_participants')
+        .where({ game_session_id: sessionId, user_id: player.user_id })
+        .update({
           result: player.result,
-          created_at: trx.fn.now(),
           updated_at: trx.fn.now(),
         });
+    }
 
-        const fieldToUpdate =
-          player.result === 'win' ? 'wins' :
-            player.result === 'tie' ? 'ties' :
-              player.result === 'loss' ? 'losses' : null;
+    // If all participants have approved, update stats
+    const approved = await trx('game_session_participants')
+      .where({ game_session_id: sessionId })
+      .whereNotNull('user_id')
+      .andWhere('approved', true)
+      .count('* as count');
 
-        console.log('Field to Update:', fieldToUpdate)
+    const total = await trx('game_session_participants')
+      .where({ game_session_id: sessionId })
+      .whereNotNull('user_id')
+      .count('* as count');
 
-        if (!fieldToUpdate) throw new Error(`Invalid result: ${player.result}`);
+    // Compare counts, see if *all* users have accepted the match before certifying the results
+    if (approved[0].count === total[0].count) {
+      const confirmedPlayers = await trx('game_session_participants')
+        .where({ game_session_id: sessionId, approved: true })
+        .select('user_id', 'result');
+
+      for (const p of confirmedPlayers) {
+        const field = p.result === 'win' ? 'wins' : p.result === 'loss' ? 'losses' : 'ties';
 
         await trx('user_stats')
           .insert({
             id: uuidv4(),
-            user_id: player.user_id,
-            wins: fieldToUpdate === 'wins' ? 1 : 0,
-            losses: fieldToUpdate === 'losses' ? 1 : 0,
-            ties: fieldToUpdate === 'ties' ? 1 : 0,
-            updated_at: trx.fn.now()
+            user_id: p.user_id,
+            [field]: 1,
+            updated_at: trx.fn.now(),
           })
           .onConflict('user_id')
           .merge({
-            [fieldToUpdate]: trx.raw(`"user_stats"."${fieldToUpdate}" + 1`),
-            updated_at: trx.fn.now()
+            [field]: trx.raw(`"user_stats"."${field}" + 1`),
+            updated_at: trx.fn.now(),
           });
       }
-    });
-  } catch (error) {
-    console.error('Error saving game session:', error);
-    throw error;
-  }
+    }
+  });
 }
 
+export default { createMatch, respondToMatch, finalizeMatch }
