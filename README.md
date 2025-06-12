@@ -11,12 +11,13 @@ A board game stats app with a social component, mobile and web friendly. A great
 * React
 * Webpack
 * Tamagui
-*
+* `zxcvbn` for password strength checking
 
 #### Mobile
 
 * React Native
 * Tamagui
+* `zxcvbn` for password strength checking
 
 #### Backend
 
