@@ -17,7 +17,7 @@ interface AuthenticatedRequest extends Request {
 const notificationRoute = Router();
 
 // GET /notifications
-notificationRoute.get('/', protectedRoute, async (req: AuthenticatedRequest, res) => {
+notificationRoute.get('/notifications', protectedRoute, async (req: AuthenticatedRequest, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
     }

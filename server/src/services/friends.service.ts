@@ -1,7 +1,6 @@
 import { db } from '../db/knex';
 import { v4 as uuidv4 } from 'uuid';
 
-
 export async function getAllFriends(userId: string) {
   try {
     const results = await db('friendships as f')
