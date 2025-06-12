@@ -44,14 +44,29 @@ saveGamesRoute.delete('/remove-game', protectedRoute, async (req: AuthenticatedR
     }
 })
 
+// ?sortBy=created_at&sortOrder=asc|desc
 saveGamesRoute.get('/game-by-category', protectedRoute, async (req: AuthenticatedRequest, res) => {
     const userId = req.user?.id;
-    const { category } = req.query;
 
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
+    const {
+        category,
+        page = '1',
+        limit = '10',
+        sortBy = 'created_at',
+        sortOrder = 'desc'
+    } = req.query;
+
     try {
-        const games = await dbGetUserGamesWithDetails(userId, category as string);
+        const games = await dbGetUserGamesWithDetails(
+            userId,
+            category as string,
+            parseInt(page as string, 10),
+            parseInt(limit as string, 10),
+            sortBy as string,
+            (['asc', 'desc'].includes(sortOrder as string) ? (sortOrder as 'asc' | 'desc') : 'desc')
+        );
         res.status(200).json(games);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch games' });
