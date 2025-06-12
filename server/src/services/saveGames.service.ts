@@ -22,10 +22,14 @@ export async function dbRemoveUserGame(userId: string, game_id: string, category
         .del();
 }
 
-export async function dbGetUserGamesWithDetails(userId: string, category?: string) {
+export async function dbGetUserGamesWithDetails(userId: string, category?: string, page = 1, limit = 10) {
+    const offset = (page - 1) * limit;
+
     const query = db('user_games')
         .where({ user_id: userId })
-        .select('game_id', 'category', 'created_at');
+        .select('game_id', 'category', 'created_at')
+        .limit(limit)
+        .offset(offset);
 
     if (category === 'wishlist' || category === 'collection') {
         query.andWhere({ category });

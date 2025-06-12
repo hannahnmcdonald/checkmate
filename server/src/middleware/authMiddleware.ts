@@ -24,8 +24,6 @@ export function authenticateJWT(req: AuthenticatedRequest, res: Response, next: 
   console.log("Raw token:", JSON.stringify(token));
   console.log("Is valid JWT:", typeof token === 'string' && token.split('.').length === 3);
 
-
-
   if (!token) {
     return res.status(401).json({ message: 'Missing token' });
   }
