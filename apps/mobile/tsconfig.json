@@ -2,6 +2,8 @@
   // "extends": "expo/tsconfig.base",
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "jsx": "react",
+    "noEmit": true,
     "strict": true,
     "paths": {
       "@/*": [
@@ -10,6 +12,7 @@
     }
   },
   "include": [
+    "src",
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
