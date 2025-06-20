@@ -1,13 +1,14 @@
 import { Theme } from 'tamagui'
-import { useState, createContext, useContext } from 'react'
-
-const ThemeContext = createContext({ toggleTheme: () => { }, theme: 'light' })
-
-export const useThemeToggle = () => useContext(ThemeContext)
+import React, { useState, createContext } from 'react'
 
 interface ThemeProviderWrapperProps {
     children: React.ReactNode;
 }
+
+export const ThemeContext = createContext({
+    theme: 'light',
+    toggleTheme: () => { }
+});
 
 export const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = ({ children }) => {
     const [theme, setTheme] = useState<'light' | 'dark'>('light')

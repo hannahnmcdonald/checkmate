@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "license": "ISC",
   "dependencies": {
     "@tamagui/config": "^1.127.1",
     "@tamagui/core": "^1.127.1",
@@ -30,7 +31,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "vite"
   },
   "eslintConfig": {
     "extends": [

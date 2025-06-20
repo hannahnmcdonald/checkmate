@@ -1,19 +1,20 @@
 import { XStack, YStack, Text, Input, Button, Theme, useTheme, useMedia } from 'tamagui'
 // ICONS DO NOT WORK
 // import { Moon, Sun, Menu } from '@tamagui/lucide-icons'
-import { useAuth } from '../../context/AuthContext';
-import { useThemeToggle } from '../themeProviderWrapper';
+import { useAuth } from '@checkmate/auth';
+// import { useThemeToggle } from '@checkmate/apps/theme';
 import { useNavigate } from 'react-router-dom'
+import React from 'react';
 
 export default function Navbar() {
     const { user } = useAuth()
-    const { theme, toggleTheme } = useThemeToggle()
+    // const { theme, toggleTheme } = useThemeToggle()
     const navigate = useNavigate()
     // const media = useMedia()
 
     return (
         <XStack
-            position="sticky"
+            position="absolute"
             top={0}
             zIndex={100}
             padding="$3"

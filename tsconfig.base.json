@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@checkmate/auth": ["packages/auth"],
+        "@checkmate/ui": ["packages/ui"],
+        "@checkmate/hooks": ["packages/hooks"],
+        "@checkmate/screens": ["packages/screens"],
+        "@checkmate/theme": ["packages/theme"]
+      },
+      "module": "esnext",
+      "target": "esnext",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true
+    }
+  }
+  

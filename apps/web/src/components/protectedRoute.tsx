@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../../../packages/auth/AuthProvider'
 import { Navigate, useLocation } from 'react-router-dom'
 
 type Props = {

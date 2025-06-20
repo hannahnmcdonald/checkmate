@@ -1,9 +1,7 @@
-import { TamaguiProvider, Theme } from 'tamagui'
-import config from '../tamagui.config';
+import { TamaguiInternalConfig, TamaguiProvider, Theme } from 'tamagui'
+import { config } from '@checkmate/theme';
 import { useState } from 'react';
-// import { Button } from 'tamagui';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-// Replace BrowserRouter with React Navigation for Mobile Dev
 
 // import Home from './pages/Home'
 // import Login from './pages/Login'
@@ -16,61 +14,37 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 // import FriendProfile from './pages/FriendProfile'
 // import Stats from './pages/Stats'
 
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider } from '@checkmate/auth';
 import Navbar from './components/Navbar/navbar';
+import React from 'react';
 // import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
+  console.log('Tamagui config:', config)
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
   return (
-
-    // Toggle theme or no? Dark mode is superior
-    //     <Button onPress={() => setTheme(t => (t === 'light' ? 'dark' : 'light'))}>
-    //       Toggle Theme
-    //     </Button>
-
-    <TamaguiProvider config={config}>
+    <TamaguiProvider config={config as unknown as TamaguiInternalConfig}>
       <Theme name={theme}>
         <Router>
           <AuthProvider>
             <Navbar />
-            <Routes>
-              {/* //           <Route path="/" element={<Home />} />
-    //           <Route path="/login" element={<Login />} />
-    //           <Route path="/register" element={<Register />} />
-
-    //           <Route
-    //             path="/profile"
-    //             element={<ProtectedRoute><Profile /></ProtectedRoute>}
-    //           />
-    //           <Route
-    //             path="/profile/stats"
-    //             element={<ProtectedRoute><Stats /></ProtectedRoute>}
-    //           />
-    //           <Route
-    //             path="/games"
-    //             element={<GameSearch />}
-    //           />
-    //           <Route
-    //             path="/games/:id"
-    //             element={<GameDetails />}
-    //           />
-    //           <Route
-    //             path="/game/:id/match"
-    //             element={<ProtectedRoute><Match /></ProtectedRoute>}
-    //           />
-    //           <Route
-    //             path="/friends/search"
-    //             element={<ProtectedRoute><FriendSearch /></ProtectedRoute>}
-    //           />
-    //           <Route
-    //             path="/friends/:id"
-    //             element={<ProtectedRoute><FriendProfile /></ProtectedRoute>}
-    //           /> */}
-            </Routes>
+            {/* <Routes>
+              {/* <Route
+                path="/profile/stats"
+                 element={<ProtectedRoute><Stats /></ProtectedRoute>}
+               />
+            </Routes> */}
           </AuthProvider>
         </Router>
       </Theme>
     </TamaguiProvider>
   )
 };
+
+// export default function App() {
+//   return (
+//     <div style={{ padding: 40 }}>
+//       <h1>Checkmate is working ✅</h1>
+//     </div>
+//   )
+// }

@@ -1,5 +1,5 @@
 import { createTamagui } from 'tamagui'
-import { config as defaultConfig } from '@tamagui/config'
+import { config as defaultConfig } from '@tamagui/config';
 
 const config = createTamagui({
     ...defaultConfig,
@@ -13,4 +13,4 @@ declare module 'tamagui' {
     interface TamaguiCustomConfig extends AppConfig { }
 }
 
-export default config
+export { config };

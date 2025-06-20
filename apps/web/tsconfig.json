@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react",
   },
-"include": ["src", "../shared", "tamagui.config.ts", "../packages/theme/theme.ts"]
+"include": ["src"]
 }
