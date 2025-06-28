@@ -5,6 +5,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@fontsource/inter": "^5.2.6",
     "@tamagui/config": "^1.127.1",
     "@tamagui/core": "^1.127.1",
     "@tamagui/lucide-icons": "^1.127.2",

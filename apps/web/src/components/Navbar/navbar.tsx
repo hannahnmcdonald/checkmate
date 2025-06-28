@@ -7,6 +7,7 @@ import {
     Theme,
 } from 'tamagui';
 // import { Moon, Sun } from '@tamagui/lucide-icons'
+import logo from '../../images/CheckMateNavLogo.png';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -46,9 +47,15 @@ export default function Navbar() {
                     gap="$2"
                     onPress={() => navigate('/')}
                 >
-                    <Text fontWeight="700" fontSize="$5">
-                        ♟ Checkmate
-                    </Text>
+                    <img
+                        src={logo}
+                        alt="Checkmate Logo"
+                        style={{
+                            height: 32,       // or whatever size you want
+                            width: 'auto',    // maintain natural aspect ratio
+                            display: 'block',
+                        }}
+                    />
                 </XStack>
 
                 <XStack ai="center" gap="$3">
