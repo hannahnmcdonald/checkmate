@@ -1,70 +1,86 @@
-import { XStack, YStack, Text, Input, Button, Theme, useTheme, useMedia } from 'tamagui'
-// ICONS DO NOT WORK
-// import { Moon, Sun, Menu } from '@tamagui/lucide-icons'
+import {
+    XStack,
+    YStack,
+    Text,
+    Input,
+    Button,
+    Theme,
+} from 'tamagui';
+// import { Moon, Sun } from '@tamagui/lucide-icons'
 import { useAuth } from '@checkmate/auth';
-// import { useThemeToggle } from '@checkmate/apps/theme';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
 export default function Navbar() {
-    const { user } = useAuth()
-    // const { theme, toggleTheme } = useThemeToggle()
-    const navigate = useNavigate()
-    // const media = useMedia()
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     return (
-        <XStack
+        <YStack
             position="absolute"
-            top={0}
+            top={10}
+            left={10}
+            right={10}
             zIndex={100}
-            padding="$3"
-            alignItems="center"
-            justifyContent="space-between"
-            backgroundColor="$backgroundTransparent"
-            borderRadius="$6"
-            margin="$3"
-            shadowColor="$shadowColor"
-            shadowOffset={{ width: 0, height: 2 }}
-            shadowRadius={10}
+            bg="white"
+            opacity={0.95}
+            borderRadius="$4"
             borderWidth={1}
             borderColor="$borderColor"
-            backdropFilter="blur(10px)" // enable if supported
+            shadowColor="black"
+            shadowOpacity={0.1}
+            shadowRadius={10}
+            backdropFilter="blur(10px)"
         >
-            {/* Logo / App Name */}
-            <XStack ai="center" gap="$2" onPress={() => navigate('/')}>
-                <Text fontWeight="bold" fontSize="$5">♟ Checkmate</Text>
+            <XStack
+                ai="center"
+                jc="space-between"
+                px="$4"
+                py="$3"
+                w="100%"
+                maxWidth={1200}
+                marginHorizontal="auto"
+            >
+                <XStack
+                    ai="center"
+                    gap="$2"
+                    onPress={() => navigate('/')}
+                >
+                    <Text fontWeight="700" fontSize="$5">
+                        ♟ Checkmate
+                    </Text>
+                </XStack>
+
+                <XStack ai="center" gap="$3">
+                    {user && (
+                        <Input
+                            placeholder="Search..."
+                            size="$3"
+                            width={200}
+                            bg="$background"
+                        />
+                    )}
+
+                    {user ? (
+                        <Button
+                            theme="red"
+                            size="$2"
+                            onPress={() => {
+                                fetch('/api/logout', {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                }).then(() => location.reload());
+                            }}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button size="$2" onPress={() => navigate('/login')}>
+                            Login
+                        </Button>
+                    )}
+                </XStack>
             </XStack>
-
-            {/* Desktop nav buttons or hamburger toggle */}
-            <XStack ai="center" gap="$3">
-                {user && (
-                    <Input
-                        placeholder="Search..."
-                        size="$3"
-                        width={200}
-                        backgroundColor="$background"
-                    />
-                )}
-
-                {user ? (
-                    <Button theme="red" size="$2" onPress={() => {
-                        fetch('/api/logout', { method: 'POST', credentials: 'include' })
-                            .then(() => location.reload())
-                    }}>
-                        Logout
-                    </Button>
-                ) : (
-                    <Button size="$2" onPress={() => navigate('/login')}>Login</Button>
-                )}
-
-                {/* Theme Toggle Icon */}
-                {/* <Button
-                    size="$2"
-                    circular
-                    onPress={toggleTheme}
-                    icon={theme === 'light' ? <Moon /> : <Sun />}
-                /> */}
-            </XStack>
-        </XStack>
-    )
+        </YStack>
+    );
 }

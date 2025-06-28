@@ -1,5 +1,7 @@
 import { TamaguiInternalConfig, TamaguiProvider, Theme } from 'tamagui'
 import { config } from '@checkmate/theme';
+// import { config } from '@tamagui/config';
+
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -21,6 +23,8 @@ import React from 'react';
 
 export default function App() {
   console.log('Tamagui config:', config)
+  console.log('Tamagui config:', JSON.stringify(config, null, 2))
+
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
   return (
     <TamaguiProvider config={config as unknown as TamaguiInternalConfig}>
@@ -43,8 +47,30 @@ export default function App() {
 
 // export default function App() {
 //   return (
-//     <div style={{ padding: 40 }}>
-//       <h1>Checkmate is working ✅</h1>
-//     </div>
+//     <TamaguiProvider config={config}>
+//       <Theme name="light">
+//         <Router>
+//           <AuthProvider>
+//             <Navbar />
+//             <div style={{ padding: 40 }}>
+//               <h1>Hello Checkmate with Tamagui</h1>
+//             </div>
+//           </AuthProvider>
+//         </Router>
+//       </Theme>
+//     </TamaguiProvider>
+//   )
+// }
+
+
+// export default function App() {
+//   return (
+//     <TamaguiProvider config={config}>
+//       <Theme name="light">
+//         <div style={{ padding: 20 }}>
+//           <h1>Tamagui baseline working</h1>
+//         </div>
+//       </Theme>
+//     </TamaguiProvider>
 //   )
 // }

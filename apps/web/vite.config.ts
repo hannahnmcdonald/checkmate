@@ -1,10 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import {
+    defineConfig
+} from 'vite';
+import {
+    tamaguiPlugin
+} from '@tamagui/vite-plugin';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 // Allow shared imports from /packages/*
 export default defineConfig({
-    plugins: [react()],
+    plugins: [
+        tamaguiPlugin({
+            config: '../packages/theme/tamagui.config.ts', // path to your config
+        }),
+        react()
+    ],
     resolve: {
         alias: {
             '@checkmate/screens': path.resolve(__dirname, '../../packages/screens'),
