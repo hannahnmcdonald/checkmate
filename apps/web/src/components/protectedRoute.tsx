@@ -1,6 +1,8 @@
 import { JSX } from 'react'
-import { useAuth } from '../../../packages/auth/AuthProvider'
+// Update the import path below to the correct relative path for your project structure
+import { useAuth } from '@checkmate/auth';
 import { Navigate, useLocation } from 'react-router-dom'
+import React from 'react';
 
 type Props = {
     children: JSX.Element

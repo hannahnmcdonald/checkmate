@@ -6,7 +6,6 @@ import {
     Button,
     Theme,
 } from 'tamagui';
-// import { Moon, Sun } from '@tamagui/lucide-icons'
 import logo from '../../images/CheckMateNavLogo.png';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
@@ -46,42 +45,48 @@ export default function Navbar() {
                         src={logo}
                         alt="Checkmate Logo"
                         style={{
-                            height: 32,       // or whatever size you want
-                            width: 'auto',    // maintain natural aspect ratio
+                            height: 32,
+                            width: 'auto',
                             display: 'block',
                         }}
                     />
                 </XStack>
 
-                <XStack ai="center" gap="$3">
-                    {user && (
-                        <Input
-                            placeholder="Search..."
-                            size="$3"
-                            width={200}
-                            bg="$background"
-                        />
-                    )}
-
-                    {user ? (
+                {user && (
+                    <XStack ai="center" gap="$3">
+                        <Button size="$2" onPress={() => navigate('/games')}>
+                            Games
+                        </Button>
+                        <Button size="$2" onPress={() => navigate('/friends/search')}>
+                            Friends
+                        </Button>
+                        <Button size="$2" onPress={() => navigate('/profile')}>
+                            Profile
+                        </Button>
                         <Button
                             size="$2"
                             onPress={() => {
-                                fetch('/api/logout', {
-                                    method: 'POST',
-                                    credentials: 'include',
-                                }).then(() => location.reload());
+                                fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() =>
+                                    location.reload()
+                                )
                             }}
                         >
                             Logout
                         </Button>
-                    ) : (
+                    </XStack>
+                )}
+
+                {!user && (
+                    <XStack ai="center" gap="$3">
                         <Button size="$2" onPress={() => navigate('/login')}>
                             Login
                         </Button>
-                    )}
-                </XStack>
+                        {/* <Button size="$2" onPress={() => navigate('/register')}>
+                            Register
+                        </Button> */}
+                    </XStack>
+                )}
             </XStack>
-        </YStack>
+        </YStack >
     );
 }
