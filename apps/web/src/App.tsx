@@ -20,10 +20,11 @@ import { AuthProvider } from '@checkmate/auth';
 import Navbar from './components/Navbar/navbar';
 import React from 'react';
 import ProtectedRoute from './components/protectedRoute';
+import Layout from './layout/layout';
 
 export default function App() {
-  console.log('Tamagui config:', config)
-  console.log('Tamagui config:', JSON.stringify(config, null, 2))
+  // console.log('Tamagui config:', config)
+  // console.log('Tamagui config:', JSON.stringify(config, null, 2))
 
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
   return (
@@ -37,12 +38,18 @@ export default function App() {
                 path="/profile/stats"
                 element={
                   <ProtectedRoute>
-                    <Profile />
+                    <Layout theme="redDark">
+                      <Profile />
+                    </Layout>
                   </ProtectedRoute>
                 }
               />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<Layout theme="greenDark">
+                <LoginPage />
+              </Layout>} />
+              <Route path="/register" element={<Layout theme="blueDark">
+                <RegisterPage />
+              </Layout>} />
             </Routes>
           </AuthProvider>
         </Router>

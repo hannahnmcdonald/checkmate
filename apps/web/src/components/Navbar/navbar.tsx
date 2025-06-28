@@ -6,6 +6,7 @@ import {
     Button,
     Theme,
 } from 'tamagui';
+import { PrimaryButton } from '../styled';
 import logo from '../../images/CheckMateNavLogo.png';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
@@ -17,14 +18,14 @@ export default function Navbar() {
 
     return (
         <YStack
-            position="absolute"
+            position="fixed"
             top={10}
             left={10}
             right={10}
             zIndex={100}
-            bg="rgba(255,255,255,0.8)"
+            bg="rgba(255,255,255,0.35)"
             opacity={1}
-            borderRadius="$4"
+            borderRadius="$10"
             backdropFilter="blur(10px)"
         >
             <XStack
@@ -54,16 +55,16 @@ export default function Navbar() {
 
                 {user && (
                     <XStack ai="center" gap="$3">
-                        <Button size="$2" onPress={() => navigate('/games')}>
+                        <PrimaryButton size="$2" onPress={() => navigate('/games')}>
                             Games
-                        </Button>
-                        <Button size="$2" onPress={() => navigate('/friends/search')}>
+                        </PrimaryButton>
+                        <PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
                             Friends
-                        </Button>
-                        <Button size="$2" onPress={() => navigate('/profile')}>
+                        </PrimaryButton>
+                        <PrimaryButton size="$2" onPress={() => navigate('/profile')}>
                             Profile
-                        </Button>
-                        <Button
+                        </PrimaryButton>
+                        <PrimaryButton
                             size="$2"
                             onPress={() => {
                                 fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() =>
@@ -72,18 +73,18 @@ export default function Navbar() {
                             }}
                         >
                             Logout
-                        </Button>
+                        </PrimaryButton>
                     </XStack>
                 )}
 
                 {!user && (
                     <XStack ai="center" gap="$3">
-                        <Button size="$2" onPress={() => navigate('/login')}>
+                        <PrimaryButton size="$2" onPress={() => navigate('/login')}>
                             Login
-                        </Button>
-                        {/* <Button size="$2" onPress={() => navigate('/register')}>
+                        </PrimaryButton>
+                        {/* <PrimaryButton size="$2" onPress={() => navigate('/register')}>
                             Register
-                        </Button> */}
+                        </PrimaryButton> */}
                     </XStack>
                 )}
             </XStack>

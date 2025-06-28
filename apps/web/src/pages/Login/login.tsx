@@ -2,6 +2,7 @@ import { YStack, XStack, Input, Button, Text, Card, Theme } from 'tamagui';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
+import { PageContainer } from '../../components/styled';
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -35,58 +36,49 @@ export default function LoginPage() {
     }
 
     return (
-        <Theme name="blueDark">
-            <YStack
-                f={1}
-                ai="center"
-                jc="center"
-                minHeight="100vh"
-                bg="$background"
-                p="$4"
-            >
-                <Card elevate size="$4" bordered width={350}>
-                    <YStack gap="$3">
-                        <Text fontSize="$6" fontWeight="700">
-                            Log In
+        <PageContainer>
+            <Card elevate size="$4" bordered width={350}>
+                <YStack gap="$3">
+                    <Text fontSize="$6" fontWeight="700">
+                        Log In
+                    </Text>
+
+                    <Input
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+
+                    <Input
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                    />
+
+                    {error && (
+                        <Text color="red" fontSize="$2">
+                            {error}
                         </Text>
+                    )}
 
-                        <Input
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
-                        />
+                    <Button onPress={handleLogin}>
+                        Log In
+                    </Button>
 
-                        <Input
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry
-                        />
-
-                        {error && (
-                            <Text color="red" fontSize="$2">
-                                {error}
-                            </Text>
-                        )}
-
-                        <Button onPress={handleLogin}>
-                            Log In
+                    <XStack jc="center">
+                        <Text fontSize="$2">Don't have an account?</Text>
+                        <Button
+                            variant="outlined"
+                            size="$2"
+                            ml="$2"
+                            onPress={() => navigate('/register')}
+                        >
+                            Register
                         </Button>
-
-                        <XStack jc="center">
-                            <Text fontSize="$2">Don't have an account?</Text>
-                            <Button
-                                variant="outlined"
-                                size="$2"
-                                ml="$2"
-                                onPress={() => navigate('/register')}
-                            >
-                                Register
-                            </Button>
-                        </XStack>
-                    </YStack>
-                </Card>
-            </YStack>
-        </Theme>
+                    </XStack>
+                </YStack>
+            </Card>
+        </PageContainer>
     )
 }
