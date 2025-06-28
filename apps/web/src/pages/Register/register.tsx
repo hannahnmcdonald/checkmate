@@ -2,7 +2,7 @@ import { YStack, XStack, Text, Card, Theme } from 'tamagui'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
-import { PageContainer, PrimaryButton, FormInput } from '../../components/styled';
+import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/styled';
 
 export default function RegisterPage() {
     const navigate = useNavigate()
@@ -85,7 +85,7 @@ export default function RegisterPage() {
     return (
         <PageContainer>
             <Card elevate size="$4" bordered width={350}>
-                <YStack gap="$3">
+                <YStack gap="$3" p="$4" width="100%">
                     <Text fontSize="$6" fontWeight="700">
                         Register
                     </Text>
@@ -104,14 +104,14 @@ export default function RegisterPage() {
 
                     {successMessage && (
                         <YStack bg="green" br="$2" p="$2">
-                            <Text color="white" fontSize="$2">
+                            <Text color="white" fontSize="$1">
                                 {successMessage}
                             </Text>
                         </YStack>
                     )}
 
                     {isFormIncomplete && (
-                        <Text color="gray" fontSize="$2">
+                        <Text color="gray" fontSize="$1">
                             Please fill out all fields.
                         </Text>
                     )}
@@ -154,12 +154,6 @@ export default function RegisterPage() {
                         secureTextEntry
                     />
 
-                    {error && (
-                        <Text color="red" fontSize="$2">
-                            {error}
-                        </Text>
-                    )}
-
                     <PrimaryButton
                         onPress={handleRegister}
                         disabled={loading || isFormIncomplete}
@@ -168,15 +162,15 @@ export default function RegisterPage() {
                     </PrimaryButton>
 
                     <XStack jc="center">
-                        <Text fontSize="$2">Already have an account?</Text>
-                        <PrimaryButton
+                        <Text fontSize="$1">Already have an account?</Text>
+                        <InlineLink
                             variant="outlined"
                             size="$2"
                             ml="$2"
                             onPress={() => navigate('/login')}
                         >
                             Log In
-                        </PrimaryButton>
+                        </InlineLink>
                     </XStack>
                 </YStack>
             </Card>

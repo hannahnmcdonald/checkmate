@@ -72,7 +72,7 @@ const config = createTamagui({
             color3: '#8b5cf6',
         },
         greenDark: {
-            background: '#052e16',
+            background: '#153226',
             backgroundHover: '#064e3b',
             color: '#6ee7b7',
             color2: '#34d399',

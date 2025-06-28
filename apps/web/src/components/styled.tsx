@@ -1,15 +1,17 @@
-import { styled, YStack, Card, Button, Input } from 'tamagui'
+import { styled, YStack, Card, Button, Input, Text } from 'tamagui'
 
 // Page container with padding and background
 export const PageContainer = styled(YStack, {
     name: 'PageContainer',
     bg: '$background',
     minHeight: '100vh',
-    px: '$8',
+    px: '$6',
     py: '$8',
-    gap: '$4',
+    gap: '$8',
     ai: 'center',
     jc: 'center',
+    position: 'relative',
+    overflow: 'hidden',
 })
 
 // Consistent card style
@@ -28,7 +30,17 @@ export const PrimaryButton = styled(Button, {
     theme: 'blue',
     br: '$3',
     bg: '$color2',
-    color: '$background'
+    color: '$background',
+    hoverStyle: {
+        bg: '$color3',
+    },
+    variants: {
+        disabled: {
+            true: {
+                opacity: 0.5,
+            },
+        },
+    },
 })
 
 // Secondary button
@@ -47,10 +59,22 @@ export const DangerButton = styled(Button, {
     br: '$3',
 })
 
-// Input field
 export const FormInput = styled(Input, {
     name: 'FormInput',
     size: '$3',
+    width: '100%',          // 👈 Fixed width
+    paddingRight: '$6',      // 👈 Reserve space for LastPass icon
     borderColor: '$color2',
     br: '$2',
+})
+
+export const InlineLink = styled(Text, {
+    name: 'InlineLink',
+    color: '$color',
+    textDecorationLine: 'underline',
+    fontWeight: '500',
+    hoverStyle: {
+        color: '$color2',
+    },
+    fontFamily: '$body',
 })
