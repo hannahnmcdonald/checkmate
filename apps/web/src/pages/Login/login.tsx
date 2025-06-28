@@ -1,8 +1,8 @@
-import { YStack, XStack, Input, Button, Text, Card, Theme } from 'tamagui';
+import { YStack, XStack, Text, Card, Theme } from 'tamagui';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
-import { PageContainer } from '../../components/styled';
+import { PageContainer, PrimaryButton, FormInput } from '../../components/styled';
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -43,13 +43,13 @@ export default function LoginPage() {
                         Log In
                     </Text>
 
-                    <Input
+                    <FormInput
                         placeholder="Email"
                         value={email}
                         onChangeText={setEmail}
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Password"
                         value={password}
                         onChangeText={setPassword}
@@ -62,20 +62,20 @@ export default function LoginPage() {
                         </Text>
                     )}
 
-                    <Button onPress={handleLogin}>
+                    <PrimaryButton onPress={handleLogin}>
                         Log In
-                    </Button>
+                    </PrimaryButton>
 
                     <XStack jc="center">
                         <Text fontSize="$2">Don't have an account?</Text>
-                        <Button
+                        <PrimaryButton
                             variant="outlined"
                             size="$2"
                             ml="$2"
                             onPress={() => navigate('/register')}
                         >
                             Register
-                        </Button>
+                        </PrimaryButton>
                     </XStack>
                 </YStack>
             </Card>

@@ -17,6 +17,8 @@
   "devDependencies": {
     "turbo": "^2.0.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.2.6"
   }
 }
-

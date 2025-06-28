@@ -1,8 +1,8 @@
-import { YStack, XStack, Input, Button, Text, Card, Theme } from 'tamagui'
+import { YStack, XStack, Text, Card, Theme } from 'tamagui'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
-import { PageContainer, PrimaryButton } from '../../components/styled';
+import { PageContainer, PrimaryButton, FormInput } from '../../components/styled';
 
 export default function RegisterPage() {
     const navigate = useNavigate()
@@ -116,38 +116,38 @@ export default function RegisterPage() {
                         </Text>
                     )}
 
-                    <Input
+                    <FormInput
                         placeholder="First Name"
                         value={firstName}
                         onChangeText={setFirstName}
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Last Name"
                         value={lastName}
                         onChangeText={setLastName}
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Username"
                         value={username}
                         onChangeText={setUsername}
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Email"
                         value={email}
                         onChangeText={setEmail}
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Password"
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry
                     />
 
-                    <Input
+                    <FormInput
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}

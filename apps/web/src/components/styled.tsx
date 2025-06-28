@@ -5,8 +5,8 @@ export const PageContainer = styled(YStack, {
     name: 'PageContainer',
     bg: '$background',
     minHeight: '100vh',
-    px: '$4',
-    py: '$4',
+    px: '$8',
+    py: '$8',
     gap: '$4',
     ai: 'center',
     jc: 'center',
@@ -27,6 +27,8 @@ export const PrimaryButton = styled(Button, {
     size: '$3',
     theme: 'blue',
     br: '$3',
+    bg: '$color2',
+    color: '$background'
 })
 
 // Secondary button
@@ -49,4 +51,6 @@ export const DangerButton = styled(Button, {
 export const FormInput = styled(Input, {
     name: 'FormInput',
     size: '$3',
+    borderColor: '$color2',
+    br: '$2',
 })

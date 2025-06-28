@@ -32,7 +32,7 @@ export default function App() {
       <Theme name={theme}>
         <Router>
           <AuthProvider>
-            <Navbar />
+            {/* <Navbar /> */}
             <Routes>
               <Route
                 path="/profile/stats"
