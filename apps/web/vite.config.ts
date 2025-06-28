@@ -26,7 +26,7 @@ export default defineConfig({
     },
     server: {
         fs: {
-            allow: ['..'], // allow accessing parent folders (packages)
+            allow: ['..', path.resolve(__dirname, '../../')]
         }
     }
 })

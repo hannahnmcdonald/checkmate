@@ -23,14 +23,9 @@ export default function Navbar() {
             left={10}
             right={10}
             zIndex={100}
-            bg="white"
-            opacity={0.95}
+            bg="rgba(255,255,255,0.8)"
+            opacity={1}
             borderRadius="$4"
-            borderWidth={1}
-            borderColor="$borderColor"
-            shadowColor="black"
-            shadowOpacity={0.1}
-            shadowRadius={10}
             backdropFilter="blur(10px)"
         >
             <XStack
@@ -70,7 +65,6 @@ export default function Navbar() {
 
                     {user ? (
                         <Button
-                            theme="red"
                             size="$2"
                             onPress={() => {
                                 fetch('/api/logout', {
