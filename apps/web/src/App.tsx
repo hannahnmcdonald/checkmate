@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 // import Home from './pages/Home'
-// import Login from './pages/Login'
-// import Register from './pages/Register'
+import LoginPage from './pages/Login/login';
+import RegisterPage from './pages/Register/register';
 import Profile from './pages/Profile/profile';
 // import GameSearch from './pages/GameSearch'
 // import GameDetails from './pages/GameDetails'
@@ -41,6 +41,8 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
             </Routes>
           </AuthProvider>
         </Router>
