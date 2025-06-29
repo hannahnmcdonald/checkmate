@@ -1,6 +1,7 @@
-import { XStack, YStack, Text, Button, Image, ScrollView } from 'tamagui'
-import GameCard from './GameCard'
-import React, { useState, useEffect, useRef } from 'react'
+import { XStack, YStack, Text, Button, Image, ScrollView } from 'tamagui';
+import GameCard from './GameCard';
+import React, { useState, useEffect, useRef } from 'react';
+import { useMedia } from 'tamagui';
 
 type Game = {
     id: string;
@@ -15,6 +16,10 @@ export default function GameCarousel() {
     const [games, setGames] = useState<Game[]>([])
     const scrollRef = useRef<ScrollView>(null);
     const [scrollX, setScrollX] = useState(0);
+    const media = useMedia()
+    const isSmall = media.sm
+    const isLarge = media.lg
+    const isMedium = !isSmall && !isLarge
 
     const scrollBy = (offset: number) => {
         const newScrollX = Math.max(0, scrollX + offset);
@@ -42,42 +47,65 @@ export default function GameCarousel() {
                 <Text fontSize="$5" fontWeight="700">
                     Popular Games
                 </Text>
-                <XStack gap="$2">
-                    <Button
-                        size="$2"
-                        onPress={() => scrollBy(-200)}
-                        theme="alt1"
-                    >
-                        ◀
-                    </Button>
-                    <Button
-                        size="$2"
-                        onPress={() => scrollBy(200)}
-                        theme="alt1"
-                    >
-                        ▶
-                    </Button>
-                </XStack>
+                {isLarge && (
+                    <XStack gap="$2">
+                        <Button size="$2" onPress={() => scrollBy(-200)} theme="alt1">
+                            ◀
+                        </Button>
+                        <Button size="$2" onPress={() => scrollBy(200)} theme="alt1">
+                            ▶
+                        </Button>
+                    </XStack>
+                )}
             </XStack>
 
-            <ScrollView horizontal
-                ref={scrollRef}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 16 }}>
-                <XStack gap="$4">
+            {isLarge ? (
+                <ScrollView
+                    horizontal
+                    ref={scrollRef}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingHorizontal: 16,
+                    }}
+                >
+                    <XStack gap="$4">
+                        {games.map((game) => (
+                            <GameCard key={game.id} {...game} />
+                        ))}
+                    </XStack>
+                </ScrollView>
+            ) : isMedium ? (
+                <XStack
+                    flexWrap="wrap"
+                    gap="$4"
+                    px="$4"
+                    jc="space-between"
+                >
                     {games.map((game) => (
-                        <GameCard
+                        <YStack
                             key={game.id}
-                            id={game.id}
-                            imageUrl={game.imageUrl}
-                            name={game.name}
-                            description={game.description}
-                            minPlayers={game.minPlayers}
-                            maxPlayers={game.maxPlayers}
-                        />
+                            width="31%"
+                        >
+                            <GameCard {...game} />
+                        </YStack>
                     ))}
                 </XStack>
-            </ScrollView>
+            ) : (
+                <YStack
+                    gap="$4"
+                    alignItems="center"
+                    px="$4"
+                >
+                    {games.map((game) => (
+                        <YStack
+                            key={game.id}
+                            width="80%"
+                        >
+                            <GameCard {...game} />
+                        </YStack>
+                    ))}
+                </YStack>
+            )}
         </YStack>
     )
 }

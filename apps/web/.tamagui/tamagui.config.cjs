@@ -24112,6 +24112,11 @@ var config2 = createTamagui({
       color2: "#F87171",
       color3: "#EF4444"
     }
+  },
+  media: {
+    sm: { maxWidth: 600 },
+    md: { minWidth: 601, maxWidth: 1024 },
+    lg: { minWidth: 1025 }
   }
 });
 // Annotate the CommonJS export names for ESM import in node:

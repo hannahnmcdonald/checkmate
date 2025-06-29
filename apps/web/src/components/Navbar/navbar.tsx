@@ -9,11 +9,14 @@ import AnimatedLogo from './AnimatedLogo';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import { X } from '@tamagui/lucide-icons';
+import { MenuButton } from './MenuButton';
+import { useMedia } from 'tamagui';
 
 export default function Navbar(theme: string) {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const media = useMedia();
+    const isSmallScreen = media.sm;
 
     return (
         <Theme name={theme}>
@@ -56,37 +59,36 @@ export default function Navbar(theme: string) {
 
                         <AnimatedLogo />
                     </XStack>
-                    <XStack gap="$2">
-                        {user && (
-                            <><PrimaryButton size="$2" onPress={() => navigate('/games')}>
-                                Games
-                            </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
-                                    Friends
-                                </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/profile')}>
-                                    Profile
-                                </PrimaryButton><PrimaryButton
-                                    size="$2"
-                                    onPress={() => {
-                                        fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload()
-                                        );
-                                    }}
-                                >
-                                    Logout
-                                </PrimaryButton></>
-                        )}
+                    {!isSmallScreen ? (
+                        <XStack gap="$2">
+                            {user && (
+                                <><PrimaryButton size="$2" onPress={() => navigate('/games')}>
+                                    Games
+                                </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
+                                        Friends
+                                    </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/profile')}>
+                                        Profile
+                                    </PrimaryButton><PrimaryButton
+                                        size="$2"
+                                        onPress={() => {
+                                            fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload()
+                                            );
+                                        }}
+                                    >
+                                        Logout
+                                    </PrimaryButton></>
+                            )}
 
-                        {!user && window.location.pathname !== '/login' && (
-                            <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
-                                Login
-                            </PrimaryButton>
-                        )}
+                            {!user && window.location.pathname !== '/login' && (
+                                <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
+                                    Login
+                                </PrimaryButton>
+                            )}
 
-                        {/* {!user && window.location.pathname !== '/register' && window.location.pathname !== '/' && (
-                            <PrimaryButton size="$2" color="$background" onPress={() => navigate('/register')}>
-                                Register
-                            </PrimaryButton>
-                        )} */}
-                    </XStack>
+                        </XStack>
+                    ) : (
+                        <MenuButton />
+                    )}
                 </XStack>
             </YStack >
         </Theme >

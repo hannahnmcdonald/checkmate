@@ -12,10 +12,10 @@ export default function HomePage() {
     return (
         <YStack
             gap="$4"
-            px="$6"
-            py="$8"
+            px="$4"
+            py="$6"
             minHeight="100vh"
-            bg="$background"
+            width="100%"
         >
             <YStack gap="$2" px="$4" py="$1" alignItems="center">
                 <Text fontSize="2rem" fontWeight="700" color="$color" py="$2">
@@ -29,7 +29,7 @@ export default function HomePage() {
             <Separator my="$1" />
 
             <Text fontSize="$6" fontWeight="700" color="$color" textAlign='center'>
-                🎲 Find your next game 🎲
+                Find your next game
             </Text>
 
             <Text fontSize="$3" color="$gray10" textAlign='center' maxWidth={600} mx="auto">
@@ -44,6 +44,7 @@ export default function HomePage() {
                     borderWidth={2}
                     br="$3"
                     px="$3"
+                    fontSize="$1"
                     placeholder="Search for a game..."
                     // value={query}
                     // onChangeText={setQuery}

@@ -120,6 +120,11 @@ const config = createTamagui({
             color3: '#EF4444',
         },
     },
+    media: {
+        sm: { maxWidth: 600 },
+        md: { minWidth: 601, maxWidth: 1024 },
+        lg: { minWidth: 1025 },
+    },
 
 
 });
