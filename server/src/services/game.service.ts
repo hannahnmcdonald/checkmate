@@ -55,8 +55,6 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
         : undefined,
     };
 
-    console.log("Fetched game details from BGG:", details);
-
     return details;
   } catch (error) {
     console.error("Error fetching game details from BGG:", error);

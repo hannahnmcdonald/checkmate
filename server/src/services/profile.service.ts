@@ -69,8 +69,6 @@ export async function getUserProfile(targetId: string) {
     ]);
 
     const isFriend = getUserFriends !== null;
-    console.log('isFriend', isFriend);
-    console.log('user', user)
 
     return {
         user: {

@@ -12,8 +12,6 @@ const profileRoute = Router();
 profileRoute.get('/profile/:userId', protectedRoute, async (req: AuthenticatedRequest, res) => {
     const targetUserId = req.params.userId;
 
-    console.log('targetUserId', targetUserId)
-
     try {
         const profile = await getUserProfile(targetUserId);
         res.json({ profile });

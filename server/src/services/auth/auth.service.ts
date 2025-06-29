@@ -28,13 +28,13 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
       if (existingUser) {
         throw new DuplicateEmailError();
       }
-    
+
       // Check if username is already in use
       const existingUsername = await findUserByUsername(payload.username, trx);
       if (existingUsername) {
         throw new DuplicateUsernameError();
       }
-  
+
       const user = await insertUser({
         id,
         email: payload.email,
@@ -43,7 +43,7 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
         last_name: payload.lastName,
         username: payload.username,
       }, trx);
-  
+
       if (!user) {
         throw new Error('User registration failed');
       }
@@ -55,34 +55,34 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
     throw error;
   };
 
-    // TODO: Send a welcome email
-    // SendGrid looks best for this
-    // URL: https://sendgrid.com/en-us/solutions/email-api
-    // TIP: Use domain verification (DKIM, SPF) if going to production
-    // TIP: Use a dedicated email domain (noreply@checkmate.app)
-    // TIP: Queue emails (e.g., with bullmq or rabbitmq) for scale (Look into SQS from AWS maybe???)
-    // sendWelcomeEmail fx Here
+  // TODO: Send a welcome email
+  // SendGrid looks best for this
+  // URL: https://sendgrid.com/en-us/solutions/email-api
+  // TIP: Use domain verification (DKIM, SPF) if going to production
+  // TIP: Use a dedicated email domain (noreply@checkmate.app)
+  // TIP: Queue emails (e.g., with bullmq or rabbitmq) for scale (Look into SQS from AWS maybe???)
+  // sendWelcomeEmail fx Here
 
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-    // export async function sendWelcomeEmail(email: string, username: string) {
-    //   const msg = {
-    //     to: email,
-    //     from: 'your@email.com',
-    //     subject: 'Welcome to CheckMate!',
-    //     text: `Hi ${username}, thanks for joining CheckMate.`,
-    //     html: `<strong>Hi ${username}</strong>,<br/>Thanks for signing up for CheckMate!`,
-    //   };
+  // export async function sendWelcomeEmail(email: string, username: string) {
+  //   const msg = {
+  //     to: email,
+  //     from: 'your@email.com',
+  //     subject: 'Welcome to CheckMate!',
+  //     text: `Hi ${username}, thanks for joining CheckMate.`,
+  //     html: `<strong>Hi ${username}</strong>,<br/>Thanks for signing up for CheckMate!`,
+  //   };
 
-    //   await sgMail.send(msg);
-    // }
+  //   await sgMail.send(msg);
+  // }
 };
 
 
 
 export async function loginUser(email: string, password: string): Promise<{
   email: any;
-  id: any; user: User; token: string 
+  id: any; user: User; token: string
 } | null> {
   return withTransaction(async (trx) => {
     const user = await findUserByEmail(email, trx);
@@ -102,5 +102,5 @@ export async function logoutUser(refreshToken: string): Promise<void> {
       console.error('Error deleting refresh token:', err);
       throw new Error('Logout failed');
     }
-  );
+    );
 }

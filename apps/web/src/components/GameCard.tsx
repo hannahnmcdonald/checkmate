@@ -19,8 +19,6 @@ export default function GameCard({
     maxPlayers: number
 }) {
     const navigate = useNavigate()
-    console.log('imageUrl:', imageUrl)
-    console.log('name:', name) // Debugging line
 
     return (
         <Card

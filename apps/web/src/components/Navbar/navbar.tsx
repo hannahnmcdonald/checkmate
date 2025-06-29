@@ -24,7 +24,7 @@ export default function Navbar(theme: string) {
                 bg="rgba(255,255,255,0.08)"
                 backdropFilter="blur(10px)"
                 borderBottomWidth={2}
-                borderBottomColor="#4D96FF"
+                borderBottomColor="$color2"
                 shadowColor="black"
                 shadowOpacity={0.3}
                 shadowRadius={20}

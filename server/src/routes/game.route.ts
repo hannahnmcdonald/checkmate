@@ -4,7 +4,6 @@ import { getBoardGameDetails, getTrendingGames } from '../services/game.service'
 const game = Router();
 
 game.get('/game/trending', async (req, res) => {
-    console.log('Received request for trending games');
     try {
         const games = await getTrendingGames()
 
@@ -13,7 +12,6 @@ game.get('/game/trending', async (req, res) => {
             return res.status(404).json({ error: 'No trending games found' });
         }
         res.setHeader('Cache-Control', 'no-store')
-        console.log('Trending games fetched:', games)
         res.json(games)
     } catch (err) {
         console.error(err)
@@ -22,7 +20,6 @@ game.get('/game/trending', async (req, res) => {
 })
 
 game.get('/game/:id', async (req, res) => {
-    console.log("Hit /game/:id route, id =", req.params.id);
     const gameId = req.params.id;
 
     if (!gameId) {
