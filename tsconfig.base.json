@@ -6,7 +6,8 @@
         "@checkmate/ui": ["packages/ui"],
         "@checkmate/hooks": ["packages/hooks"],
         "@checkmate/screens": ["packages/screens"],
-        "@checkmate/theme": ["packages/theme"]
+        "@checkmate/theme": ["packages/theme"],
+        "@checkmate/state": ["packages/state"]
       },
       "module": "esnext",
       "target": "esnext",

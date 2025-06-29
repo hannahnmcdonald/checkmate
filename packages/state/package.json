@@ -1,0 +1,12 @@
+{
+    "name": "@checkmate/state",
+    "version": "1.0.0",
+    "main": "index.ts",
+    "types": "index.ts",
+    "peerDependencies": {
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "tamagui": "^1.95.0"
+    }
+  }
+  
