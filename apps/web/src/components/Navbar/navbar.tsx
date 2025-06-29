@@ -1,9 +1,6 @@
 import {
     XStack,
     YStack,
-    Text,
-    Input,
-    Button,
     Theme,
 } from 'tamagui';
 import { PrimaryButton } from '../Styled';
@@ -12,6 +9,7 @@ import AnimatedLogo from './AnimatedLogo';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { X } from '@tamagui/lucide-icons';
 
 export default function Navbar(theme: string) {
     const { user } = useAuth();
@@ -33,19 +31,17 @@ export default function Navbar(theme: string) {
                 py="$2"
                 px="$4"
                 borderRadius={20}
+                jc="space-between"
+            // ac="space-between"
             >
                 <XStack
-                    ai="center"
+                    width="100%"
                     jc="space-between"
-                    px="$4"
-                    py="$3"
-                    w="100%"
-                    maxWidth={1200}
-                    marginHorizontal="auto"
+                    ai="center"
+                    px="$1"
+                    py="$1"
                 >
                     <XStack
-                        ai="center"
-                        gap="$2"
                         onPress={() => navigate('/')}
                     >
                         {/* <img
@@ -60,43 +56,33 @@ export default function Navbar(theme: string) {
 
                         <AnimatedLogo />
                     </XStack>
-
-                    {user && (
-                        <XStack ai="center" gap="$3">
-                            <PrimaryButton size="$2" onPress={() => navigate('/games')}>
+                    <XStack gap="$2">
+                        {user && (
+                            <><PrimaryButton size="$2" onPress={() => navigate('/games')}>
                                 Games
-                            </PrimaryButton>
-                            <PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
-                                Friends
-                            </PrimaryButton>
-                            <PrimaryButton size="$2" onPress={() => navigate('/profile')}>
-                                Profile
-                            </PrimaryButton>
-                            <PrimaryButton
-                                size="$2"
-                                onPress={() => {
-                                    fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() =>
-                                        location.reload()
-                                    )
-                                }}
-                            >
-                                Logout
-                            </PrimaryButton>
-                        </XStack>
-                    )}
+                            </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
+                                    Friends
+                                </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/profile')}>
+                                    Profile
+                                </PrimaryButton><PrimaryButton
+                                    size="$2"
+                                    onPress={() => {
+                                        fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload()
+                                        );
+                                    }}
+                                >
+                                    Logout
+                                </PrimaryButton></>
+                        )}
 
-                    {!user && (
-                        <XStack ai="center" gap="$3">
+                        {!user && (
                             <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
                                 Login
                             </PrimaryButton>
-                            {/* <PrimaryButton size="$2" onPress={() => navigate('/register')}>
-                            Register
-                        </PrimaryButton> */}
-                        </XStack>
-                    )}
+                        )}
+                    </XStack>
                 </XStack>
             </YStack >
-        </Theme>
+        </Theme >
     );
 }
