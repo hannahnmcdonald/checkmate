@@ -4,7 +4,7 @@ import { styled, YStack, Card, Button, Input, Text } from 'tamagui'
 export const PageContainer = styled(YStack, {
     name: 'PageContainer',
     bg: '$background',
-    minHeight: '100vh',
+    minHeight: '80vh',
     px: '$6',
     py: '$8',
     gap: '$8',
