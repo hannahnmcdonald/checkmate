@@ -4,7 +4,6 @@ import App from './App'
 import '@fontsource/jetbrains-mono'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
+    // <React.StrictMode>
+    <App />
 )

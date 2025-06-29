@@ -5,16 +5,18 @@
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "server"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "concurrently \"yarn workspace web dev\" \"yarn workspace server dev\"",
     "dev:web": "turbo run dev --filter=web",
     "dev:mobile": "turbo run dev --filter=mobile",
     "build": "turbo run build",
     "clean": "rm -rf node_modules yarn.lock && yarn install"
   },
   "devDependencies": {
+    "concurrently": "^9.2.0",
     "turbo": "^2.0.0",
     "typescript": "^5.4.0"
   },

@@ -11,7 +11,7 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         tamaguiPlugin({
-            config: '../packages/theme/tamagui.config.ts', // path to your config
+            config: '../../packages/theme/tamagui.config.ts', // path to your config
         }),
         react()
     ],
@@ -25,6 +25,14 @@ export default defineConfig({
         }
     },
     server: {
+        // Forwards any API requests during development to our backend server.
+        proxy: {
+            "/api": {
+                target: "http://localhost:3001",
+                changeOrigin: true,
+                secure: false
+            }
+        },
         fs: {
             allow: ['..', path.resolve(__dirname, '../../')]
         }

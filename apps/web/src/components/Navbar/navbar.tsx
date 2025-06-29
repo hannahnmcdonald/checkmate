@@ -6,8 +6,9 @@ import {
     Button,
     Theme,
 } from 'tamagui';
-import { PrimaryButton } from '../styled';
-import logo from '../../images/CheckMateNavLogo.png';
+import { PrimaryButton } from '../Styled';
+// import logo from '../../images/CheckMateNavLogo.png';
+import AnimatedLogo from './AnimatedLogo';
 import { useAuth } from '@checkmate/auth';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -19,15 +20,19 @@ export default function Navbar(theme: string) {
     return (
         <Theme name={theme}>
             <YStack
-                position="fixed"
-                top={10}
-                left={10}
-                right={10}
+                position="sticky"
+                top={18}
                 zIndex={100}
-                bg="rgba(255,255,255,0.25)"
-                opacity={1}
-                borderRadius="$10"
+                bg="rgba(255,255,255,0.08)"
                 backdropFilter="blur(10px)"
+                borderBottomWidth={2}
+                borderBottomColor="#4D96FF"
+                shadowColor="black"
+                shadowOpacity={0.3}
+                shadowRadius={20}
+                py="$2"
+                px="$4"
+                borderRadius={20}
             >
                 <XStack
                     ai="center"
@@ -43,7 +48,7 @@ export default function Navbar(theme: string) {
                         gap="$2"
                         onPress={() => navigate('/')}
                     >
-                        <img
+                        {/* <img
                             src={logo}
                             alt="Checkmate Logo"
                             style={{
@@ -51,7 +56,9 @@ export default function Navbar(theme: string) {
                                 width: 'auto',
                                 display: 'block',
                             }}
-                        />
+                        /> */}
+
+                        <AnimatedLogo />
                     </XStack>
 
                     {user && (

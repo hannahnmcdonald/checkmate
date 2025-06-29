@@ -2,7 +2,8 @@ import { YStack, XStack, Text, Card, Theme } from 'tamagui';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
-import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/styled';
+import Footer from '../../components/Footer';
+import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -48,56 +49,57 @@ export default function LoginPage() {
     }
 
     return (
-        <PageContainer>
-            <Card elevate size="$4" bordered width={350}>
-                <YStack gap="$3" p="$4">
-                    <Text fontSize="$6" fontWeight="700">
-                        Log In
-                    </Text>
-
-
-                    {error && (
-                        <Text color="red" fontSize="$1">
-                            {error}
+        <>
+            <PageContainer>
+                <Card elevate size="$4" bordered width={350}>
+                    <YStack gap="$3" p="$4">
+                        <Text fontSize="$6" fontWeight="700">
+                            Log In
                         </Text>
-                    )}
 
-                    {isFormIncomplete && (
-                        <Text color="gray" fontSize="$1">
-                            Please fill out all fields.
-                        </Text>
-                    )}
 
-                    <FormInput
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
+                        {error && (
+                            <Text color="red" fontSize="$1">
+                                {error}
+                            </Text>
+                        )}
 
-                    <FormInput
-                        placeholder="Password"
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
+                        {isFormIncomplete && (
+                            <Text color="gray" fontSize="$1">
+                                Please fill out all fields.
+                            </Text>
+                        )}
 
-                    <PrimaryButton onPress={handleLogin} disabled={loading || isFormIncomplete}>
-                        Log In
-                    </PrimaryButton>
+                        <FormInput
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={setEmail} />
 
-                    <XStack jc="center">
-                        <Text fontSize="$1">Don't have an account?</Text>
-                        <InlineLink
-                            variant="outlined"
-                            size="$2"
-                            ml="$2"
-                            onPress={() => navigate('/register')}
-                        >
-                            Register
-                        </InlineLink>
-                    </XStack>
-                </YStack>
-            </Card>
-        </PageContainer>
+                        <FormInput
+                            placeholder="Password"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry />
+
+                        <PrimaryButton onPress={handleLogin} disabled={loading || isFormIncomplete}>
+                            Log In
+                        </PrimaryButton>
+
+                        <XStack jc="center">
+                            <Text fontSize="$1">Don't have an account?</Text>
+                            <InlineLink
+                                variant="outlined"
+                                size="$2"
+                                ml="$2"
+                                onPress={() => navigate('/register')}
+                            >
+                                Register
+                            </InlineLink>
+                        </XStack>
+                    </YStack>
+                </Card>
+            </PageContainer>
+            <Footer />
+        </>
     )
 }

@@ -56,7 +56,6 @@ const config = createTamagui({
     },
     themes: {
         ...defaultConfig.themes,
-
         blueDark: {
             background: '#0f172a',
             backgroundHover: '#1e293b',
@@ -78,26 +77,47 @@ const config = createTamagui({
             color2: '#34d399',
             color3: '#10b981',
         },
+        brownDark: {
+            background: '#3B1F1A',
+            backgroundHover: '#4C2720',
+            color: '#E4BFA3',
+            color2: '#D39A74',
+            color3: '#B76A4A',
+        },
+        oliveDark: {
+            background: '#3A2E12',
+            backgroundHover: '#51411A',
+            color: '#D9C98A',
+            color2: '#BFAE64',
+            color3: '#A38E3E',
+        },
         tealDark: {
-            background: '#0f766e',
-            backgroundHover: '#115e59',
-            color: '#5eead4',
-            color2: '#2dd4bf',
-            color3: '#14b8a6',
+            background: '#0C3B3B',
+            backgroundHover: '#0F4D4D',
+            color: '#6EE7B7',
+            color2: '#34D399',
+            color3: '#10B981',
         },
-        orangeDark: {
-            background: '#7c2d12',
-            backgroundHover: '#9a3412',
-            color: '#fdba74',
-            color2: '#fb923c',
-            color3: '#f97316',
+        medBlueDark: {
+            background: '#102A4C',
+            backgroundHover: '#14366A',
+            color: '#93C5FD',
+            color2: '#60A5FA',
+            color3: '#3B82F6',
         },
-        redDark: {
-            background: '#7f1d1d',
-            backgroundHover: '#991b1b',
-            color: '#fca5a5',
-            color2: '#f87171',
-            color3: '#ef4444',
+        magentaDark: {
+            background: '#4A173A',
+            backgroundHover: '#631F4E',
+            color: '#F0ABFC',
+            color2: '#E879F9',
+            color3: '#D946EF',
+        },
+        maroonDark: {
+            background: '#4A1A1A',
+            backgroundHover: '#641F1F',
+            color: '#FCA5A5',
+            color2: '#F87171',
+            color3: '#EF4444',
         },
     },
 

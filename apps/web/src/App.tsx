@@ -5,7 +5,7 @@ import { config } from '@checkmate/theme';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-// import Home from './pages/Home'
+import HomePage from './pages/Home/Home';
 import LoginPage from './pages/Login/login';
 import RegisterPage from './pages/Register/register';
 import Profile from './pages/Profile/profile';
@@ -17,9 +17,8 @@ import Profile from './pages/Profile/profile';
 // import Stats from './pages/Stats/stats';
 
 import { AuthProvider } from '@checkmate/auth';
-import Navbar from './components/Navbar/navbar';
 import React from 'react';
-import ProtectedRoute from './components/protectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
 
 export default function App() {
@@ -34,8 +33,11 @@ export default function App() {
           <AuthProvider>
             {/* <Navbar /> */}
             <Routes>
+              <Route path="/" element={<Layout theme="blueDark">
+                <HomePage />
+              </Layout>} />
               <Route
-                path="/profile/stats"
+                path="/profile"
                 element={
                   <ProtectedRoute>
                     <Layout theme="redDark">
@@ -44,10 +46,10 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/login" element={<Layout theme="greenDark">
+              <Route path="/login" element={<Layout theme="tealDark">
                 <LoginPage />
               </Layout>} />
-              <Route path="/register" element={<Layout theme="blueDark">
+              <Route path="/register" element={<Layout theme="magentaDark">
                 <RegisterPage />
               </Layout>} />
             </Routes>

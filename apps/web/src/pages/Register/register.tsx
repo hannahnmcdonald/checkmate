@@ -2,7 +2,8 @@ import { YStack, XStack, Text, Card, Theme } from 'tamagui'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
-import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/styled';
+import Footer from '../../components/Footer';
+import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
 
 export default function RegisterPage() {
     const navigate = useNavigate()
@@ -83,97 +84,94 @@ export default function RegisterPage() {
     }
 
     return (
-        <PageContainer>
-            <Card elevate size="$4" bordered width={350}>
-                <YStack gap="$3" p="$4" width="100%">
-                    <Text fontSize="$6" fontWeight="700">
-                        Register
-                    </Text>
-
-                    {error && (
-                        <YStack
-                            bg="red"
-                            br="$2"
-                            p="$2"
-                        >
-                            <Text color="white" fontSize="$2">
-                                {error}
-                            </Text>
-                        </YStack>
-                    )}
-
-                    {successMessage && (
-                        <YStack bg="green" br="$2" p="$2">
-                            <Text color="white" fontSize="$1">
-                                {successMessage}
-                            </Text>
-                        </YStack>
-                    )}
-
-                    {isFormIncomplete && (
-                        <Text color="gray" fontSize="$1">
-                            Please fill out all fields.
+        <>
+            <PageContainer>
+                <Card elevate size="$4" bordered width={350}>
+                    <YStack gap="$3" p="$4" width="100%">
+                        <Text fontSize="$6" fontWeight="700">
+                            Register
                         </Text>
-                    )}
 
-                    <FormInput
-                        placeholder="First Name"
-                        value={firstName}
-                        onChangeText={setFirstName}
-                    />
+                        {error && (
+                            <YStack
+                                bg="red"
+                                br="$2"
+                                p="$2"
+                            >
+                                <Text color="white" fontSize="$2">
+                                    {error}
+                                </Text>
+                            </YStack>
+                        )}
 
-                    <FormInput
-                        placeholder="Last Name"
-                        value={lastName}
-                        onChangeText={setLastName}
-                    />
+                        {successMessage && (
+                            <YStack bg="green" br="$2" p="$2">
+                                <Text color="white" fontSize="$1">
+                                    {successMessage}
+                                </Text>
+                            </YStack>
+                        )}
 
-                    <FormInput
-                        placeholder="Username"
-                        value={username}
-                        onChangeText={setUsername}
-                    />
+                        {isFormIncomplete && (
+                            <Text color="gray" fontSize="$1">
+                                Please fill out all fields.
+                            </Text>
+                        )}
 
-                    <FormInput
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
+                        <FormInput
+                            placeholder="First Name"
+                            value={firstName}
+                            onChangeText={setFirstName} />
 
-                    <FormInput
-                        placeholder="Password"
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
+                        <FormInput
+                            placeholder="Last Name"
+                            value={lastName}
+                            onChangeText={setLastName} />
 
-                    <FormInput
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        secureTextEntry
-                    />
+                        <FormInput
+                            placeholder="Username"
+                            value={username}
+                            onChangeText={setUsername} />
 
-                    <PrimaryButton
-                        onPress={handleRegister}
-                        disabled={loading || isFormIncomplete}
-                    >
-                        {loading ? 'Creating...' : 'Create Account'}
-                    </PrimaryButton>
+                        <FormInput
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={setEmail} />
 
-                    <XStack jc="center">
-                        <Text fontSize="$1">Already have an account?</Text>
-                        <InlineLink
-                            variant="outlined"
-                            size="$2"
-                            ml="$2"
-                            onPress={() => navigate('/login')}
+                        <FormInput
+                            placeholder="Password"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry />
+
+                        <FormInput
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry />
+
+                        <PrimaryButton
+                            onPress={handleRegister}
+                            disabled={loading || isFormIncomplete}
                         >
-                            Log In
-                        </InlineLink>
-                    </XStack>
-                </YStack>
-            </Card>
-        </PageContainer>
+                            {loading ? 'Creating...' : 'Create Account'}
+                        </PrimaryButton>
+
+                        <XStack jc="center">
+                            <Text fontSize="$1">Already have an account?</Text>
+                            <InlineLink
+                                variant="outlined"
+                                size="$2"
+                                ml="$2"
+                                onPress={() => navigate('/login')}
+                            >
+                                Log In
+                            </InlineLink>
+                        </XStack>
+                    </YStack>
+                </Card>
+            </PageContainer>
+            <Footer />
+        </>
     )
 }

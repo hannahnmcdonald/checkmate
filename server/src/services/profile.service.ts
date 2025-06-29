@@ -1,6 +1,6 @@
 import { db } from '../db/knex';
 import withPrivacy from '../utils/withPrivacy.util';
-import getBoardGameDetails from './game.service';
+import { getBoardGameDetails } from './game.service';
 
 // TODO: this is a duplicate of the one in the friends service 
 export async function getUserFriends(userId: string) {

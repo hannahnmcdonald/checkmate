@@ -9,7 +9,7 @@ export const PageContainer = styled(YStack, {
     py: '$8',
     gap: '$8',
     ai: 'center',
-    jc: 'center',
+    jc: 'flex-start',
     position: 'relative',
     overflow: 'hidden',
 })

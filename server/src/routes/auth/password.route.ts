@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { protectedRoute } from '../../middleware/authMiddleware';
 import { Request } from 'express';
-import { changeUserPassword, forgotPassword, resetPassword, updateProfile } from 'src/services/auth/password.service';
+import { changeUserPassword, forgotPassword, resetPassword, updateProfile } from '../../services/auth/password.service';
 
 const passwordRoute = Router();
 

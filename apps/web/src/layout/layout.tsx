@@ -1,6 +1,6 @@
 import { Theme, YStack } from 'tamagui'
 import React from 'react';
-import Navbar from '../components/Navbar/navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 interface LayoutProps {
     children: React.ReactNode;

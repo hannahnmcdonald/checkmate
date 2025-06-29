@@ -5,7 +5,7 @@ import {
     markAllNotificationsRead,
     deleteNotification,
     clearReadNotifications
-} from 'src/services/notifications.service';
+} from '../services/notifications.service';
 
 import { protectedRoute } from '../middleware/authMiddleware';
 import { Request } from 'express';
