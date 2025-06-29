@@ -75,11 +75,16 @@ export default function Navbar(theme: string) {
                                 </PrimaryButton></>
                         )}
 
-                        {!user && (
+                        {!user && window.location.pathname !== '/login' && (
                             <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
                                 Login
                             </PrimaryButton>
                         )}
+                        {/* {!user && window.location.pathname !== '/register' && window.location.pathname !== '/' && (
+                            <PrimaryButton size="$2" color="$background" onPress={() => navigate('/register')}>
+                                Register
+                            </PrimaryButton>
+                        )} */}
                     </XStack>
                 </XStack>
             </YStack >
