@@ -1,7 +1,8 @@
-import { Card, YStack, Text, Image, Button } from 'tamagui'
+import { Card, XStack, Text, Image, Button } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { PrimaryButton } from './Styled'
+import { Heart, PlusSquare } from '@tamagui/lucide-icons';
 
 export default function GameCard({
     id,
@@ -52,6 +53,25 @@ export default function GameCard({
             <Text color="$color3" fontSize={14} ellipsizeMode="tail">
                 Players: {minPlayers} - {maxPlayers}
             </Text>
+
+            <XStack gap="$2" mt="auto">
+                <Button
+                    size="$2"
+                    circular
+                    icon={Heart}
+                    onPress={() => {
+                        // handle wishlist toggle
+                    }}
+                />
+                <Button
+                    size="$2"
+                    circular
+                    icon={PlusSquare}
+                    onPress={() => {
+                        // handle add to collection
+                    }}
+                />
+            </XStack>
 
             <PrimaryButton
                 size="$2"

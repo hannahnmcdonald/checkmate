@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/Home/Home';
 import LoginPage from './pages/Login/login';
 import RegisterPage from './pages/Register/register';
-import Profile from './pages/Profile/profile';
+import ProfilePage from './pages/Profile/profile';
 // import GameSearch from './pages/GameSearch'
 // import GameDetails from './pages/GameDetails'
 // import Match from './pages/Match'
@@ -38,11 +38,11 @@ export default function App() {
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute>
-                    <Layout theme="redDark">
-                      <Profile />
-                    </Layout>
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <Layout theme="medBlueDark">
+                    <ProfilePage />
+                  </Layout>
+                  // </ProtectedRoute>
                 }
               />
               <Route path="/login" element={<Layout theme="tealDark">

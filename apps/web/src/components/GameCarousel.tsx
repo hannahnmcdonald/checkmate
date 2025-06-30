@@ -1,6 +1,6 @@
-import { XStack, YStack, Text, Button, Image, ScrollView } from 'tamagui';
+import { XStack, YStack, ScrollView, Button } from 'tamagui';
 import GameCard from './GameCard';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMedia } from 'tamagui';
 
 type Game = {
@@ -12,14 +12,19 @@ type Game = {
     maxPlayers: number;
 };
 
-export default function GameCarousel() {
-    const [games, setGames] = useState<Game[]>([])
+export default function GameCarousel({
+    games,
+    header,
+}: {
+    games: Game[];
+    header?: React.ReactNode;
+}) {
     const scrollRef = useRef<ScrollView>(null);
     const [scrollX, setScrollX] = useState(0);
-    const media = useMedia()
-    const isSmall = media.sm
-    const isLarge = media.lg
-    const isMedium = !isSmall && !isLarge
+    const media = useMedia();
+    const isSmall = media.sm;
+    const isLarge = media.lg;
+    const isMedium = !isSmall && !isLarge;
 
     const scrollBy = (offset: number) => {
         const newScrollX = Math.max(0, scrollX + offset);
@@ -32,21 +37,10 @@ export default function GameCarousel() {
         setScrollX(newScrollX);
     };
 
-    useEffect(() => {
-        fetch('/api/game/trending')
-            .then((res) => res.json())
-            .then((data) => {
-                setGames(data)
-            })
-            .catch(console.error)
-    }, [])
-
     return (
         <YStack gap="$3">
             <XStack ai="center" jc="space-between" mb="$2" px="$4">
-                <Text fontSize="$5" fontWeight="700">
-                    Popular Games
-                </Text>
+                {header}
                 {isLarge && (
                     <XStack gap="$2">
                         <Button size="$2" onPress={() => scrollBy(-200)} theme="alt1">
@@ -82,30 +76,20 @@ export default function GameCarousel() {
                     jc="space-between"
                 >
                     {games.map((game) => (
-                        <YStack
-                            key={game.id}
-                            width="31%"
-                        >
+                        <YStack key={game.id} width="31%">
                             <GameCard {...game} />
                         </YStack>
                     ))}
                 </XStack>
             ) : (
-                <YStack
-                    gap="$4"
-                    alignItems="center"
-                    px="$4"
-                >
+                <YStack gap="$4" alignItems="center" px="$4">
                     {games.map((game) => (
-                        <YStack
-                            key={game.id}
-                            width="80%"
-                        >
+                        <YStack key={game.id} width="80%">
                             <GameCard {...game} />
                         </YStack>
                     ))}
                 </YStack>
             )}
         </YStack>
-    )
+    );
 }

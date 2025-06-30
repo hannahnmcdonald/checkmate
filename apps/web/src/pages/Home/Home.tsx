@@ -4,6 +4,7 @@ import Footer from '../../components/Footer';
 import { FormInput, PrimaryButton } from '../../components/Styled';
 import React from 'react';
 import { Search } from '@tamagui/lucide-icons';
+import TrendingGames from './Components/TrendingGames';
 
 export default function HomePage() {
     // TODO: Implement search functionality
@@ -65,7 +66,7 @@ export default function HomePage() {
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
 
-            <GameCarousel />
+            <TrendingGames />
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
 
