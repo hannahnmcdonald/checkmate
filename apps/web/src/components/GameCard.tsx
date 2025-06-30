@@ -20,6 +20,9 @@ export default function GameCard({
     maxPlayers: number
 }) {
     const navigate = useNavigate()
+    // TODO: Hardcoded for now
+    const isCollected = true;
+    const isWishlisted = true;
 
     return (
         <Card
@@ -58,17 +61,19 @@ export default function GameCard({
                 <Button
                     size="$2"
                     circular
+                    theme={isWishlisted ? 'maroonDark' : 'alt1'}
                     icon={Heart}
                     onPress={() => {
-                        // handle wishlist toggle
+                        // TODO: handle wishlist toggle
                     }}
                 />
                 <Button
                     size="$2"
                     circular
+                    theme={isCollected ? 'maroonDark' : 'alt1'}
                     icon={PlusSquare}
                     onPress={() => {
-                        // handle add to collection
+                        // TODO: handle add to collection
                     }}
                 />
             </XStack>

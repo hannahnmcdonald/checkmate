@@ -10,7 +10,7 @@ import LoginPage from './pages/Login/login';
 import RegisterPage from './pages/Register/register';
 import ProfilePage from './pages/Profile/profile';
 // import GameSearch from './pages/GameSearch'
-// import GameDetails from './pages/GameDetails'
+import GameDetailsPage from './pages/Game/game';
 // import Match from './pages/Match'
 // import FriendSearch from './pages/FriendSearch'
 // import FriendProfile from './pages/FriendProfile'
@@ -41,6 +41,16 @@ export default function App() {
                   // <ProtectedRoute>
                   <Layout theme="medBlueDark">
                     <ProfilePage />
+                  </Layout>
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/game/:id"
+                element={
+                  // <ProtectedRoute>
+                  <Layout theme="greenDark">
+                    <GameDetailsPage />
                   </Layout>
                   // </ProtectedRoute>
                 }
