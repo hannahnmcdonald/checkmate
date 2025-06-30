@@ -18,11 +18,11 @@ export default defineConfig({
     resolve: {
         alias: {
             '@checkmate/screens': path.resolve(__dirname, '../../packages/screens'),
-            '@checkmate/auth': path.resolve(__dirname, '../../packages/auth'),
             '@checkmate/theme': path.resolve(__dirname, '../../packages/theme'),
             '@checkmate/ui': path.resolve(__dirname, '../../packages/ui'),
             '@checkmate/hooks': path.resolve(__dirname, '../../packages/hooks'),
-            '@checkmate/state': path.resolve(__dirname, '../../packages/state')
+            '@checkmate/state': path.resolve(__dirname, '../../packages/state'),
+            '@checkmate/api': path.resolve(__dirname, '../../packages/api')
         }
     },
     server: {

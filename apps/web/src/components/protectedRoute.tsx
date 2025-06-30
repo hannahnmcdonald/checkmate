@@ -1,6 +1,6 @@
 import { JSX } from 'react'
 // Update the import path below to the correct relative path for your project structure
-import { useAuth } from '@checkmate/auth';
+import { useAuth } from '@checkmate/state';
 import { Navigate, useLocation } from 'react-router-dom'
 import React from 'react';
 

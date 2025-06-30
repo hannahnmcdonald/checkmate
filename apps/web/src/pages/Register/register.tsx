@@ -2,10 +2,13 @@ import { YStack, XStack, Text, Card, Theme } from 'tamagui'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
+import { register } from '@checkmate/api';
+import { useAuth } from '@checkmate/state';
 import Footer from '../../components/Footer';
 import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
 
 export default function RegisterPage() {
+    const { dispatch } = useAuth()
     const navigate = useNavigate()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -47,25 +50,9 @@ export default function RegisterPage() {
         }
 
         try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    username,
-                    email,
-                    password,
-                }),
-            })
-
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(data.error || 'Registration failed')
-            }
+            const { user, token } = await register({ email, password, firstName, lastName, username })
+            dispatch({ type: 'LOGIN', payload: { user, token } })
+            localStorage.setItem('authToken', token);
 
             setSuccessMessage('Account created! Redirecting...')
             setTimeout(() => {

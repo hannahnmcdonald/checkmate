@@ -1,6 +1,6 @@
 import { Sheet, Button, YStack, Text } from 'tamagui'
 import { Menu } from '@tamagui/lucide-icons'
-import { useAuth } from '@checkmate/auth';
+import { useAuth } from '@checkmate/state';
 import { useNavigate } from 'react-router-dom';
 import React from 'react'
 

@@ -16,7 +16,7 @@ import Profile from './pages/Profile/profile';
 // import FriendProfile from './pages/FriendProfile'
 // import Stats from './pages/Stats/stats';
 
-import { AuthProvider } from '@checkmate/auth';
+import { AuthProvider } from '@checkmate/state';
 import React from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
@@ -31,7 +31,6 @@ export default function App() {
       <Theme name={theme}>
         <Router>
           <AuthProvider>
-            {/* <Navbar /> */}
             <Routes>
               <Route path="/" element={<Layout theme="blueDark">
                 <HomePage />

@@ -2,12 +2,12 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@checkmate/auth": ["packages/auth"],
         "@checkmate/ui": ["packages/ui"],
         "@checkmate/hooks": ["packages/hooks"],
         "@checkmate/screens": ["packages/screens"],
         "@checkmate/theme": ["packages/theme"],
-        "@checkmate/state": ["packages/state"]
+        "@checkmate/state": ["packages/state"],
+        "@checkmate/api": ["packages/api"]
       },
       "module": "esnext",
       "target": "esnext",

@@ -6,14 +6,14 @@ import {
 import { PrimaryButton } from '../Styled';
 // import logo from '../../images/CheckMateNavLogo.png';
 import AnimatedLogo from './AnimatedLogo';
-import { useAuth } from '@checkmate/auth';
+import { useAuth } from '@checkmate/state';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { MenuButton } from './MenuButton';
 import { useMedia } from 'tamagui';
 
 export default function Navbar(theme: string) {
-    const { user } = useAuth();
+    const { state } = useAuth();
     const navigate = useNavigate();
     const media = useMedia();
     const isSmallScreen = media.sm;
@@ -35,7 +35,6 @@ export default function Navbar(theme: string) {
                 px="$4"
                 borderRadius={20}
                 jc="space-between"
-            // ac="space-between"
             >
                 <XStack
                     width="100%"
@@ -61,7 +60,7 @@ export default function Navbar(theme: string) {
                     </XStack>
                     {!isSmallScreen ? (
                         <XStack gap="$2">
-                            {user && (
+                            {state.user && (
                                 <><PrimaryButton size="$2" onPress={() => navigate('/games')}>
                                     Games
                                 </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
@@ -79,7 +78,7 @@ export default function Navbar(theme: string) {
                                     </PrimaryButton></>
                             )}
 
-                            {!user && window.location.pathname !== '/login' && (
+                            {!state.user && window.location.pathname !== '/login' && (
                                 <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
                                     Login
                                 </PrimaryButton>

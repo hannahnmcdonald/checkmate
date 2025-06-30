@@ -1,11 +1,14 @@
 import { YStack, XStack, Text, Card, Theme } from 'tamagui';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@checkmate/state'
 import React from 'react'
 import Footer from '../../components/Footer';
 import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
+import { login } from '@checkmate/api/auth.api'
 
 export default function LoginPage() {
+    const { dispatch } = useAuth()
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -21,22 +24,14 @@ export default function LoginPage() {
 
         if (!emailRegex.test(email)) {
             setError('Please enter a valid email address')
+            setLoading(false)
             return
         }
 
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            })
-
-            if (!response.ok) {
-                throw new Error('Invalid credentials')
-            }
+            const { user, token } = await login({ email, password })
+            dispatch({ type: 'LOGIN', payload: { user, token } })
+            localStorage.setItem('authToken', token);
 
             navigate('/profile')
         } catch (err) {
@@ -45,6 +40,8 @@ export default function LoginPage() {
             } else {
                 setError('An unknown error occurred')
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -56,7 +53,6 @@ export default function LoginPage() {
                         <Text fontSize="$6" fontWeight="700">
                             Log In
                         </Text>
-
 
                         {error && (
                             <Text color="red" fontSize="$1">
