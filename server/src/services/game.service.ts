@@ -42,8 +42,9 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
         : item.name?.["@_value"] || "Unknown",
       yearPublished: item.yearpublished?.["@_value"],
       description: item.description,
-      image: item.image?.["@_value"] || undefined,
-      thumbnail: item.thumbnail?.["@_value"] || undefined,
+      image: item.image || undefined,
+      thumbnail: item.thumbnail || undefined,
+
       minPlayers: item.minplayers?.["@_value"]
         ? parseInt(item.minplayers["@_value"], 10)
         : undefined,
@@ -54,7 +55,6 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
         ? parseInt(item.playingtime["@_value"], 10)
         : undefined,
     };
-
     return details;
   } catch (error) {
     console.error("Error fetching game details from BGG:", error);
