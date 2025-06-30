@@ -50,9 +50,8 @@ export default function RegisterPage() {
         }
 
         try {
-            const { user, token } = await register({ email, password, firstName, lastName, username })
-            dispatch({ type: 'LOGIN', payload: { user, token } })
-            localStorage.setItem('authToken', token);
+            const { user } = await register({ email, password, firstName, lastName, username })
+            dispatch({ type: 'LOGIN', payload: { user } })
 
             setSuccessMessage('Account created! Redirecting...')
             setTimeout(() => {

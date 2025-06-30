@@ -31,11 +31,10 @@ export default function AnimatedLogo() {
                 <Text
                     key={index}
                     fontWeight="700"
-                    fontSize="1.5rem"
-                    animateOnly="color"
+                    fontSize="1.75rem"
                     textShadowColor="black"
                     textShadowOffset={{ width: 0, height: 0 }}
-                    textShadowRadius={1}
+                    textShadowRadius={2}
                     color={letterColors[index]}
                 >
                     {letter}

@@ -5,7 +5,7 @@ import { useAuth } from '@checkmate/state'
 import React from 'react'
 import Footer from '../../components/Footer';
 import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
-import { login } from '@checkmate/api/auth.api'
+import { login } from '@checkmate/api';
 
 export default function LoginPage() {
     const { dispatch } = useAuth()
@@ -29,9 +29,12 @@ export default function LoginPage() {
         }
 
         try {
-            const { user, token } = await login({ email, password })
-            dispatch({ type: 'LOGIN', payload: { user, token } })
-            localStorage.setItem('authToken', token);
+            const { user } = await login({ email, password })
+            dispatch({
+                type: 'LOGIN', payload: {
+                    user
+                }
+            })
 
             navigate('/profile')
         } catch (err) {

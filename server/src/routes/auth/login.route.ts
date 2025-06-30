@@ -20,6 +20,9 @@ login.post('/login', async (req, res) => {
       return res.status(500).json({ message: 'Malformed user data' });
     }
 
+    // Safer Option:
+    // HTTP ONLy - cannot be read by JS
+    // Automatic
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
