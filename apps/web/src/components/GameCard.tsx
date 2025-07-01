@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { PrimaryButton } from './Styled'
 import { Heart, PlusSquare } from '@tamagui/lucide-icons';
+import { useAuth } from '@checkmate/state';
 
 export default function GameCard({
     id,
@@ -19,6 +20,7 @@ export default function GameCard({
     minPlayers: number
     maxPlayers: number
 }) {
+    const { state } = useAuth();
     const navigate = useNavigate()
     // TODO: Hardcoded for now
     const isCollected = true;
@@ -57,26 +59,28 @@ export default function GameCard({
                 Players: {minPlayers} - {maxPlayers}
             </Text>
 
-            <XStack gap="$2" mt="auto">
-                <Button
-                    size="$2"
-                    circular
-                    theme={isWishlisted ? 'maroonDark' : 'alt1'}
-                    icon={Heart}
-                    onPress={() => {
-                        // TODO: handle wishlist toggle
-                    }}
-                />
-                <Button
-                    size="$2"
-                    circular
-                    theme={isCollected ? 'maroonDark' : 'alt1'}
-                    icon={PlusSquare}
-                    onPress={() => {
-                        // TODO: handle add to collection
-                    }}
-                />
-            </XStack>
+            {state.user ? (
+                <XStack gap="$2" mt="auto">
+                    <Button
+                        size="$2"
+                        circular
+                        theme={isWishlisted ? 'maroonDark' : 'alt1'}
+                        icon={Heart}
+                        onPress={() => {
+                            // TODO: handle wishlist toggle
+                        }}
+                    />
+                    <Button
+                        size="$2"
+                        circular
+                        theme={isCollected ? 'maroonDark' : 'alt1'}
+                        icon={PlusSquare}
+                        onPress={() => {
+                            // TODO: handle add to collection
+                        }}
+                    />
+                </XStack>
+            ) : null}
 
             <PrimaryButton
                 size="$2"

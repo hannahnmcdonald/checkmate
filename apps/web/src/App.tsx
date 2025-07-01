@@ -9,8 +9,10 @@ import HomePage from './pages/Home/Home';
 import LoginPage from './pages/Login/login';
 import RegisterPage from './pages/Register/register';
 import ProfilePage from './pages/Profile/profile';
+import GameDiscoveryPage from './pages/Game/GameDiscovery/GameDiscovery';
 // import GameSearch from './pages/GameSearch'
-import GameDetailsPage from './pages/Game/game';
+import GameDetailsPage from './pages/Game/GameDetails/GameDetails';
+import GameSearchResults from './pages/Game/GameSearchResults/GameSearchResults';
 // import Match from './pages/Match'
 // import FriendSearch from './pages/FriendSearch'
 // import FriendProfile from './pages/FriendProfile'
@@ -18,7 +20,7 @@ import GameDetailsPage from './pages/Game/game';
 
 import { AuthProvider } from '@checkmate/state';
 import React from 'react';
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
 
 export default function App() {
@@ -53,6 +55,22 @@ export default function App() {
                     <GameDetailsPage />
                   </Layout>
                   // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/games"
+                element={
+                  <Layout theme="medBlueDark">
+                    <GameDiscoveryPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Layout theme="medBlueDark">
+                    <GameSearchResults />
+                  </Layout>
                 }
               />
               <Route path="/login" element={<Layout theme="tealDark">

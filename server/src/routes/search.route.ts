@@ -9,19 +9,20 @@ interface SearchQuery {
 
 search.get(
   '/search', async (req, res) => {
-  const query: SearchQuery = req.query as SearchQuery;
+    const query: SearchQuery = req.query as SearchQuery;
 
-  if (!query.q) {
-    res.status(400).json({ error: 'Missing query parameter: q' }); 
-    return;
-  }
+    if (!query.q) {
+      res.status(400).json({ error: 'Missing query parameter: q' });
+      return;
+    }
 
-  try {
-    const games = await searchBoardGames(query.q);
-    res.json({ games });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch data from BoardGameGeek' });
-  } 
-});
+    try {
+      const games = await searchBoardGames(query.q);
+      console.log('games route', games)
+      res.json(games);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch data from BoardGameGeek' });
+    }
+  });
 
 export default search;

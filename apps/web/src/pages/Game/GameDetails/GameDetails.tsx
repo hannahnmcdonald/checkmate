@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { YStack, XStack, Text, Image, Button, Spinner } from 'tamagui';
 import { Heart, PlusSquare } from '@tamagui/lucide-icons';
 import { useAuth } from '@checkmate/state';
-import { PrimaryButton } from '../../components/Styled';
-import { Badge } from '../../components/GameBadge';
+import { PrimaryButton } from '../../../components/Styled';
+import { Badge } from '../../../components/GameBadge';
 
 type Game = {
     id: string;

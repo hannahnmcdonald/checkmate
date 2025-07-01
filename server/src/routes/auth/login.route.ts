@@ -30,6 +30,7 @@ login.post('/login', async (req, res) => {
       maxAge: 1000 * 60 * 60, // 1 hr
     });
 
+    // TODO: Need to NOT return password on login
     return res.status(200).json({
       message: 'Login successful',
       user,

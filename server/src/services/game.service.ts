@@ -1,3 +1,5 @@
+// TODO: revert back to axios
+
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
 import fetch from 'node-fetch'
@@ -20,7 +22,6 @@ interface BoardGameDetails {
   playingTime?: number;
   categories?: string[];
   mechanics?: string[];
-
 }
 
 export async function getBoardGameDetails(gameId: string): Promise<BoardGameDetails> {
