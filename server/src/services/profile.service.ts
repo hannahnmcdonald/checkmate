@@ -20,6 +20,12 @@ export async function getUserFriends(userId: string) {
 };
 
 export async function getUserSessions(userId: string) {
+
+    if (!userId) {
+        console.error('getUserSessions called without userId');
+        throw new Error('userId is required');
+    }
+
     const recentSessionsRaw = await db('game_session_participants as gsp')
         .where('gsp.user_id', userId)
         .join('game_sessions as gs', 'gs.id', 'gsp.game_session_id')
@@ -59,6 +65,8 @@ export async function getUserSessions(userId: string) {
 
 export async function getUserProfile(targetId: string) {
 
+    console.log('targetId', targetId)
+
     const [user, stats, games, sessions, friends, privacy] = await Promise.all([
         db('users').where('id', targetId).first(),
         db('user_stats').where('user_id', targetId).first(),
@@ -90,7 +98,10 @@ export async function getUserProfile(targetId: string) {
 
 export async function getFullUserProfile(userId: string) {
     const [user, stats, games, friends] = await Promise.all([
-        db('users').where('id', userId).select('username', 'first_name', 'last_name', 'avatar').first(),
+        db('users')
+            .where('id', userId)
+            .select('username', 'first_name', 'last_name', 'avatar')
+            .first(),
         db('user_stats').where('user_id', userId).first(),
         db('user_games').where('user_id', userId),
         db('friendships as f')
@@ -99,14 +110,21 @@ export async function getFullUserProfile(userId: string) {
             })
             .andWhere('f.status', 'accepted')
             .join('users as u', function () {
-                this.on('u.id', '=', db.raw(`
-            (CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END)
-          `, [userId]));
+                this.on('u.id', '=', db.raw(
+                    `(CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END)`,
+                    [userId]
+                ));
             })
             .select('u.id', 'u.username', 'u.first_name', 'u.last_name'),
     ]);
 
-    const userRecentSessions = getUserSessions(user.id)
+    // Handle the case where user does not exist
+    if (!user) {
+        throw new Error(`User with id ${userId} not found`);
+    }
+
+    // Now safe to use user.id
+    const userRecentSessions = await getUserSessions(user.id);
 
     return {
         user,
@@ -119,6 +137,7 @@ export async function getFullUserProfile(userId: string) {
         friends,
     };
 }
+
 
 
 export default { getUserProfile, getFullUserProfile };

@@ -18,6 +18,9 @@ interface BoardGameDetails {
   minPlayers?: number;
   maxPlayers?: number;
   playingTime?: number;
+  categories?: string[];
+  mechanics?: string[];
+
 }
 
 export async function getBoardGameDetails(gameId: string): Promise<BoardGameDetails> {
@@ -29,6 +32,16 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
     const parsed = parser.parse(xml);
 
     const item = parsed.items?.item;
+    const links = Array.isArray(item.link) ? item.link : [item.link];
+
+    const categories = links
+      .filter((l: { [x: string]: string; }) => l["@_type"] === "boardgamecategory")
+      .map((l: { [x: string]: any; }) => l["@_value"]);
+
+    const mechanics = links
+      .filter((l: { [x: string]: string; }) => l["@_type"] === "boardgamemechanic")
+      .map((l: { [x: string]: any; }) => l["@_value"]);
+
 
     if (!item || item.error) {
       console.warn(`BGG returned invalid item for ID ${gameId}`);
@@ -54,7 +67,10 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
       playingTime: item.playingtime?.["@_value"]
         ? parseInt(item.playingtime["@_value"], 10)
         : undefined,
+      categories,
+      mechanics
     };
+    console.log(details)
     return details;
   } catch (error) {
     console.error("Error fetching game details from BGG:", error);

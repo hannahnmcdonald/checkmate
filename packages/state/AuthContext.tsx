@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // On mount, check if the user is already authenticated via cookie
     useEffect(() => {
-        fetch('/api/me', {
+        fetch('/me', {
             credentials: 'include', // 👈 IMPORTANT
         })
             .then((res) => {
@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             })
             .catch(() => {
                 // Not logged in, do nothing
+                console.log('Not logged in')
             });
     }, []);
 
