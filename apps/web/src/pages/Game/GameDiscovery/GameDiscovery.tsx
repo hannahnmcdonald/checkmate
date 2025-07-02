@@ -2,7 +2,7 @@ import { YStack, Text, Separator } from 'tamagui'
 import Footer from '../../../components/Footer';
 import React from 'react';
 import TrendingGames from '../../Home/Components/TrendingGames';
-import SearchBar from '../../../components/SearchBar/SearchBar';
+import SearchBar from '../../../components/GameSearchBar/GameSearchBar';
 
 export default function GameDiscoveryPage() {
     // TODO: Implement search functionality

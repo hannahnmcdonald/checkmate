@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { YStack, Text, Separator } from 'tamagui'
 import Footer from '../../../components/Footer';
 import React from 'react';
-import SearchBar from '../../../components/SearchBar/SearchBar';
+import SearchBar from '../../../components/GameSearchBar/GameSearchBar';
 import { useGameSearch } from '../../../hooks/useGameSearch'
 // import { GameGrid } from '../../../components/GameGrid';
 import GameCarousel from '../../../components/GameCarousel';

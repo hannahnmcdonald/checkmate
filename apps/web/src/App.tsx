@@ -10,9 +10,9 @@ import LoginPage from './pages/Login/login';
 import RegisterPage from './pages/Register/register';
 import ProfilePage from './pages/Profile/profile';
 import GameDiscoveryPage from './pages/Game/GameDiscovery/GameDiscovery';
-// import GameSearch from './pages/GameSearch'
 import GameDetailsPage from './pages/Game/GameDetails/GameDetails';
 import GameSearchResults from './pages/Game/GameSearchResults/GameSearchResults';
+import FindFriendsPage from './pages/Friends/FindFriends';
 // import Match from './pages/Match'
 // import FriendSearch from './pages/FriendSearch'
 // import FriendProfile from './pages/FriendProfile'
@@ -22,6 +22,7 @@ import { AuthProvider } from '@checkmate/state';
 import React from 'react';
 // import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
+
 
 export default function App() {
   // console.log('Tamagui config:', config)
@@ -70,6 +71,14 @@ export default function App() {
                 element={
                   <Layout theme="medBlueDark">
                     <GameSearchResults />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/friends"
+                element={
+                  <Layout theme="tealDark">
+                    <FindFriendsPage />
                   </Layout>
                 }
               />
