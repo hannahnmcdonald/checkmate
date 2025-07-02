@@ -17,6 +17,8 @@ const categoryColors = {
     "Territory Building": "#98BFAF",
     "Medieval": "#CD4C4C",
     "Number": "#69C4D8",
+    "Political": "#2e1484",
+    "Negotiation": "#b4b613",
     // fallback/default color:
     "default": "#999",
 };
@@ -38,9 +40,11 @@ const categoryIcons = {
     "Territory Building": "🧭",
     "Medieval": "🏰",
     "Number": "➕",
+    "Political": "🗳️",
+    "Negotiation": "☎️"
 };
 
-// TODO: migrate to lucide icons
+// TODO: migrate to lucide icons? 
 // const categoryIcons = {
 //     "Party Game": <Dice5 size={12} color="white" />,
 //     "Deduction": <Brain size={12} color="white" />,

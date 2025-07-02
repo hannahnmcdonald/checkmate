@@ -12,11 +12,11 @@ export function IconButton({
 }) {
     return (
         <Button
-            size="$2"
+            size="$3"
             p="$2"
             circular
             onPress={onToggle}
-            backgroundColor={selected ? '#4D96FF' : 'transparent'}
+            backgroundColor={selected ? '$color2' : 'transparent'}
         >
             <Icon color={selected ? 'white' : '#999'} fill={selected ? 'white' : 'transparent'} />
         </Button>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { YStack, XStack, Text, Image, Button, Spinner } from 'tamagui';
-import { Heart, PlusSquare } from '@tamagui/lucide-icons';
+import { Heart, Bookmark } from '@tamagui/lucide-icons';
 import { useAuth } from '@checkmate/state';
 import { PrimaryButton } from '../../../components/Styled';
 import { Badge } from '../../../components/GameBadge';
-import { useSavedGames } from '../../../hooks/useSavedGames';
-import { GameSaveToggleButton } from '../GameSaveToggleButton/GameSaveToggleButton';
+import { useSaveGame } from '../../../hooks/useSaveGame';
+import { useRemoveGame } from '../../../hooks/useRemoveGame';
+import { IconButton } from '../../../components/IconButton';
+import { useGameSaveStatus } from '../../../hooks/useGameSaveStatus';
 
 type Game = {
     id: string;
@@ -28,14 +30,19 @@ export default function GameDetailsPage() {
     const [game, setGame] = useState<Game | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const { savedGames } = useSavedGames();
-    const isWishlisted = savedGames.some(
-        (g) => g.game_id === id && g.category === "wishlist"
-    );
-    const isCollected = savedGames.some(
-        (g) => g.game_id === id && g.category === "collection"
-    );
+    const { status, loading: statusLoading } = useGameSaveStatus(id);
+    const { mutate: save } = useSaveGame();
+    const { mutate: remove } = useRemoveGame();
 
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isCollected, setIsCollected] = useState(false);
+
+    useEffect(() => {
+        if (!statusLoading) {
+            setIsWishlisted(status.wishlist);
+            setIsCollected(status.collection);
+        }
+    }, [status, statusLoading]);
 
     useEffect(() => {
         fetch(`/api/game/${id}`)
@@ -90,22 +97,40 @@ export default function GameDetailsPage() {
                 {description || "No description"}
             </Text>
 
-            {state.user ? (
+            {state.user && !statusLoading && (
                 <XStack gap="$2" mt="$2">
-                    <GameSaveToggleButton
-                        gameId={id}
-                        category="wishlist"
-                        icon={Heart}
-                        initiallySaved={isWishlisted}
+                    <IconButton
+                        selected={isWishlisted}
+                        Icon={Heart}
+                        onToggle={() => {
+                            setIsWishlisted((prev) => {
+                                if (prev) {
+                                    remove(id, "wishlist");
+                                    return false;
+                                } else {
+                                    save(id, "wishlist");
+                                    return true;
+                                }
+                            });
+                        }}
                     />
-                    <GameSaveToggleButton
-                        gameId={id}
-                        category="collection"
-                        icon={PlusSquare}
-                        initiallySaved={isCollected}
+                    <IconButton
+                        selected={isCollected}
+                        Icon={Bookmark}
+                        onToggle={() => {
+                            setIsCollected((prev) => {
+                                if (prev) {
+                                    remove(id, "collection");
+                                    return false;
+                                } else {
+                                    save(id, "collection");
+                                    return true;
+                                }
+                            });
+                        }}
                     />
                 </XStack>
-            ) : (null)}
+            )}
 
             <Text fontSize="$3" mt="$3" mb="$1">Categories:</Text>
             <XStack flexWrap="wrap" mt="$2">

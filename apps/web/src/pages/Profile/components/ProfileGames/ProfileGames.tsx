@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import GameCarousel from '../../../../components/GameCarousel';
 // import { PrimaryButton } from '../../../../components/Styled';
 import { XStack } from 'tamagui';
-import { ToggleTabs } from '../../../../components/Toggle';
+// import { ToggleTabs } from '../../../../components/Toggle';
+import { useAuth } from '@checkmate/state';
+import { useSavedGames } from '../../../../hooks/useSavedGames';
 
 type Game = {
     id: string;
@@ -82,37 +84,29 @@ export const dummyGames: Game[] = [
 
 
 export default function ProfileGames() {
-    const [activeTab, setActiveTab] = useState<'wishlist' | 'collection'>('collection');
-    const [wishlist, setWishlist] = useState<Game[]>([]);
-    const [collection, setCollection] = useState<Game[]>([]);
+    // const [activeTab, setActiveTab] = useState<'wishlist' | 'collection'>('collection');
+    const { state } = useAuth();
+    const { savedGames } = useSavedGames();
 
-    // useEffect(() => {
-    //     fetch('/api/user/wishlist')
-    //         .then((res) => res.json())
-    //         .then(setWishlist);
-
-    //     fetch('/api/user/collection')
-    //         .then((res) => res.json())
-    //         .then(setCollection);
-    // }, []);
-
-    // const games = activeTab === 'wishlist' ? wishlist : collection;
+    //TODO: Do we even want the icon wishlist/collection toggle if this section will already be sorted?
 
     return (
         <GameCarousel
             games={dummyGames}
             header={
                 <XStack gap="$2">
-                    <ToggleTabs
+                    {/* <ToggleTabs
                         options={[
                             { label: 'Collection', value: 'collection' },
                             { label: 'Wishlist', value: 'wishlist' },
                         ]}
                         value={activeTab}
                         onChange={setActiveTab}
-                    />
+                    /> */}
                 </XStack>
             }
+            savedGames={savedGames}
+            isLoggedIn={!!state.user}
         />
     );
 }

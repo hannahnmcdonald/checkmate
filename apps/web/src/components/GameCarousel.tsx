@@ -15,9 +15,13 @@ type Game = {
 export default function GameCarousel({
     games,
     header,
+    savedGames,
+    isLoggedIn
 }: {
     games: Game[];
     header?: React.ReactNode;
+    savedGames: { game_id: string; category: string }[];
+    isLoggedIn: boolean;
 }) {
     const scrollRef = useRef<ScrollView>(null);
     const [scrollX, setScrollX] = useState(0);
@@ -64,20 +68,24 @@ export default function GameCarousel({
                 >
                     <XStack gap="$2">
                         {games.map((game) => (
-                            <GameCard key={game.id} {...game} />
+                            <GameCard
+                                key={game.id}
+                                {...game}
+                                savedGames={savedGames}
+                                isLoggedIn={isLoggedIn}
+                            />
                         ))}
                     </XStack>
                 </ScrollView>
             ) : isMedium ? (
-                <XStack
-                    flexWrap="wrap"
-                    gap="$4"
-                    px="$4"
-                    jc="space-between"
-                >
+                <XStack flexWrap="wrap" gap="$4" px="$4" jc="space-between">
                     {games.map((game) => (
                         <YStack key={game.id} width="31%">
-                            <GameCard {...game} />
+                            <GameCard
+                                {...game}
+                                savedGames={savedGames}
+                                isLoggedIn={isLoggedIn}
+                            />
                         </YStack>
                     ))}
                 </XStack>
@@ -85,7 +93,11 @@ export default function GameCarousel({
                 <YStack gap="$4" alignItems="center" px="$2">
                     {games.map((game) => (
                         <YStack key={game.id} width="80%">
-                            <GameCard {...game} />
+                            <GameCard
+                                {...game}
+                                savedGames={savedGames}
+                                isLoggedIn={isLoggedIn}
+                            />
                         </YStack>
                     ))}
                 </YStack>

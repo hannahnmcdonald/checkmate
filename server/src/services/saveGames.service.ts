@@ -117,3 +117,19 @@ export async function dbGetUserSavedGames(userId: string) {
         .where("user_id", userId);
 }
 
+/**
+ * Get whether a game is saved in wishlist/collection by this user.
+ */
+export async function dbGetUserGameSaveStatus(userId: string, gameId: string): Promise<{
+    wishlist: boolean;
+    collection: boolean;
+}> {
+    const entries = await db('user_games')
+        .select('category')
+        .where({ user_id: userId, game_id: gameId });
+
+    return {
+        wishlist: entries.some((e) => e.category === 'wishlist'),
+        collection: entries.some((e) => e.category === 'collection'),
+    };
+}

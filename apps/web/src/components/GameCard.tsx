@@ -2,12 +2,12 @@ import { Card, XStack, Text, Image, Button } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { PrimaryButton } from './Styled'
-import { Heart, PlusSquare } from '@tamagui/lucide-icons';
-import { useAuth } from '@checkmate/state';
+import { Heart, Bookmark } from '@tamagui/lucide-icons';
 import { useMedia } from 'tamagui';
+import { IconButton } from './IconButton';
 import { useSaveGame } from "../hooks/useSaveGame";
 import { useRemoveGame } from "../hooks/useRemoveGame";
-import { useSavedGames } from '../hooks/useSavedGames';
+
 
 export default function GameCard({
     id,
@@ -16,42 +16,41 @@ export default function GameCard({
     description,
     minPlayers,
     maxPlayers,
+    savedGames,
+    isLoggedIn,
 }: {
-    id: string
-    imageUrl: string
-    name: string
-    description: string
-    minPlayers: number
-    maxPlayers: number
+    id: string;
+    imageUrl: string;
+    name: string;
+    description: string;
+    minPlayers: number;
+    maxPlayers: number;
+    savedGames: { game_id: string; category: string }[];
+    isLoggedIn: boolean;
 }) {
-    const { state } = useAuth();
     const navigate = useNavigate()
-
-    const [isWishlisted, setIsWishlisted] = useState(false);
-    const [isCollected, setIsCollected] = useState(false);
-
 
     const media = useMedia();
     const isSmall = media.sm;
     const isLarge = media.lg;
-    const isMedium = !isSmall && !isLarge;
 
-    const { mutate: save, loading: saving, error: saveError } = useSaveGame();
-    const { mutate: remove, loading: removing, error: removeError } = useRemoveGame();
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isCollected, setIsCollected] = useState(false);
 
-    // TO DO: Only need this if user is logged in
-    const { savedGames } = useSavedGames();
-    console.log(savedGames)
+    const { mutate: save } = useSaveGame();
+    const { mutate: remove } = useRemoveGame();
+
     useEffect(() => {
         if (savedGames) {
             setIsWishlisted(
-                savedGames.some(g => g.game_id === id && g.category === "wishlist")
+                savedGames.some((g) => g.game_id === id && g.category === "wishlist")
             );
             setIsCollected(
-                savedGames.some(g => g.game_id === id && g.category === "collection")
+                savedGames.some((g) => g.game_id === id && g.category === "collection")
             );
         }
     }, [savedGames, id]);
+
 
     return (
         <Card
@@ -86,22 +85,37 @@ export default function GameCard({
                 Players: {minPlayers} - {maxPlayers}
             </Text>
 
-            {state.user ? (
+            {isLoggedIn ? (
                 <XStack gap="$2" mt="auto">
-                    <Button
-                        size="$2"
-                        circular
-                        // theme={isWishlisted ? 'maroonDark' : 'alt1'}
-                        icon={Heart}
-                        onPress={() => save(id, "wishlist")}
+                    <IconButton
+                        tooltipText='Add to wishlist'
+                        selected={isWishlisted}
+                        Icon={Heart}
+                        onToggle={() => {
+                            if (isWishlisted) {
+                                remove(id, "wishlist");
+                                setIsWishlisted(false);
+                            } else {
+                                save(id, "wishlist");
+                                setIsWishlisted(true);
+                            }
+                        }}
                     />
-                    <Button
-                        size="$2"
-                        circular
-                        // theme={isCollected ? 'maroonDark' : 'alt1'}
-                        icon={PlusSquare}
-                        onPress={() => save(id, "collection")}
+                    <IconButton
+                        tooltipText='Add to collection'
+                        selected={isCollected}
+                        Icon={Bookmark}
+                        onToggle={() => {
+                            if (isCollected) {
+                                remove(id, "collection");
+                                setIsCollected(false);
+                            } else {
+                                save(id, "collection");
+                                setIsCollected(true);
+                            }
+                        }}
                     />
+
                 </XStack>
             ) : null}
 

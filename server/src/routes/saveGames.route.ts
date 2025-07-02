@@ -5,7 +5,8 @@ import {
     dbSaveUserGame,
     dbRemoveUserGame,
     dbGetUserGamesWithDetails,
-    dbGetUserSavedGames
+    dbGetUserSavedGames,
+    dbGetUserGameSaveStatus
 } from '../services/saveGames.service'
 
 interface AuthenticatedRequest extends Request {
@@ -45,6 +46,23 @@ saveGamesRoute.delete('/remove-game', protectedRoute, async (req: AuthenticatedR
         res.status(500).json({ error: 'Failed to remove game' });
     }
 })
+
+saveGamesRoute.get('/saved-games/:gameId', protectedRoute, async (req: AuthenticatedRequest, res) => {
+    const userId = req.user?.id;
+    const { gameId } = req.params;
+
+    if (!userId || !gameId) {
+        return res.status(400).json({ error: 'Missing user ID or game ID' });
+    }
+
+    try {
+        const status = await dbGetUserGameSaveStatus(userId, gameId);
+        res.json(status);
+    } catch (err) {
+        console.error('Error fetching saved status:', err);
+        res.status(500).json({ error: 'Failed to fetch saved status' });
+    }
+});
 
 // ?sortBy=created_at&sortOrder=asc|desc
 saveGamesRoute.get('/game-by-category', protectedRoute, async (req: AuthenticatedRequest, res) => {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import GameCarousel from '../../../components/GameCarousel';
 import { Text } from 'tamagui';
+import { useAuth } from '@checkmate/state';
+import { useSavedGames } from '../../../hooks/useSavedGames';
 
 type Game = {
     id: string;
@@ -13,6 +15,9 @@ type Game = {
 
 export default function TrendingGames() {
     const [games, setGames] = useState<Game[]>([]);
+    const { state } = useAuth();
+    console.log('LOGGED IN?', state.user)
+    const { savedGames } = useSavedGames();
 
     useEffect(() => {
         fetch('/api/game/trending')
@@ -21,7 +26,6 @@ export default function TrendingGames() {
             .catch(console.error);
     }, []);
 
-    console.log('games', games)
     return (
         <GameCarousel
             games={games}
@@ -30,6 +34,8 @@ export default function TrendingGames() {
                     Popular Games
                 </Text>
             }
+            savedGames={savedGames}
+            isLoggedIn={!!state.user}
         />
     );
 }
