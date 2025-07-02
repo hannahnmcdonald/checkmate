@@ -1,4 +1,3 @@
-// src/services/auth.service.ts
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../models/user.model';
@@ -77,8 +76,6 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
   //   await sgMail.send(msg);
   // }
 };
-
-
 
 export async function loginUser(email: string, password: string): Promise<{
   email: any;

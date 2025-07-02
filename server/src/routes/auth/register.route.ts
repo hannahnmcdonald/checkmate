@@ -13,21 +13,24 @@ register.post('/register', async (req, res) => {
 
   try {
     const user = await registerUser(req.body);
-    
+
     if (!user) {
       return res.status(500).json({ message: 'User registration failed' });
     }
 
-    return res.status(201).json(user);
+    return res.status(201).json({
+      message: 'Registration successful',
+      email: user.email
+    });
   } catch (err: any) {
 
     const isDuplicateEmail = err instanceof DuplicateEmailError || err.name === 'DuplicateEmailError';
     const isDuplicateUsername = err instanceof DuplicateUsernameError || err.name === 'DuplicateUsernameError';
-  
+
     if (isDuplicateEmail || isDuplicateUsername) {
       return res.status(409).json({ error: err.message });
     }
-  
+
     return res.status(500).json({ error: 'Unexpected error' });
   }
 });
