@@ -66,7 +66,7 @@ export default function Navbar(theme: string) {
                                 Games
                             </PrimaryButton>
                             {state.user && (
-                                <><PrimaryButton size="$2" onPress={() => navigate('/friends/search')}>
+                                <><PrimaryButton size="$2" onPress={() => navigate('/friends')}>
                                     Friends
                                 </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/profile')}>
                                         Profile
