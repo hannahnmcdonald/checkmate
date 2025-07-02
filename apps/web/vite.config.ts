@@ -22,7 +22,8 @@ export default defineConfig({
             '@checkmate/ui': path.resolve(__dirname, '../../packages/ui'),
             '@checkmate/hooks': path.resolve(__dirname, '../../packages/hooks'),
             '@checkmate/state': path.resolve(__dirname, '../../packages/state'),
-            '@checkmate/api': path.resolve(__dirname, '../../packages/api')
+            '@checkmate/api': path.resolve(__dirname, '../../packages/api'),
+            '@checkmate/types': path.resolve(__dirname, '../../packages/types')
         }
     },
     server: {

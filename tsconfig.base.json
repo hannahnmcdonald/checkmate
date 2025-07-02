@@ -7,13 +7,19 @@
         "@checkmate/screens": ["packages/screens"],
         "@checkmate/theme": ["packages/theme"],
         "@checkmate/state": ["packages/state"],
-        "@checkmate/api": ["packages/api"]
+        "@checkmate/api": ["packages/api"],
+        "@checkmate/types": ["packages/types"]
       },
       "module": "esnext",
       "target": "esnext",
       "strict": true,
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "references": [
+        { "path": "./packages/types" },
+        { "path": "./packages/api" },
+        { "path": "./apps/web" }
+      ],
     }
   }
   

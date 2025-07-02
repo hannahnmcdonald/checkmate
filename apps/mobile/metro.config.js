@@ -21,7 +21,8 @@ config.resolver.extraNodeModules = {
     '@checkmate/hooks': path.resolve(workspaceRoot, 'packages/apps/hooks'),
     '@checkmate/screens': path.resolve(workspaceRoot, 'packages/apps/screens'),
     '@checkmate/state': path.resolve(workspaceRoot, 'packages/apps/state'),
-    '@checkmate/api': path.resolve(workspaceRoot, 'packages/apps/api')
+    '@checkmate/api': path.resolve(workspaceRoot, 'packages/apps/api'),
+    '@checkmate/types': path.resolve(workspaceRoot, 'packages/apps/types')
 }
 
 module.exports = config
