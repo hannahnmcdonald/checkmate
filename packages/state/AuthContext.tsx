@@ -38,25 +38,29 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    // On mount, check if the user is already authenticated via cookie
     useEffect(() => {
-        fetch('/me', {
-            credentials: 'include', // 👈 IMPORTANT
+        fetch('/api/me', {
+            credentials: 'include',
         })
             .then((res) => {
-                console.log(res)
-                if (!res.ok) throw new Error('Not authenticated');
+                if (res.status === 401) {
+                    // No valid session, ignore
+                    console.log('No active session');
+                    return null;
+                }
+                if (!res.ok) throw new Error('Unexpected error');
                 return res.json();
             })
             .then((data) => {
-                console.log(data)
-                dispatch({ type: 'LOGIN', payload: { user: data.user } });
+                if (data) {
+                    dispatch({ type: 'LOGIN', payload: { user: data.user } });
+                }
             })
-            .catch(() => {
-                // Not logged in, do nothing
-                console.log('Not logged in')
+            .catch((err) => {
+                console.log('Error checking auth:', err);
             });
     }, []);
+
 
     return (
         <AuthContext.Provider value={{ state, dispatch }}>
