@@ -1,55 +1,41 @@
-import { YStack, XStack, Text } from 'tamagui'
+import { YStack, XStack, Text } from "tamagui";
 import { FormInput, PrimaryButton } from '../../../../components/Styled';
-import { useNavigate, useLocation } from "react-router-dom";
-import React, { useState } from 'react';
-import { Search } from '@tamagui/lucide-icons';
+import { Search } from "@tamagui/lucide-icons";
+import React from "react";
 
-export default function FriendSearchBar({ initialQuery = "" }: { initialQuery?: string }) {
-    const [query, setQuery] = useState(initialQuery);
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const handleSubmit = () => {
-        if (query.trim()) {
-            navigate(`/friend/search?q=${encodeURIComponent(query.trim())}`);
-        }
-    };
-
+export default function SearchBar({
+    query,
+    setQuery,
+    onSubmit,
+}: {
+    query: string;
+    setQuery: (v: string) => void;
+    onSubmit: () => void;
+}) {
     return (
         <>
-            <XStack gap="$2" mt="$2" py="$4" width="100%" maxWidth={500} alignContent='center' mx="auto">
-                <Text fontSize="$6" fontWeight="700" color="$color" textAlign='center'>
-                    Find your friends!
+            <XStack gap="$2" mt="$2" width="100%" maxWidth={500} mx="auto" my="$4">
+                <Text fontSize="$6" fontWeight="700" textAlign="center">
+                    Find Friends
                 </Text>
-
                 <FormInput
                     flex={1}
                     size="$4"
-                    theme="tealDark"
-                    borderWidth={2}
-                    br="$3"
-                    px="$3"
-                    fontSize="$1"
-                    placeholder="Search for friends..."
+                    placeholder="Search users..."
                     value={query}
                     onChangeText={setQuery}
                     onKeyPress={(e) => {
-                        if (e.key === "Enter") handleSubmit();
-                    }}
-                    focusStyle={{
-                        borderColor: "#6BCB77",
+                        if (e.key === "Enter") onSubmit();
                     }}
                 />
                 <PrimaryButton
                     size="$4"
-                    theme="tealDark"
-                    color="white"
-                    onPress={handleSubmit}
+                    onPress={onSubmit}
                     disabled={!query}
                 >
-                    <Search color="white" />
+                    <Search />
                 </PrimaryButton>
             </XStack>
         </>
-    )
+    );
 }

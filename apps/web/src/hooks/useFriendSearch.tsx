@@ -7,7 +7,7 @@ export function useFriendSearch(query: string) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
+    const search = async (query: string) => {
         if (!query.trim()) {
             setResults([]);
             return;
@@ -16,11 +16,15 @@ export function useFriendSearch(query: string) {
         setLoading(true);
         setError(null);
 
-        searchFriends(query)
-            .then(setResults)
-            .catch((err) => setError(err.message))
-            .finally(() => setLoading(false));
-    }, [query]);
+        try {
+            const data = await searchUsers(query);
+            setResults(data);
+        } catch (err) {
+            setError((err as Error).message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    return { results, loading, error };
+    return { results, loading, error, search };
 }
