@@ -8,6 +8,8 @@ export default function GameDiscoveryPage() {
     // TODO: Implement search functionality
     // AND add a search icon to the input field
     // AND take user to search results page on submit
+
+    // TODO: Would be nice to have a search categories option to add near the search bar
     return (
         <YStack
             gap="$4"
@@ -19,8 +21,6 @@ export default function GameDiscoveryPage() {
             <SearchBar />
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
-
-            // TODO: Would be nice to have a search categories option to add near the search bar
 
             <TrendingGames />
 
