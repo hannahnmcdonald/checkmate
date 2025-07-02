@@ -26,11 +26,11 @@ export function MenuButton() {
                 <Sheet.Handle />
                 <Sheet.Frame>
                     <YStack gap="$4" padding="$4">
+                        <Text onPress={() => { navigate('/games'); setOpen(false); }}>Games</Text>
                         <Text onPress={() => { navigate('/login'); setOpen(false); }}>Login</Text>
                         {state.user &&
                             <>
                                 <Text onPress={() => { navigate('/profile'); setOpen(false); }}>Profile</Text>
-                                <Text onPress={() => { navigate('/games'); setOpen(false); }}>Games</Text>
                                 <Text onPress={() => { navigate('/friends'); setOpen(false); }}>Friends</Text>
                                 <Text onPress={() => {
                                     fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload());

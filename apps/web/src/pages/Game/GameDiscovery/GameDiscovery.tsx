@@ -20,6 +20,8 @@ export default function GameDiscoveryPage() {
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
 
+            // TODO: Would be nice to have a search categories option to add near the search bar
+
             <TrendingGames />
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
