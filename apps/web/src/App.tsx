@@ -20,7 +20,7 @@ import FindFriendsPage from './pages/Friends/FindFriends';
 
 import { AuthProvider } from '@checkmate/state';
 import React from 'react';
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
 
 
@@ -41,21 +41,21 @@ export default function App() {
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute>
-                    <Layout theme="medBlueDark">
-                      <ProfilePage />
-                    </Layout>
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <Layout theme="medBlueDark">
+                    <ProfilePage />
+                  </Layout>
+                  // </ProtectedRoute>
                 }
               />
               <Route
                 path="/game/:id"
                 element={
-                  <ProtectedRoute>
-                    <Layout theme="tealDark">
-                      <GameDetailsPage />
-                    </Layout>
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <Layout theme="tealDark">
+                    <GameDetailsPage />
+                  </Layout>
+                  // </ProtectedRoute>
                 }
               />
               <Route
@@ -77,11 +77,11 @@ export default function App() {
               <Route
                 path="/friends"
                 element={
-                  <ProtectedRoute>
-                    <Layout theme="tealDark">
-                      <FindFriendsPage />
-                    </Layout>
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <Layout theme="tealDark">
+                    <FindFriendsPage />
+                  </Layout>
+                  // </ProtectedRoute>
                 }
               />
               <Route path="/login" element={<Layout theme="tealDark">

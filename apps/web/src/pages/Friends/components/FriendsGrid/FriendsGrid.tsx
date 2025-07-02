@@ -14,6 +14,7 @@ interface FriendGridProps {
   users: Friend[];
   actionButton?: (user: Friend) => React.ReactNode;
   emptyText?: string;
+  title: string
 }
 
 // interface Friend {
@@ -36,7 +37,9 @@ interface FriendGridProps {
 
 // console.log('users', users)
 
-export function FriendGrid({ users, actionButton, emptyText = "No results" }: FriendGridProps) {
+const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
+
+export function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {
 
   console.log('users', users)
   if (!users || users.length === 0) {
@@ -44,18 +47,22 @@ export function FriendGrid({ users, actionButton, emptyText = "No results" }: Fr
   }
 
   return (
-    <XStack
-      flexWrap="wrap"
-      gap="$4"
-      jc="flex-start"
-    >
-      {users.map((user) => (
-        <FriendCard
-          key={user.id}
-          user={user}
-          action={actionButton ? actionButton(user) : undefined}
-        />
-      ))}
-    </XStack>
+    <>
+      <Text textAlign="center">{title}</Text>
+      <XStack
+        flexWrap="wrap"
+        gap="$4"
+        jc="center"
+      >
+        {users.map((user, idx) => (
+          <FriendCard
+            key={user.id}
+            user={user}
+            action={actionButton ? actionButton(user) : undefined}
+            theme={themes[idx % themes.length]}
+          />
+        ))}
+      </XStack>
+    </>
   );
 }

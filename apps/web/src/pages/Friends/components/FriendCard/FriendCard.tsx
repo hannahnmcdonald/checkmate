@@ -5,22 +5,21 @@ import { Friend } from "@checkmate/types";
 interface FriendCardProps {
     user: Friend;
     action?: React.ReactNode;
+    theme: string
 }
 
-export function FriendCard({ user, action }: FriendCardProps) {
+export function FriendCard({ user, action, theme }: FriendCardProps) {
     return (
-        <Card bordered elevate width={160} p="$3" ai="center">
+        <Card bordered elevate width={160} p="$3" ai="center" theme={theme}>
             <Image
-                src={user.avatarUrl || "/default-avatar.png"}
+                src={user.avatar || "/default-avatar.png"}
                 width={60}
                 height={60}
                 borderRadius={30}
             />
 
             <Text mt="$2" fontWeight="700">
-                {/* {user.username}
-                 */}
-                USERNAME
+                {user.username}
             </Text>
 
             {/* {user.mutualFriendsCount !== undefined && (
