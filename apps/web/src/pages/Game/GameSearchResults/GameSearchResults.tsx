@@ -38,10 +38,6 @@ export default function GameSearchResults() {
             <YStack gap="$4" px="$4" py="$4">
                 <SearchBar initialQuery={query} />
 
-                <Text fontSize="$5" mt="$2">
-                    Results for "{query}"
-                </Text>
-
                 {loading ? (
                     <Text>Loading...</Text>
                 ) : results?.length === 0 ? (
@@ -50,7 +46,9 @@ export default function GameSearchResults() {
                     // TODO: swap to grid, add pagiation
                     // <Text>{results.length} results found.</Text>
                     // <GameGrid games={results} />
-                    <GameCarousel games={results} />
+                    <GameCarousel games={results} header={<Text fontSize="$5" mt="$2">
+                        Results for "{query}"
+                    </Text>} />
                 )}
             </YStack>
             <Footer />
