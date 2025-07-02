@@ -9,6 +9,14 @@ const categoryColors = {
     "Science Fiction": "#A55EEA",
     "Adventure": "#E879F9",
     "Exploration": "#F87171",
+    "City Building": "#F8AE0C",
+    "Video Game Theme": "#330EA5",
+    "Space Exploration": "#CEDC3F",
+    "Card Game": "#DD22FD",
+    "Novel-based": "#0F4B6E",
+    "Territory Building": "#98BFAF",
+    "Medieval": "#CD4C4C",
+    "Number": "#69C4D8",
     // fallback/default color:
     "default": "#999",
 };
@@ -21,7 +29,15 @@ const categoryIcons = {
     "Fantasy": "🧙",
     "Science Fiction": "🚀",
     "Exploration": "🗺️",
-    "Adventure": "🧗‍♂️"
+    "Adventure": "🧗‍♂️",
+    "City Building": "🏰",
+    "Video Game Theme": "🎮",
+    "Space Exploration": "🌌",
+    "Card Game": "🃏",
+    "Novel-based": "📖",
+    "Territory Building": "🧭",
+    "Medieval": "🏰",
+    "Number": "➕",
 };
 
 // TODO: migrate to lucide icons
@@ -67,7 +83,7 @@ export function Badge({
             mr="$2"
             mb="$2"
         >
-            <Text color="white" fontSize="$2">
+            <Text color="white" fontSize="$2" px="$2">
                 {icon} {label}
             </Text>
         </XStack>
