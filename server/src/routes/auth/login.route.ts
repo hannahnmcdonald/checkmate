@@ -30,8 +30,11 @@ login.post('/login', async (req, res) => {
       maxAge: 1000 * 60 * 60, // 1 hr
     });
 
+    // TODO: Need to make sure we aren't passing this up
     return res.status(200).json({
       message: 'Login successful',
+      user,
+      id,
       email: userEmail,
     });
   } catch (err) {

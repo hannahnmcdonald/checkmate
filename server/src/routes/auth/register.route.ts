@@ -18,10 +18,7 @@ register.post('/register', async (req, res) => {
       return res.status(500).json({ message: 'User registration failed' });
     }
 
-    return res.status(201).json({
-      message: 'Registration successful',
-      email: user.email
-    });
+    return res.status(201).json(user);
   } catch (err: any) {
 
     const isDuplicateEmail = err instanceof DuplicateEmailError || err.name === 'DuplicateEmailError';

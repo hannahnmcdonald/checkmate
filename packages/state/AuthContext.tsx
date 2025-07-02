@@ -44,10 +44,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             credentials: 'include', // 👈 IMPORTANT
         })
             .then((res) => {
+                console.log(res)
                 if (!res.ok) throw new Error('Not authenticated');
                 return res.json();
             })
             .then((data) => {
+                console.log(data)
                 dispatch({ type: 'LOGIN', payload: { user: data.user } });
             })
             .catch(() => {
