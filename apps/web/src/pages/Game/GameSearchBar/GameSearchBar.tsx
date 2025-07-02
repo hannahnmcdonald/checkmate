@@ -1,5 +1,5 @@
 import { YStack, XStack, Text } from 'tamagui'
-import { FormInput, PrimaryButton } from '../Styled';
+import { FormInput, PrimaryButton } from '../../../components/Styled';
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState } from 'react';
 import { Search } from '@tamagui/lucide-icons';

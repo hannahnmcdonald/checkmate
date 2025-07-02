@@ -52,7 +52,7 @@ export default function App() {
                 path="/game/:id"
                 element={
                   // <ProtectedRoute>
-                  <Layout theme="greenDark">
+                  <Layout theme="tealDark">
                     <GameDetailsPage />
                   </Layout>
                   // </ProtectedRoute>

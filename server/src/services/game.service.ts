@@ -117,5 +117,9 @@ export async function getTrendingGames() {
   return detailedGames;
 }
 
+// TODO: Need to add service to get user's interactions with the game in question
+// Is the game in their collection/wishlist?
+// What are their recent matches with said game?
+// What are their stats in the game?
 
 export default { getBoardGameDetails, getTrendingGames };
