@@ -26,7 +26,7 @@ friendRoute.get('/friends', protectedRoute, async (req: AuthenticatedRequest, re
 
   try {
     const friendsList = await getAllFriends(userId);
-    res.json({ friendsList })
+    res.json(friendsList)
   } catch (error) {
     console.log('Error retrieving friends list:', error);
     res.status(500).json({ message: 'Internal server error' });
