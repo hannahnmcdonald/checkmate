@@ -4,6 +4,7 @@ import React from 'react'
 import { PrimaryButton } from './Styled'
 import { Heart, PlusSquare } from '@tamagui/lucide-icons';
 import { useAuth } from '@checkmate/state';
+import { useMedia } from 'tamagui';
 
 export default function GameCard({
     id,
@@ -26,12 +27,17 @@ export default function GameCard({
     const isCollected = true;
     const isWishlisted = true;
 
+    const media = useMedia();
+    const isSmall = media.sm;
+    const isLarge = media.lg;
+    const isMedium = !isSmall && !isLarge;
+
     return (
         <Card
             elevate
             bordered
             width="100%"
-            maxWidth={200}
+            maxWidth={isLarge ? 200 : 400}
             padding="$4"
             gap="$3"
             bg="$backgroundHover"

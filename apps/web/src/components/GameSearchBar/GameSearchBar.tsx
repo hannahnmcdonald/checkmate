@@ -25,7 +25,7 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
                 Search thousands of board games by name, category, or player count.
             </Text>
 
-            <XStack gap="$2" mt="$2" width="100%" maxWidth={500} alignContent='center' mx="auto">
+            <XStack gap="$2" mt="$2" width="100%" maxWidth={500} alignContent='center' mx="auto" p="$2">
                 <FormInput
                     flex={1}
                     size="$4"

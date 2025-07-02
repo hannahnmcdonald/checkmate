@@ -62,7 +62,7 @@ export default function GameCarousel({
                         paddingHorizontal: 16,
                     }}
                 >
-                    <XStack gap="$4">
+                    <XStack gap="$2">
                         {games.map((game) => (
                             <GameCard key={game.id} {...game} />
                         ))}
@@ -82,7 +82,7 @@ export default function GameCarousel({
                     ))}
                 </XStack>
             ) : (
-                <YStack gap="$4" alignItems="center" px="$4">
+                <YStack gap="$4" alignItems="center" px="$2">
                     {games.map((game) => (
                         <YStack key={game.id} width="80%">
                             <GameCard {...game} />

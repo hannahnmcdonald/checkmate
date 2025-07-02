@@ -4,8 +4,7 @@ import {
     Theme,
 } from 'tamagui';
 import { PrimaryButton } from '../Styled';
-// import logo from '../../images/CheckMateNavLogo.png';
-import AnimatedLogo from './AnimatedLogo';
+import logo from '../../images/navbarlogo.png'
 import { useAuth } from '@checkmate/state';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -18,15 +17,13 @@ export default function Navbar(theme: string) {
     const media = useMedia();
     const isSmallScreen = media.sm;
 
-    // console.log(state.user)
-
     return (
         <Theme name={theme}>
             <YStack
                 position="sticky"
                 top={18}
                 zIndex={100}
-                bg="rgba(255,255,255,0.08)"
+                bg="rgba(255,255,255,0.15)"
                 backdropFilter="blur(10px)"
                 borderBottomWidth={2}
                 borderBottomColor="$color2"
@@ -48,7 +45,7 @@ export default function Navbar(theme: string) {
                     <XStack
                         onPress={() => navigate('/')}
                     >
-                        {/* <img
+                        <img
                             src={logo}
                             alt="Checkmate Logo"
                             style={{
@@ -56,9 +53,8 @@ export default function Navbar(theme: string) {
                                 width: 'auto',
                                 display: 'block',
                             }}
-                        /> */}
+                        />
 
-                        <AnimatedLogo />
                     </XStack>
                     {!isSmallScreen ? (
                         <XStack gap="$2">
