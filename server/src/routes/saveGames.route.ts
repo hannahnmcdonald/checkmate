@@ -4,7 +4,8 @@ import { Request } from 'express';
 import {
     dbSaveUserGame,
     dbRemoveUserGame,
-    dbGetUserGamesWithDetails
+    dbGetUserGamesWithDetails,
+    dbGetUserSavedGames
 } from '../services/saveGames.service'
 
 interface AuthenticatedRequest extends Request {
@@ -72,5 +73,19 @@ saveGamesRoute.get('/game-by-category', protectedRoute, async (req: Authenticate
         res.status(500).json({ error: 'Failed to fetch games' });
     }
 });
+
+saveGamesRoute.get('/saved-games', protectedRoute, async (req: AuthenticatedRequest, res) => {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    try {
+        const savedGames = await dbGetUserSavedGames(userId);
+        res.json({ savedGames });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch saved games' });
+    }
+});
+
 
 export default saveGamesRoute;

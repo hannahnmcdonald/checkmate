@@ -5,6 +5,8 @@ import { Heart, PlusSquare } from '@tamagui/lucide-icons';
 import { useAuth } from '@checkmate/state';
 import { PrimaryButton } from '../../../components/Styled';
 import { Badge } from '../../../components/GameBadge';
+import { useSavedGames } from '../../../hooks/useSavedGames';
+import { GameSaveToggleButton } from '../GameSaveToggleButton/GameSaveToggleButton';
 
 type Game = {
     id: string;
@@ -25,6 +27,15 @@ export default function GameDetailsPage() {
     const { state } = useAuth();
     const [game, setGame] = useState<Game | null>(null);
     const [loading, setLoading] = useState(true);
+
+    const { savedGames } = useSavedGames();
+    const isWishlisted = savedGames.some(
+        (g) => g.game_id === id && g.category === "wishlist"
+    );
+    const isCollected = savedGames.some(
+        (g) => g.game_id === id && g.category === "collection"
+    );
+
 
     useEffect(() => {
         fetch(`/api/game/${id}`)
@@ -79,24 +90,22 @@ export default function GameDetailsPage() {
                 {description || "No description"}
             </Text>
 
-            <XStack gap="$2" mt="$2">
-                <Button
-                    size="$3"
-                    circular
-                    icon={Heart}
-                    onPress={() => {
-                        // TODO: handle wishlist toggle
-                    }}
-                />
-                <Button
-                    size="$3"
-                    circular
-                    icon={PlusSquare}
-                    onPress={() => {
-                        // TODO: handle add to collection
-                    }}
-                />
-            </XStack>
+            {state.user ? (
+                <XStack gap="$2" mt="$2">
+                    <GameSaveToggleButton
+                        gameId={id}
+                        category="wishlist"
+                        icon={Heart}
+                        initiallySaved={isWishlisted}
+                    />
+                    <GameSaveToggleButton
+                        gameId={id}
+                        category="collection"
+                        icon={PlusSquare}
+                        initiallySaved={isCollected}
+                    />
+                </XStack>
+            ) : (null)}
 
             <Text fontSize="$3" mt="$3" mb="$1">Categories:</Text>
             <XStack flexWrap="wrap" mt="$2">

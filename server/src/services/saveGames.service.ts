@@ -110,4 +110,10 @@ export async function dbGetUserGamesWithDetails(
     return { total, totalPages, currentPage: page, games: gameDetails };
 }
 
+// TODO: Add error handling
+export async function dbGetUserSavedGames(userId: string) {
+    return await db("user_games")
+        .select("game_id", "category")
+        .where("user_id", userId);
+}
 
