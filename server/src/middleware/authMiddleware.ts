@@ -31,7 +31,7 @@ export function authenticateJWT(req: AuthenticatedRequest, res: Response, next: 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     console.log('DECODED:', decoded)
-    req.user = decoded; // 🔴 This line is essential
+    req.user = decoded;
     console.log('middleware', req.user)
     next();
   } catch (err) {

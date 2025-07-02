@@ -22,6 +22,7 @@ notificationRoute.get('/notifications', protectedRoute, async (req: Authenticate
         return res.status(401).json({ error: 'Unauthorized' });
     }
     const userId = req.user.id;
+    console.log('NOTIFICATIONS', userId)
 
     try {
         const notifications = await getAllNotifications(userId)
@@ -33,7 +34,7 @@ notificationRoute.get('/notifications', protectedRoute, async (req: Authenticate
 });
 
 // PATCH /notifications/:id/read
-notificationRoute.patch('/:id/read', protectedRoute, async (req: AuthenticatedRequest, res) => {
+notificationRoute.patch('/notifications/:id/read', protectedRoute, async (req: AuthenticatedRequest, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -50,7 +51,7 @@ notificationRoute.patch('/:id/read', protectedRoute, async (req: AuthenticatedRe
 });
 
 // PATCH /notifications/mark-all-read
-notificationRoute.patch('/mark-all-read', protectedRoute, async (req: AuthenticatedRequest, res) => {
+notificationRoute.patch('/notifications/mark-all-read', protectedRoute, async (req: AuthenticatedRequest, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -66,7 +67,7 @@ notificationRoute.patch('/mark-all-read', protectedRoute, async (req: Authentica
 });
 
 // DELETE /notifications/:id
-notificationRoute.delete('/:id', protectedRoute, async (req: AuthenticatedRequest, res) => {
+notificationRoute.delete('/notifications/:id', protectedRoute, async (req: AuthenticatedRequest, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
     }

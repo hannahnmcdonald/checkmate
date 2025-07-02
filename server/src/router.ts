@@ -20,9 +20,9 @@ router.use('/', matchRoute)
 router.use('/', friendRoute);
 router.use('/', profileRoute);
 router.use('/', meRoute);
+router.use('/', saveGamesRoute);
 router.use('/', notificationRoute);
 router.use('/', passwordRoute);
-router.use('/', saveGamesRoute);
 router.use('/auth', register);
 router.use('/auth', login);
 router.use('/auth', logout);

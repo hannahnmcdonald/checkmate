@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { loginUser } from '../../services/auth/auth.service';
-import { signAccessToken } from '../../services/auth/jwt.service';
 
 const login = Router();
 

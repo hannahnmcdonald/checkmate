@@ -11,9 +11,11 @@ const meRoute = Router();
 
 meRoute.get('/me', protectedRoute, async (req: AuthenticatedRequest, res) => {
     try {
+        console.log('REQ.USER in /me route:', req.user);
         const userId = req.user?.id;
+
         if (!userId) {
-            return res.status(400).json({ message: 'User ID is missing' });
+            return res.status(401).json({ message: 'Not authenticated' });
         }
         const profile = await getFullUserProfile(userId);
         res.status(200).json(profile);

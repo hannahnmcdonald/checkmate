@@ -34,6 +34,7 @@ saveGamesRoute.post('/save-game', protectedRoute, async (req: AuthenticatedReque
 saveGamesRoute.delete('/remove-game', protectedRoute, async (req: AuthenticatedRequest, res) => {
     const userId = req.user?.id;
     const { game_id, category } = req.body;
+    console.log(game_id, category, userId)
 
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
