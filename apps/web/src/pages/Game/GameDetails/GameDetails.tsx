@@ -78,14 +78,17 @@ export default function GameDetailsPage() {
 
     return (
         <YStack width="100%" gap="$4" px="$4" py="$4" maxWidth={700} mx="auto">
-            <Image
+            {image ? (<Image
                 source={{ uri: image }}
                 width="100%"
                 maxWidth="100%"
-                aspectRatio={16 / 9}
+                aspectRatio={4 / 3}
                 borderRadius="$3"
                 height='auto'
-            />
+            />) : (
+                <Text textAlign='center' color="grey">No image found</Text>
+            )}
+
 
             <Text fontSize="$6" fontWeight="700">{name}</Text>
 
@@ -100,6 +103,7 @@ export default function GameDetailsPage() {
             {state.user && !statusLoading && (
                 <XStack gap="$2" mt="$2">
                     <IconButton
+                        text="Add to Wishlist"
                         selected={isWishlisted}
                         Icon={Heart}
                         onToggle={() => {
@@ -115,6 +119,7 @@ export default function GameDetailsPage() {
                         }}
                     />
                     <IconButton
+                        text="Add to Collection"
                         selected={isCollected}
                         Icon={Bookmark}
                         onToggle={() => {

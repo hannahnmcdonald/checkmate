@@ -16,7 +16,6 @@ type Game = {
 export default function TrendingGames() {
     const [games, setGames] = useState<Game[]>([]);
     const { state } = useAuth();
-    console.log('LOGGED IN?', state.user)
     const { savedGames } = useSavedGames();
 
     useEffect(() => {

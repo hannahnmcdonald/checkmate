@@ -65,8 +65,9 @@ export default function GameCard({
             <Image
                 source={{ uri: imageUrl }}
                 width="100%"
-                height={100}
-                borderRadius="$2"
+                aspectRatio={4 / 3} // or whatever ratio fits most of your images
+                resizeMode="cover"
+                backgroundColor="$background"
             />
 
             <Text fontWeight="700"
@@ -88,7 +89,6 @@ export default function GameCard({
             {isLoggedIn ? (
                 <XStack gap="$2" mt="auto">
                     <IconButton
-                        tooltipText='Add to wishlist'
                         selected={isWishlisted}
                         Icon={Heart}
                         onToggle={() => {
@@ -102,7 +102,6 @@ export default function GameCard({
                         }}
                     />
                     <IconButton
-                        tooltipText='Add to collection'
                         selected={isCollected}
                         Icon={Bookmark}
                         onToggle={() => {

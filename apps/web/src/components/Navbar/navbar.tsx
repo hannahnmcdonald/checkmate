@@ -17,8 +17,6 @@ export default function Navbar(theme: string) {
     const media = useMedia();
     const isSmallScreen = media.sm;
 
-    console.log('state', state)
-
     return (
         <Theme name={theme}>
             <YStack

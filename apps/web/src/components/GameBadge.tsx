@@ -19,6 +19,9 @@ const categoryColors = {
     "Number": "#69C4D8",
     "Political": "#2e1484",
     "Negotiation": "#b4b613",
+    "Environmental": "#0c6fba",
+    "Civilization": "#c03065",
+    "Industry / Manufacturing": "#6c6ae3",
     // fallback/default color:
     "default": "#999",
 };
@@ -41,7 +44,10 @@ const categoryIcons = {
     "Medieval": "🏰",
     "Number": "➕",
     "Political": "🗳️",
-    "Negotiation": "☎️"
+    "Negotiation": "☎️",
+    "Environmental": "🌱",
+    "Civilization": "🌆",
+    "Industry / Manufacturing": "🏗️"
 };
 
 // TODO: migrate to lucide icons? 
