@@ -47,7 +47,7 @@ export function FriendGrid({ users, actionButton, emptyText = "No results", titl
   }
 
   return (
-    <>
+    <YStack gap="$4">
       <Text textAlign="center">{title}</Text>
       <XStack
         flexWrap="wrap"
@@ -63,6 +63,6 @@ export function FriendGrid({ users, actionButton, emptyText = "No results", titl
           />
         ))}
       </XStack>
-    </>
+    </YStack>
   );
 }

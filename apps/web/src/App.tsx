@@ -42,7 +42,7 @@ export default function App() {
                 path="/profile"
                 element={
                   // <ProtectedRoute>
-                  <Layout theme="medBlueDark">
+                  <Layout theme="blueDark">
                     <ProfilePage />
                   </Layout>
                   // </ProtectedRoute>

@@ -119,6 +119,14 @@ const config = createTamagui({
             color2: '#F87171',
             color3: '#EF4444',
         },
+        blackDark: {
+            background: '#000000',
+            backgroundHover: '#111111',
+            color: '#E0E0E0',
+            color2: '#AAAAAA',
+            color3: '#555555',
+        },
+
     },
     media: {
         sm: { maxWidth: 600 },
