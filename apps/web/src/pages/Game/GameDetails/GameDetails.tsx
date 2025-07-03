@@ -9,6 +9,7 @@ import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useRemoveGame } from '../../../hooks/useRemoveGame';
 import { IconButton } from '../../../components/IconButton';
 import { useGameSaveStatus } from '../../../hooks/useGameSaveStatus';
+import cleanDescription from '../../../utils/CleanDescription';
 
 type Game = {
     id: string;
@@ -76,6 +77,8 @@ export default function GameDetailsPage() {
 
     const { name, description, minPlayers, maxPlayers, image, playingTime, yearPublished } = game;
 
+    const cleanedDescription = cleanDescription(description)
+
     return (
         <YStack width="100%" gap="$4" px="$4" py="$4" maxWidth={700} mx="auto">
             {image ? (<Image
@@ -96,8 +99,9 @@ export default function GameDetailsPage() {
                 {yearPublished || null} • {playingTime ? `${playingTime} minutes` : null} • {minPlayers && maxPlayers ? `Players: ${minPlayers}-${maxPlayers}` : null}
             </Text>
 
-            <Text fontSize="$3" mt="$2">
-                {description || "No description"}
+
+            <Text whiteSpace="pre-wrap" fontSize="$3" mt="$2">
+                {cleanedDescription || "No description"}
             </Text>
 
             {state.user && !statusLoading && (

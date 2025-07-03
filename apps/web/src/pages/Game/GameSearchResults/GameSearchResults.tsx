@@ -35,7 +35,7 @@ export default function GameSearchResults() {
 
     return (
         <>
-            <YStack gap="$4" px="$4" py="$4">
+            <YStack gap="$4" px="$4" py="$4" >
                 <SearchBar initialQuery={query} />
 
                 {loading ? (

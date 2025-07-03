@@ -7,7 +7,8 @@ import { useMedia } from 'tamagui';
 import { IconButton } from './IconButton';
 import { useSaveGame } from "../hooks/useSaveGame";
 import { useRemoveGame } from "../hooks/useRemoveGame";
-
+// import he from "he";
+import cleanDescription from '../utils/CleanDescription';
 
 export default function GameCard({
     id,
@@ -39,6 +40,8 @@ export default function GameCard({
 
     const { mutate: save } = useSaveGame();
     const { mutate: remove } = useRemoveGame();
+
+    const cleanedDescription = cleanDescription(description)
 
     useEffect(() => {
         if (savedGames) {
@@ -78,8 +81,8 @@ export default function GameCard({
                 {name}
             </Text>
 
-            <Text color="$color2" fontSize={12} numberOfLines={3}>
-                {description}
+            <Text whiteSpace="pre-wrap" numberOfLines={10}>
+                {cleanedDescription}
             </Text>
 
             <Text color="$color3" fontSize={14} ellipsizeMode="tail">

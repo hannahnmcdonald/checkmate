@@ -15,10 +15,12 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
         }
     };
 
+    //TODO: use badges to prefill the search
+
     return (
         <>
             <Text fontSize="$6" fontWeight="700" color="$color" textAlign='center'>
-                Find your next game
+                Ready to roll? Find your next adventure
             </Text>
 
             <Text fontSize="$3" color="$gray10" textAlign='center' maxWidth={600} mx="auto">
@@ -29,12 +31,12 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
                 <FormInput
                     flex={1}
                     size="$4"
-                    borderColor="#4D96FF"
+                    borderColor="$color2"
                     borderWidth={2}
                     br="$3"
                     px="$3"
                     fontSize="$1"
-                    placeholder="Search for a game..."
+                    placeholder="e.g., Terraforming Mars, Wingspan..."
                     value={query}
                     onChangeText={setQuery}
                     onKeyPress={(e) => {
@@ -51,6 +53,9 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
                     color="white"
                     onPress={handleSubmit}
                     disabled={!query}
+                    animateOnly={["scale"]}
+                    pressStyle={{ scale: 0.95 }}
+                    hoverStyle={{ scale: 1.05, backgroundColor: "$color3" }}
                 >
                     <Search color="white" />
                 </PrimaryButton>
