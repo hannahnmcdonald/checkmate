@@ -1,6 +1,7 @@
 import { Friend } from "@checkmate/types";
 
 export async function searchFriends(query: string): Promise<Friend[]> {
+    console.log('query', query)
     const res = await fetch(`/api/friends/search?q=${encodeURIComponent(query)}`, {
         credentials: "include",
     });

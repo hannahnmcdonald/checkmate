@@ -17,26 +17,6 @@ interface FriendGridProps {
   title: string
 }
 
-// interface Friend {
-//   id: string;
-//   username: string;
-//   avatarUrl?: string;
-//   joinedDate?: string;
-//   mutualFriendsCount?: number;
-// }
-
-{/* <FriendGrid
-  users={friends}
-  actionButton={(user) => (
-    <Button onPress={() => removeFriend(user.id)}>
-      Remove
-    </Button>
-  )}
-  emptyText="No friends yet."
-/> */}
-
-// console.log('users', users)
-
 const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
 
 export function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {

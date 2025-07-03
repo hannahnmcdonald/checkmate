@@ -33,9 +33,10 @@ friendRoute.get('/friends', protectedRoute, async (req: AuthenticatedRequest, re
   }
 });
 
-friendRoute.get('/friend', protectedRoute, async (req: AuthenticatedRequest, res) => {
-  const query = req.query.query as string;
+friendRoute.get('/friends/search', protectedRoute, async (req: AuthenticatedRequest, res) => {
+  const query = req.query.q as string;
   const userId = req.user?.id || '';
+  console.log('query', query, req.query.q)
 
   if (!query || query.trim().length < 2) {
     return res.status(400).json({ message: 'Search query must be at least 2 characters' });
@@ -43,7 +44,7 @@ friendRoute.get('/friend', protectedRoute, async (req: AuthenticatedRequest, res
 
   try {
     const results = await searchUsersByUsername(query, userId);
-    res.json({ results });
+    res.json(results);
   } catch (err) {
     console.error('Error searching users:', err);
     res.status(500).json({ message: 'Internal server error' });

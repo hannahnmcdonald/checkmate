@@ -36,6 +36,7 @@ export default function FindFriendsPage() {
     const { friends, loading: friendsLoading } = useGetCurrentFriends();
     const { requests, loading: incomingLoading } = useIncomingFriendRequests();
 
+    console.log('results', results)
     return (
         <YStack gap="$4">
             <FriendSearchBar query={query} setQuery={setQuery} onSubmit={() => search(query)} />
@@ -48,7 +49,7 @@ export default function FindFriendsPage() {
                     users={results}
                     actionButton={(user) => (
                         <Button
-                        // onPress={() => sendFriendRequest(user.id)}
+                            onPress={() => sendFriendRequest(user.id)}
                         >
                             Add Friend
                         </Button>

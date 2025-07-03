@@ -13,11 +13,11 @@ export default function SearchBar({
     onSubmit: () => void;
 }) {
     return (
-        <>
-            <XStack gap="$2" mt="$2" width="100%" maxWidth={500} mx="auto" my="$4">
-                <Text fontSize="$6" fontWeight="700" textAlign="center">
-                    Find Friends
-                </Text>
+        <YStack my="$4">
+            <Text fontSize="$6" fontWeight="700" textAlign="center">
+                Find Friends
+            </Text>
+            <XStack gap="$2" mt="$2" width="90%" maxWidth={500} mx="auto" my="$4">
                 <FormInput
                     flex={1}
                     size="$4"
@@ -36,6 +36,6 @@ export default function SearchBar({
                     <Search />
                 </PrimaryButton>
             </XStack>
-        </>
+        </YStack>
     );
 }

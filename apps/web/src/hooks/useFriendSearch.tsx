@@ -13,11 +13,13 @@ export function useFriendSearch(query: string) {
             return;
         }
 
+        console.log('SEARCHING')
+
         setLoading(true);
         setError(null);
 
         try {
-            const data = await searchUsers(query);
+            const data = await searchFriends(query);
             setResults(data);
         } catch (err) {
             setError((err as Error).message);
