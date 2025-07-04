@@ -1,6 +1,5 @@
 import { TamaguiInternalConfig, TamaguiProvider, Theme } from 'tamagui'
 import { config } from '@checkmate/theme';
-// import { config } from '@tamagui/config';
 
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -13,20 +12,14 @@ import GameDiscoveryPage from './pages/Game/GameDiscovery/GameDiscovery';
 import GameDetailsPage from './pages/Game/GameDetails/GameDetails';
 import GameSearchResults from './pages/Game/GameSearchResults/GameSearchResults';
 import FindFriendsPage from './pages/Friends/FindFriends';
-// import Match from './pages/Match'
-// import FriendSearch from './pages/FriendSearch'
-// import FriendProfile from './pages/FriendProfile'
-// import Stats from './pages/Stats/stats';
 
 import { AuthProvider } from '@checkmate/state';
 import React from 'react';
-// import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/layout';
 
 
 export default function App() {
-  // console.log('Tamagui config:', config)
-  // console.log('Tamagui config:', JSON.stringify(config, null, 2))
 
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
   return (
@@ -41,21 +34,19 @@ export default function App() {
               <Route
                 path="/profile"
                 element={
-                  // <ProtectedRoute>
-                  <Layout theme="blueDark">
-                    <ProfilePage />
-                  </Layout>
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <Layout theme="blueDark">
+                      <ProfilePage />
+                    </Layout>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/game/:id"
                 element={
-                  // <ProtectedRoute>
                   <Layout theme="tealDark">
                     <GameDetailsPage />
                   </Layout>
-                  // </ProtectedRoute>
                 }
               />
               <Route
@@ -77,11 +68,11 @@ export default function App() {
               <Route
                 path="/friends"
                 element={
-                  // <ProtectedRoute>
-                  <Layout theme="tealDark">
-                    <FindFriendsPage />
-                  </Layout>
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <Layout theme="tealDark">
+                      <FindFriendsPage />
+                    </Layout>
+                  </ProtectedRoute>
                 }
               />
               <Route path="/login" element={<Layout theme="tealDark">
