@@ -1,6 +1,7 @@
 import { Theme, YStack } from 'tamagui'
 import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -13,6 +14,7 @@ export default function Layout({ children, theme }: LayoutProps) {
             <YStack bg="$background" minHeight="100vh" px="$4" py="$4">
                 <Navbar theme={theme} />
                 {children}
+                <Footer />
             </YStack>
         </Theme>
     )

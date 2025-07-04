@@ -69,7 +69,7 @@ const mechanicColors = {
     default: "#555",
 };
 
-export function Badge({
+export default function GameBadge({
     label,
     type,
 }: {

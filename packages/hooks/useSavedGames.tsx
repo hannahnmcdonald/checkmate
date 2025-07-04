@@ -2,7 +2,7 @@ import { useAuth } from '@checkmate/state';
 import { useEffect, useState } from 'react';
 import { getSavedGames } from '@checkmate/api';
 
-export function useSavedGames() {
+export default function useSavedGames() {
     const { state } = useAuth();
     const [savedGames, setSavedGames] = useState<{ game_id: string; category: string }[]>([]);
     const [loading, setLoading] = useState(false);

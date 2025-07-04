@@ -1,10 +1,12 @@
-import { XStack, YStack, Text, Button } from "tamagui";
-import React, { useState, useEffect } from 'react';
+import { YStack, Text, Button } from "tamagui";
+import React, { useState } from 'react';
 import { FriendGrid } from './components/index';
-import { useFriendSearch } from "../../hooks/useFriendSearch";
-import { useGetCurrentFriends } from "../../hooks/useGetCurrentFriends";
-import { useIncomingFriendRequests } from "../../hooks/useIncomingFriendRequests";
 import FriendSearchBar from "./components/FriendSearchBar/FriendSearchBar";
+import {
+    useFriendSearch,
+    useGetCurrentFriends,
+    useIncomingFriendRequests
+} from "@checkmate/hooks";
 
 const hardcodedFriends = [
     {
@@ -36,7 +38,6 @@ export default function FindFriendsPage() {
     const { friends, loading: friendsLoading } = useGetCurrentFriends();
     const { requests, loading: incomingLoading } = useIncomingFriendRequests();
 
-    console.log('results', results)
     return (
         <YStack gap="$4">
             <FriendSearchBar query={query} setQuery={setQuery} onSubmit={() => search(query)} />

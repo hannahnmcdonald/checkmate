@@ -1,12 +1,12 @@
 import React from 'react'
-import { Theme, YStack, Text } from 'tamagui'
+import { YStack, Text } from 'tamagui'
 // import ProfileHeader from './components/ProfileHeader/ProfileHeader'
 // import ProfileStats from './components/ProfileStats/ProfileStats'
 import ProfileGames from './components/ProfileGames/ProfileGames'
 // import ProfileFriends from './components/ProfileFriends/ProfileFriends'
 // import ProfileMatches from './components/ProfileMatches/ProfileMatches'
 import { FriendGrid } from '../Friends/components'
-// import { useGetCurrentFriends } from "../../hooks/useGetCurrentFriends";
+// import { useGetCurrentFriends } from "@checkmate/hooks";
 
 const hardcodedFriends = [
     {

@@ -1,7 +1,7 @@
 import { Button, Text, YStack } from 'tamagui';
 import React from 'react';
 
-export function IconButton({
+export default function IconButton({
     selected,
     onToggle,
     Icon,

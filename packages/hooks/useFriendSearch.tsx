@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { searchFriends } from "@checkmate/api";
-import { Friend } from '@checkmate/types';
+import { Friend } from "@checkmate/types";
 
-export function useFriendSearch(query: string) {
+export default function useFriendSearch(query: string) {
     const [results, setResults] = useState<Friend[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

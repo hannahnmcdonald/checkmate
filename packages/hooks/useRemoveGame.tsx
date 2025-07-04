@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { removeGame } from "@checkmate/api";
 
-export function useRemoveGame() {
+export default function useRemoveGame() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 

@@ -4,14 +4,16 @@ import { config } from '@checkmate/theme';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import HomePage from './pages/Home/Home';
-import LoginPage from './pages/Login/login';
-import RegisterPage from './pages/Register/register';
-import ProfilePage from './pages/Profile/profile';
-import GameDiscoveryPage from './pages/Game/GameDiscovery/GameDiscovery';
-import GameDetailsPage from './pages/Game/GameDetails/GameDetails';
-import GameSearchResults from './pages/Game/GameSearchResults/GameSearchResults';
-import FindFriendsPage from './pages/Friends/FindFriends';
+import {
+  HomePage,
+  FindFriendsPage,
+  GameDetailsPage,
+  GameDiscoveryPage,
+  GameSearchResultsPage,
+  ProfilePage,
+  RegisterPage,
+  LoginPage
+} from './pages/index'
 
 import { AuthProvider } from '@checkmate/state';
 import React from 'react';
@@ -61,7 +63,7 @@ export default function App() {
                 path="/search"
                 element={
                   <Layout theme="medBlueDark">
-                    <GameSearchResults />
+                    <GameSearchResultsPage />
                   </Layout>
                 }
               />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { saveGame } from "@checkmate/api";
 
-export function useSaveGame() {
+export default function useSaveGame() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 

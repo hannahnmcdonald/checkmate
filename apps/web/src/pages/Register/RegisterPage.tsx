@@ -4,8 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import React from 'react';
 import { register } from '@checkmate/api';
 import { useAuth } from '@checkmate/state';
-import Footer from '../../components/Footer';
-import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
+import {
+    PageContainer,
+    PrimaryButton,
+    FormInput,
+    InlineLink
+} from '../../components/Styled';
 
 export default function RegisterPage() {
     const { dispatch } = useAuth()
@@ -157,7 +161,6 @@ export default function RegisterPage() {
                     </YStack>
                 </Card>
             </PageContainer>
-            <Footer />
         </>
     )
 }

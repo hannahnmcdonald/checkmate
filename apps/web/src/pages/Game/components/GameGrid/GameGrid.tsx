@@ -1,4 +1,4 @@
-import GameCard from './GameCard';
+import { GameCard } from '../index'
 import { YStack, XStack } from 'tamagui'
 import React from 'react';
 import { useMedia } from 'tamagui';
@@ -13,7 +13,7 @@ type Game = {
     maxPlayers: number
 };
 
-export function GameGrid({ games }: { games: Game[] }) {
+export default function GameGrid({ games }: { games: Game[] }) {
     const media = useMedia();
     const isSmall = media.sm;
     const isLarge = media.lg;

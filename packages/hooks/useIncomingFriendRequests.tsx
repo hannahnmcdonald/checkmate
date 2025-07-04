@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getIncomingFriendRequests } from "@checkmate/api";
 import { Friend } from "@checkmate/types";
 
-export function useIncomingFriendRequests() {
+export default function useIncomingFriendRequests() {
     const [requests, setRequests] = useState<Friend[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

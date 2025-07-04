@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { YStack, XStack, Text, Image, Button, Spinner } from 'tamagui';
+import { YStack, XStack, Text, Image, Spinner } from 'tamagui';
 import { Heart, Bookmark } from '@tamagui/lucide-icons';
 import { useAuth } from '@checkmate/state';
-import { PrimaryButton } from '../../../components/Styled';
-import { Badge } from '../../../components/GameBadge';
-import { useSaveGame } from '../../../hooks/useSaveGame';
-import { useRemoveGame } from '../../../hooks/useRemoveGame';
-import { IconButton } from '../../../components/IconButton';
-import { useGameSaveStatus } from '../../../hooks/useGameSaveStatus';
-import cleanDescription from '../../../utils/CleanDescription';
+import { PrimaryButton } from '../../components/Styled';
+import { IconButton, GameBadge } from './components';
+import {
+    cleanDescription
+} from "../../utils"
+
+import {
+    useSaveGame,
+    useRemoveGame,
+    useGameSaveStatus
+} from "@checkmate/hooks"
 
 type Game = {
     id: string;
@@ -144,14 +148,14 @@ export default function GameDetailsPage() {
             <Text fontSize="$3" mt="$3" mb="$1">Categories:</Text>
             <XStack flexWrap="wrap" mt="$2">
                 {game.categories?.map((category) => (
-                    <Badge key={category} label={category} type="category" />
+                    <GameBadge key={category} label={category} type="category" />
                 ))}
             </XStack>
 
             <Text fontSize="$3" mt="$4" mb="$1">Mechanics:</Text>
             <XStack flexWrap="wrap">
                 {game.mechanics?.map((m) => (
-                    <Badge key={m} label={m} type="mechanic" />
+                    <GameBadge key={m} label={m} type="mechanic" />
                 ))}
             </XStack>
 

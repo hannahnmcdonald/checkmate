@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@checkmate/state'
 import React from 'react'
-import Footer from '../../components/Footer';
 import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
 import { login } from '@checkmate/api';
 
@@ -98,7 +97,6 @@ export default function LoginPage() {
                     </YStack>
                 </Card>
             </PageContainer>
-            <Footer />
         </>
     )
 }

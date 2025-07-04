@@ -1,8 +1,7 @@
 import { YStack, Text, Separator } from 'tamagui'
-import Footer from '../../components/Footer';
 import React from 'react';
 import TrendingGames from './Components/TrendingGames';
-import SearchBar from '../Game/GameSearchBar/GameSearchBar';
+import { GameSearchBar } from '../Game/components';
 
 export default function HomePage() {
     // TODO: Implement search functionality
@@ -27,15 +26,13 @@ export default function HomePage() {
 
             <Separator my="$1" />
 
-            <SearchBar />
+            <GameSearchBar />
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
 
             <TrendingGames />
 
             <Separator my="$1" borderBottomColor="#4D96FF" />
-
-            <Footer />
         </YStack>
     )
 }

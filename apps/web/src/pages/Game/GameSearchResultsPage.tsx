@@ -1,11 +1,11 @@
 import { useLocation } from "react-router-dom";
-import { YStack, Text, Separator } from 'tamagui'
-import Footer from '../../../components/Footer';
+import { YStack, Text } from 'tamagui'
 import React from 'react';
-import SearchBar from '../GameSearchBar/GameSearchBar';
-import { useGameSearch } from '../../../hooks/useGameSearch'
-// import { GameGrid } from '../../../components/GameGrid';
-import GameCarousel from '../../../components/GameCarousel';
+import { useGameSearch } from "@checkmate/hooks"
+import {
+    GameCarousel,
+    GameSearchBar
+} from "./components";
 
 // export class ErrorBoundary extends React.Component {
 //     state = { hasError: false, error: null };
@@ -22,7 +22,7 @@ import GameCarousel from '../../../components/GameCarousel';
 //     }
 // }
 
-export default function GameSearchResults() {
+export default function GameSearchResultsPage() {
     console.log("GameSearchResults mounted!");
 
     const location = useLocation();
@@ -36,7 +36,7 @@ export default function GameSearchResults() {
     return (
         <>
             <YStack gap="$4" px="$4" py="$4" >
-                <SearchBar initialQuery={query} />
+                <GameSearchBar initialQuery={query} />
 
                 {loading ? (
                     <Text>Loading...</Text>
@@ -51,7 +51,6 @@ export default function GameSearchResults() {
                     </Text>} />
                 )}
             </YStack>
-            <Footer />
         </>
     );
 }

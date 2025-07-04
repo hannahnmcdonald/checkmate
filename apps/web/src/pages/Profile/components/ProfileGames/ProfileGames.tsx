@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import GameCarousel from '../../../../components/GameCarousel';
+import GameCarousel from '../../../Game/components/GameCarousel/GameCarousel';
 // import { PrimaryButton } from '../../../../components/Styled';
 import { XStack } from 'tamagui';
 // import { ToggleTabs } from '../../../../components/Toggle';
 import { useAuth } from '@checkmate/state';
-import { useSavedGames } from '../../../../hooks/useSavedGames';
+import { useSavedGames } from "@checkmate/hooks";
 
 type Game = {
     id: string;

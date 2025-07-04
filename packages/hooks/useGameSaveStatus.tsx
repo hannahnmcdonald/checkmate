@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useGameSaveStatus(gameId: string | undefined) {
+export default function useGameSaveStatus(gameId: string | undefined) {
     const [status, setStatus] = useState<{
         wishlist: boolean;
         collection: boolean;

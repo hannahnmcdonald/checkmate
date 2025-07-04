@@ -15,7 +15,7 @@ export type Game = {
     categories?: string[];
     mechanics?: string[];
 }
-export function useGameSearch(query: string) {
+export default function useGameSearch(query: string) {
     const [results, setResults] = useState<Game[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

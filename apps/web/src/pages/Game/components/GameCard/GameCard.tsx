@@ -1,14 +1,15 @@
 import { Card, XStack, Text, Image, Button } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
-import { PrimaryButton } from './Styled'
+import { PrimaryButton } from '../../../../components/Styled'
 import { Heart, Bookmark } from '@tamagui/lucide-icons';
 import { useMedia } from 'tamagui';
-import { IconButton } from './IconButton';
-import { useSaveGame } from "../hooks/useSaveGame";
-import { useRemoveGame } from "../hooks/useRemoveGame";
-// import he from "he";
-import cleanDescription from '../utils/CleanDescription';
+import { IconButton } from '../index'
+import {
+    useSaveGame,
+    useRemoveGame
+} from "@checkmate/hooks";
+import { cleanDescription } from "../../../../utils"
 
 export default function GameCard({
     id,
@@ -68,7 +69,7 @@ export default function GameCard({
             <Image
                 source={{ uri: imageUrl }}
                 width="100%"
-                aspectRatio={4 / 3} // or whatever ratio fits most of your images
+                aspectRatio={4 / 3}
                 resizeMode="cover"
                 backgroundColor="$background"
             />

@@ -1,10 +1,10 @@
-import { YStack, XStack, Text } from 'tamagui'
-import { FormInput, PrimaryButton } from '../../../components/Styled';
+import { XStack, Text } from 'tamagui'
+import { FormInput, PrimaryButton } from '../../../../components/Styled';
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState } from 'react';
 import { Search } from '@tamagui/lucide-icons';
 
-export default function SearchBar({ initialQuery = "" }: { initialQuery?: string }) {
+export default function GameSearchBar({ initialQuery = "" }: { initialQuery?: string }) {
     const [query, setQuery] = useState(initialQuery);
     const navigate = useNavigate();
     const location = useLocation();

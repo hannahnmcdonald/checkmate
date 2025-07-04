@@ -1,5 +1,5 @@
 import { XStack, YStack, ScrollView, Button } from 'tamagui';
-import GameCard from './GameCard';
+import GameCard from '../GameCard/GameCard';
 import React, { useRef, useState } from 'react';
 import { useMedia } from 'tamagui';
 
