@@ -3,7 +3,7 @@ import { FormInput, PrimaryButton } from '../../../../components/Styled';
 import { Search } from "@tamagui/lucide-icons";
 import React from "react";
 
-export default function SearchBar({
+export default function FriendSearchBar({
     query,
     setQuery,
     onSubmit,

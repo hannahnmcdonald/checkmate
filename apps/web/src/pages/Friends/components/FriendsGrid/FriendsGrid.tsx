@@ -1,5 +1,5 @@
 import { XStack, YStack, Text } from "tamagui";
-import { FriendCard } from "../FriendCard/FriendCard";
+import { FriendCard } from "../index";
 import React from 'react';
 // import { Friend } from '@checkmate/types';
 export interface Friend {
@@ -19,7 +19,7 @@ interface FriendGridProps {
 
 const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
 
-export function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {
+export default function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {
 
   console.log('users', users)
   if (!users || users.length === 0) {

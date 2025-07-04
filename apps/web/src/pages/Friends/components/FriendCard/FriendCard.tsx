@@ -8,7 +8,7 @@ interface FriendCardProps {
     theme: string
 }
 
-export function FriendCard({ user, action, theme }: FriendCardProps) {
+export default function FriendCard({ user, action, theme }: FriendCardProps) {
     return (
         <Card bordered elevate width={160} p="$3" ai="center" theme={theme}>
             <Image

@@ -1,7 +1,11 @@
 import { YStack, Text, Button } from "tamagui";
 import React, { useState } from 'react';
-import { FriendGrid } from './components/index';
-import FriendSearchBar from "./components/FriendSearchBar/FriendSearchBar";
+
+import {
+    FriendGrid,
+    FriendSearchBar
+} from './components'
+
 import {
     useFriendSearch,
     useGetCurrentFriends,
