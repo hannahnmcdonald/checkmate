@@ -20,29 +20,32 @@ interface FriendGridProps {
 const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
 
 export default function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {
+  const noFriends = !users || users.length === 0
 
-  console.log('users', users)
-  if (!users || users.length === 0) {
-    return <Text textAlign="center">{emptyText}</Text>;
-  }
 
+  // TODO: Export this into a separate profile version
   return (
-    <YStack gap="$4">
-      <Text textAlign="center">{title}</Text>
-      <XStack
-        flexWrap="wrap"
-        gap="$4"
-        jc="center"
-      >
-        {users.map((user, idx) => (
-          <FriendCard
-            key={user.id}
-            user={user}
-            action={actionButton ? actionButton(user) : undefined}
-            theme={themes[idx % themes.length]}
-          />
-        ))}
-      </XStack>
+    <YStack gap="$4" py="$4">
+      <Text textAlign="center" fontSize="1.5rem">{title}</Text>
+
+      {noFriends ? (
+        <Text textAlign="center" fontSize=".75rem">{emptyText}</Text>
+      ) : (
+        <XStack
+          flexWrap="wrap"
+          gap="$4"
+          jc="center"
+        >
+          {users.map((user, idx) => (
+            <FriendCard
+              key={user.id}
+              user={user}
+              action={actionButton ? actionButton(user) : undefined}
+              theme={themes[idx % themes.length]}
+            />
+          ))}
+        </XStack>
+      )}
     </YStack>
   );
 }

@@ -3,6 +3,6 @@ import { Text } from 'tamagui'
 
 export default function ProfileHeader() {
     return (
-        <Text>Header</Text>
+        <Text fontSize="2rem">Welcome back, Hannah!</Text>
     )
 }
