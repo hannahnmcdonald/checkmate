@@ -1,6 +1,6 @@
 import { YStack, Separator } from 'tamagui'
 import React from 'react';
-import TrendingGames from '../Home/Components/TrendingGames';
+import TrendingGames from '../Home/Components/TrendingGames/TrendingGames';
 import { GameSearchBar } from './components';
 
 export default function GameDiscoveryPage() {

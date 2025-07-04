@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import GameCarousel from '../../Game/components/GameCarousel/GameCarousel';
+import { GameCarousel } from '../../../Game/components';
 import { Text } from 'tamagui';
 import { useAuth } from '@checkmate/state';
 import { useSavedGames } from "@checkmate/hooks";
