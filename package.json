@@ -16,11 +16,18 @@
     "clean": "rm -rf node_modules yarn.lock && yarn install"
   },
   "devDependencies": {
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/yamljs": "^0.2.34",
     "concurrently": "^9.2.0",
     "turbo": "^2.0.0",
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "@fontsource/jetbrains-mono": "^5.2.6"
+    "@fontsource/jetbrains-mono": "^5.2.6",
+    "add": "^2.0.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
+    "yarn": "^1.22.22"
   }
 }

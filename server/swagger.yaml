@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: CheckMate API
+  version: 1.0.0
+  description: API documentation for the CheckMate board game app
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local server
+
+tags:
+  - name: Auth
+  - name: Friends
+  - name: Games
+  - name: Matches
+  - name: Notifications
+  - name: SavedGames
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Log in a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Invalid credentials
+        '500':
+          description: Unexpected error
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Log out current user
+      responses:
+        '200':
+          description: Logged out successfully
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - username
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                username:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+      responses:
+        '201':
+          description: User created
+        '409':
+          description: Duplicate email or username
+        '500':
+          description: Server error
+
+  /friends:
+    get:
+      tags:
+        - Friends
+      summary: Get all friends of the current user
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Friends list
+        '401':
+          description: Unauthorized
+
+  /friends/search:
+    get:
+      tags:
+        - Friends
+      summary: Search users by username
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+        '400':
+          description: Invalid query
+        '500':
+          description: Error searching
+
+  /game/trending:
+    get:
+      tags:
+        - Games
+      summary: Get trending games
+      responses:
+        '200':
+          description: List of trending games
+        '500':
+          description: Error fetching games
+
+  /game/{id}:
+    get:
+      tags:
+        - Games
+      summary: Get game details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Game details
+        '404':
+          description: Game not found
+
+  /save-game:
+    post:
+      tags:
+        - SavedGames
+      summary: Save a game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                game_id:
+                  type: string
+                category:
+                  type: string
+                  enum: [wishlist, collection]
+      responses:
+        '201':
+          description: Game saved
+        '409':
+          description: Already saved
+        '500':
+          description: Error saving
+
+  /remove-game:
+    delete:
+      tags:
+        - SavedGames
+      summary: Remove a saved game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                game_id:
+                  type: string
+                category:
+                  type: string
+      responses:
+        '200':
+          description: Game removed
+        '500':
+          description: Error removing
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
