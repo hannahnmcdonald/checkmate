@@ -19,7 +19,7 @@ export default function GameSearchBar({ initialQuery = "" }: { initialQuery?: st
 
     return (
         <>
-            <Text fontSize="$6" fontWeight="700" color="$color" textAlign='center'>
+            <Text fontSize="1.5rem" fontWeight="700" color="$color" textAlign='center'>
                 Ready to roll? Find your next adventure
             </Text>
 

@@ -13,6 +13,7 @@ export default function Footer() {
             width="100%"
             alignItems="center"
             py="$4"
+            pt="$10"
             gap="$2"
             {...(isSmall ? { px: "$2" } : isMedium ? { px: "$4" } : { px: "$6" })}
             {...(isSmall ? { jc: "center" } : { jc: "space-between" })}

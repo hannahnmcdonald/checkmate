@@ -26,8 +26,10 @@ export function MenuButton() {
                 <Sheet.Handle />
                 <Sheet.Frame>
                     <YStack gap="$4" padding="$4">
-                        <Text onPress={() => { navigate('/games'); setOpen(false); }}>Games</Text>
-                        <Text onPress={() => { navigate('/login'); setOpen(false); }}>Login</Text>
+                        <Text onPress={() => { navigate('/games'); setOpen(false); }}>Discover</Text>
+                        {!state.user && window.location.pathname !== '/login' && (
+                            <Text onPress={() => { navigate('/login'); setOpen(false); }}>Login</Text>
+                        )}
                         {state.user &&
                             <>
                                 <Text onPress={() => { navigate('/profile'); setOpen(false); }}>Profile</Text>

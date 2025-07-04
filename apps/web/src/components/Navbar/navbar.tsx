@@ -59,7 +59,7 @@ export default function Navbar(theme: string) {
                     {!isSmallScreen ? (
                         <XStack gap="$2">
                             <PrimaryButton size="$2" onPress={() => navigate('/games')}>
-                                Games
+                                Discover
                             </PrimaryButton>
                             {state.user && (
                                 <><PrimaryButton size="$2" onPress={() => navigate('/friends')}>
