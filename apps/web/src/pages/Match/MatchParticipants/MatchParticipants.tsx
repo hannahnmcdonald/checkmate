@@ -13,8 +13,9 @@ type Props = {
     onChange: () => void;
 };
 
-export default function StartMatchFriendCard({ friend, checked, onChange }: Props) {
+export default function MatchParticipants({ friend, checked, onChange }: Props) {
     console.log(friend.username, checked);
+    console.log('friend', friend.avatar)
     console.log(`Checkbox for ${friend.username}:`, checked);
 
     return (
@@ -28,11 +29,9 @@ export default function StartMatchFriendCard({ friend, checked, onChange }: Prop
             jc="space-between"
         >
             <XStack ai="center" gap="$2" px="$4">
-                <Avatar
-                    circular
-                    size="$3"
-                    src={getAvatarUrl(friend.avatar)}
-                />
+                <Avatar circular size="$3">
+                    <Avatar.Image src={getAvatarUrl(friend.avatar)} />
+                </Avatar>
                 <Text>{friend.username}</Text>
             </XStack>
             <Checkbox

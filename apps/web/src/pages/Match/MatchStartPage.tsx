@@ -69,8 +69,7 @@ export default function MatchStartPage() {
         );
     }
 
-    console.log("loadingGame", loadingGame, "friendsLoading", friendsLoading);
-
+    console.log('START', friends)
 
     return (
         <YStack
