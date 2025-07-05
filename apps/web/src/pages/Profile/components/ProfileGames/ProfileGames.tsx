@@ -2,6 +2,7 @@ import SavedGamesList from './SavedGamesList/SavedGamesList';
 import { Text, YStack, XStack, ScrollView } from 'tamagui';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart, Bookmark } from '@tamagui/lucide-icons';
 import { useMedia } from 'tamagui';
 import {
     useRemoveGame
@@ -54,12 +55,12 @@ export default function ProfileGames({
     return (
         <XStack
             gap="$4"
+            py="$4.5"
             flexWrap="wrap"
             jc="space-between"
             ai="flex-start"
             width="100%"
         >
-            {/* Wishlist */}
             <YStack
                 width={isMedium ? "48%" : "100%"}
                 height={400}
@@ -68,9 +69,14 @@ export default function ProfileGames({
                 borderRadius="$4"
                 overflow="hidden"
             >
-                <Text fontSize="$5" fontWeight="700" mb="$2" p="$3">
-                    Wishlist
-                </Text>
+
+                <XStack ai="center" gap="$2" mb="$2" p="$3">
+                    <Heart size="$1" />
+                    <Text fontSize="$2" fontWeight="700">
+                        Wishlist
+                    </Text>
+                </XStack>
+
                 <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
                     <SavedGamesList
                         games={wishlist.filter((g) => g.game)}
@@ -80,7 +86,6 @@ export default function ProfileGames({
                 </ScrollView>
             </YStack>
 
-            {/* Collection */}
             <YStack
                 width={isMedium ? "48%" : "100%"}
                 height={400}
@@ -89,9 +94,13 @@ export default function ProfileGames({
                 borderRadius="$4"
                 overflow="hidden"
             >
-                <Text fontSize="$5" fontWeight="700" mb="$2" p="$3">
-                    Collection
-                </Text>
+
+                <XStack ai="center" gap="$2" mb="$2" p="$3">
+                    <Bookmark size="$1" />
+                    <Text fontSize="$2" fontWeight="700">
+                        Collection
+                    </Text>
+                </XStack>
                 <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
                     <SavedGamesList
                         games={collection.filter((g) => g.game)}
