@@ -10,6 +10,7 @@ export default function Footer() {
 
     return (
         <YStack
+            minHeight="100vh"
             width="100%"
             alignItems="center"
             py="$4"
