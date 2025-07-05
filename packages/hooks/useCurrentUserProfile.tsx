@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react';
-import { UserProfile } from '@checkmate/types';
-import { getCurrentUserProfile } from '@checkmate/api';
+import { useEffect, useState } from "react";
+import { UserProfile } from "@checkmate/types";
+import { getCurrentUserProfile } from "@checkmate/api";
+import { useAuth } from "@checkmate/state";
 
 export default function useCurrentUserProfile() {
     const [data, setData] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const fetchProfile = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const profile = await getCurrentUserProfile();
-            setData(profile);
-        } catch (err) {
-            console.error("Error fetching profile:", err);
-            setError((err as Error).message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProfile();
-    }, []);
+    const { logout } = useAuth();
 
     useEffect(() => {
         setLoading(true);
@@ -31,17 +15,20 @@ export default function useCurrentUserProfile() {
 
         getCurrentUserProfile()
             .then((profile) => {
-                console.log("[HOOK] Fetched profile:", profile);
                 setData(profile);
-                setLoading(false);
             })
-            .catch((err) => {
+            .catch(async (err) => {
                 console.error("Error fetching profile:", err);
+                if (err.message.includes("401")) {
+                    // If you want a more robust check, inspect the status code instead
+                    await logout();
+                }
                 setError(err.message);
+            })
+            .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [logout]);
 
-    return { data, loading, error, refetch: fetchProfile };
+    return { data, loading, error };
 }
-

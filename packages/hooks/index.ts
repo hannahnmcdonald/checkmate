@@ -8,6 +8,10 @@ import useSaveGame from "./useSaveGame";
 import useRemoveGame from "./useRemoveGame";
 import useCurrentUserProfile from "./useCurrentUserProfile"
 import useGetGameDetails from "./useGetGameDetails"
+import useAcceptFriendRequest from "./useAcceptFriendRequest"
+import useDeclineFriendRequest from "./useDeclineFriendRequest"
+import useSendFriendRequest from "./useSendFriendRequest"
+import useOutgoingFriendRequests from "./useOutgoingFriendRequests";
 
 export {
     useFriendSearch,
@@ -19,5 +23,9 @@ export {
     useSaveGame,
     useSavedGames,
     useCurrentUserProfile,
-    useGetGameDetails
+    useGetGameDetails,
+    useAcceptFriendRequest,
+    useDeclineFriendRequest,
+    useOutgoingFriendRequests,
+    useSendFriendRequest
 }
