@@ -10,16 +10,16 @@ export default function Footer() {
 
     return (
         <YStack
-            minHeight="100vh"
             width="100%"
-            alignItems="center"
+            ai="center"
             py="$4"
-            pt="$10"
-            gap="$2"
-            {...(isSmall ? { px: "$2" } : isMedium ? { px: "$4" } : { px: "$6" })}
-            {...(isSmall ? { jc: "center" } : { jc: "space-between" })}
+            px="$4"
         >
-            <XStack gap="$4">
+            <XStack
+                gap="$4"
+                flexWrap="wrap"
+                jc="center"
+            >
                 <Text fontSize="$2" color="$color3">
                     © 2025 CheckMate
                 </Text>

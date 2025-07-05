@@ -12,7 +12,11 @@ export default function Layout({ children, theme }: LayoutProps) {
         <Theme name={theme}>
             <YStack bg="$background" minHeight="100vh" px="$4" py="$4">
                 <Navbar theme={theme} />
-                {children}
+
+                <YStack flex={1}>
+                    {children}
+                </YStack>
+
                 <Footer />
             </YStack>
         </Theme>
