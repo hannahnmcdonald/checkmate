@@ -73,7 +73,7 @@ export async function getUserProfile(targetId: string) {
         db('user_privacy').where('user_id', targetId).first(),
     ]);
 
-    const isFriend = getUserFriends !== null;
+    const isFriend = friends && friends.length > 0;
 
     // For each saved game, fetch game details from BGG
     const gameResults = await Promise.allSettled(

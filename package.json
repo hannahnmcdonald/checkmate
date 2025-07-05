@@ -2,6 +2,7 @@
   "name": "checkmate",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
@@ -19,12 +20,15 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/yamljs": "^0.2.34",
     "concurrently": "^9.2.0",
+    "knex": "^3.1.0",
+    "ts-node": "^10.9.2",
     "turbo": "^2.0.0",
     "typescript": "^5.4.0"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.6",
     "add": "^2.0.6",
+    "dotenv": "^17.0.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "swagger-jsdoc": "^6.2.8",
@@ -33,7 +37,7 @@
     "yarn": "^1.22.22"
   },
   "resolutions": {
-  "react": "19.1.0",
-  "react-dom": "19.1.0"
-}
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
 }

@@ -7,7 +7,8 @@ import { useAuth } from '@checkmate/state';
 export default function ProfilePage() {
     const { state } = useAuth();
     const { friends, loading: friendsLoading } = useGetCurrentFriends();
-    const { data, loading, error } = useCurrentUserProfile();
+    const { data, loading, error, refetch } = useCurrentUserProfile();
+
 
     if (loading) {
         return (
@@ -33,24 +34,25 @@ export default function ProfilePage() {
         );
     }
 
+    // ✅ ONLY LOG HERE, when you are sure `data` is not null
+    console.log("DATA IN PROFILE PAGE:", data);
+    console.log("Wishlist in data:", data.games?.wishlist);
+    console.log("Collection in data:", data.games?.collection);
+
     return (
-        // <Theme name="blueDark">
         <YStack p="$4">
             <ProfileHeader />
-            {/* <ProfileStats /> */}
             <ProfileGames
-                savedGames={[
-                    ...(data.games.wishlist ?? []),
-                    ...(data.games.collection ?? [])
-                ]}
+                wishlist={data.games.wishlist ?? []}
+                collection={data.games.collection ?? []}
                 isLoggedIn={!!state.user}
+                refetchProfile={refetch}
             />
             <ProfileFriends
                 users={data.friends}
                 title="Friends"
             />
-            {/* <ProfileMatches /> */}
         </YStack>
-        // </Theme>
-    )
+    );
+
 }

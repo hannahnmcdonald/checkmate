@@ -39,6 +39,9 @@ export async function removeGame(gameId: string, category: string): Promise<void
     if (!res.ok) {
         throw new Error("Failed to remove game.");
     }
+    const data = await res.json();
+    console.log("Removed Saved Game:", data);
+    return data.savedGames;
 }
 
 export async function getSavedGames(): Promise<{ game_id: string; category: string }[]> {

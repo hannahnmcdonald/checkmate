@@ -27,7 +27,7 @@ game.get('/game/trending', async (req, res) => {
         cacheExpires = now + 3600 * 1000; // cache for 1 hour
 
         res.setHeader('Cache-Control', 'public, max-age=3600');
-        res.json(games);
+        res.status(200).json(games);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch trending games' });

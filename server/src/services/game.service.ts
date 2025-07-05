@@ -24,7 +24,14 @@ interface BoardGameDetails {
   mechanics?: string[];
 }
 
+const bggCache = new Map<string, any>();
+
 export async function getBoardGameDetails(gameId: string): Promise<BoardGameDetails> {
+  if (bggCache.has(gameId)) {
+    console.log(`Serving cached game details for ID ${gameId}`);
+    return bggCache.get(gameId);
+  }
+
   const url = `https://boardgamegeek.com/xmlapi2/thing?id=${gameId}&stats=1`;
 
   try {
@@ -71,6 +78,8 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
       categories,
       mechanics
     };
+    bggCache.set(gameId, details);
+
     console.log(details)
     return details;
   } catch (error) {

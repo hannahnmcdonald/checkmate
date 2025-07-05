@@ -7,12 +7,31 @@ export default function useCurrentUserProfile() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const fetchProfile = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const profile = await getCurrentUserProfile();
+            setData(profile);
+        } catch (err) {
+            console.error("Error fetching profile:", err);
+            setError((err as Error).message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProfile();
+    }, []);
+
     useEffect(() => {
         setLoading(true);
         setError(null);
 
         getCurrentUserProfile()
             .then((profile) => {
+                console.log("[HOOK] Fetched profile:", profile);
                 setData(profile);
                 setLoading(false);
             })
@@ -23,5 +42,6 @@ export default function useCurrentUserProfile() {
             });
     }, []);
 
-    return { data, loading, error };
+    return { data, loading, error, refetch: fetchProfile };
 }
+

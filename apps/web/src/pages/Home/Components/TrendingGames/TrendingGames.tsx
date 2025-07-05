@@ -20,10 +20,18 @@ export default function TrendingGames() {
 
     useEffect(() => {
         fetch('/api/game/trending')
-            .then((res) => res.json())
+            .then(async (res) => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Error ${res.status}: ${text}`);
+                }
+                return res.json();
+            })
             .then(setGames)
             .catch(console.error);
     }, []);
+
+    console.log('GAMES', games)
 
     return (
         <GameCarousel

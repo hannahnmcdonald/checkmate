@@ -1,6 +1,7 @@
 import { db } from '../db/knex';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { getBoardGameDetails } from './game.service';
 
 const bggCache = new Map<string, any>();
 
@@ -21,19 +22,19 @@ async function fetchBggGame(gameId: string) {
  * @param game_id 
  * @param category Enum - either 'wishlist' or 'collection'
  */
-export async function dbSaveUserGame(userId: string, game_id: string, category: string) {
-    if (!['wishlist', 'collection'].includes(category)) {
-        throw new Error('Invalid category');
-    }
+// export async function dbSaveUserGame(userId: string, game_id: string, category: string) {
+//     if (!['wishlist', 'collection'].includes(category)) {
+//         throw new Error('Invalid category');
+//     }
 
-    await db('user_games').insert({
-        id: uuidv4(),
-        user_id: userId,
-        game_id,
-        category,
-        created_at: new Date(),
-    });
-}
+//     await db('user_games').insert({
+//         id: uuidv4(),
+//         user_id: userId,
+//         game_id,
+//         category,
+//         created_at: new Date(),
+//     });
+// }
 
 /**
  * Removes a game from the user's saved games
@@ -134,28 +135,44 @@ export async function dbGetUserGameSaveStatus(userId: string, gameId: string): P
     };
 }
 
-export async function dbGetSavedGamesWithDetails(userId: string) {
-    return db('saved_games as sg')
-        .join('user_games as g', 'sg.game_id', 'g.id')
-        .where('sg.user_id', userId)
-        .select([
-            'sg.category',
-            'g.id as gameId',
-            'g.title',
-            'g.thumbnail',
-            'g.description',
-            'g.published_year'
-        ])
-        .then((rows) =>
-            rows.map((row) => ({
-                category: row.category,
-                game: {
-                    id: row.gameId,
-                    title: row.title,
-                    thumbnail: row.thumbnail,
-                    description: row.description,
-                    publishedYear: row.published_year
-                }
-            }))
-        );
+export async function dbGetUserSavedGamesWithBggDetails(userId: string) {
+    const savedGamesRaw = await db('user_games')
+        .select('game_id', 'category')
+        .where('user_id', userId);
+
+    const savedGames = await Promise.all(
+        savedGamesRaw.map(async (g) => {
+            try {
+                const details = await getBoardGameDetails(g.game_id);
+                return {
+                    category: g.category,
+                    game: details
+                };
+            } catch (err) {
+                console.warn(`Failed to fetch details for game ${g.game_id}:`, err);
+                return null; // Mark as missing
+            }
+        })
+    );
+
+    // Remove any null entries
+    return savedGames.filter(Boolean);
+}
+
+
+export async function dbSaveUserGame(userId: string, game_id: string, category: string) {
+    if (!['wishlist', 'collection'].includes(category)) {
+        throw new Error('Invalid category');
+    }
+
+    const metadata = await getBoardGameDetails(game_id);
+
+    await db("user_games").insert({
+        id: uuidv4(),
+        user_id: userId,
+        game_id,
+        category,
+        created_at: new Date(),
+        metadata: JSON.stringify(metadata)
+    });
 }

@@ -7,8 +7,12 @@ import {
     dbGetUserGamesWithDetails,
     dbGetUserSavedGames,
     dbGetUserGameSaveStatus,
-    dbGetSavedGamesWithDetails
+    dbGetUserSavedGamesWithBggDetails,
+    // dbGetSavedGamesWithDetails
 } from '../services/saveGames.service'
+// import {
+//     getBoardGameDetails
+// } from '../services/game.service'
 
 interface AuthenticatedRequest extends Request {
     user?: { id: string;[key: string]: any };
@@ -107,17 +111,20 @@ saveGamesRoute.get('/saved-games', protectedRoute, async (req: AuthenticatedRequ
     }
 });
 
-saveGamesRoute.get('/saved-games/details', protectedRoute, async (req, res) => {
-    const { userId } = req.params;
+saveGamesRoute.get('/saved-games/details', protectedRoute, async (req: AuthenticatedRequest, res) => {
+    const userId = req.user?.id;
+
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-        const savedGames = await dbGetSavedGamesWithDetails(userId);
-        res.status(200).json(savedGames);
+        const savedGames = await dbGetUserSavedGamesWithBggDetails(userId);
+        res.status(200).json({ savedGames });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Failed to load saved games' });
     }
 });
+
 
 
 export default saveGamesRoute;
