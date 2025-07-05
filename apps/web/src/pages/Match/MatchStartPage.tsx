@@ -98,7 +98,7 @@ export default function MatchStartPage() {
             <XStack gap="$2" jc="center">
                 <PrimaryButton
                     onPress={handleStartMatch}
-                    disabled={creating}
+                    disabled={creating || selectedFriendIds.length === 0}
                     theme="active"
                 >
                     {creating ? "Starting..." : "Start Match"}
