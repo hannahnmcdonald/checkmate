@@ -25,7 +25,13 @@ export default function MatchFinalPage() {
     const losers = participants.filter(p => p.result === "loss");
 
     return (
-        <YStack p="$4" gap="$4">
+        <YStack
+            p="$4"
+            gap="$4"
+            maxWidth={600}
+            width="100%"
+            mx="auto"
+        >
             <XStack ai="center" gap="$3">
                 <Image
                     src={game?.thumbnail || ""}
