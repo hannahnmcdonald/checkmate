@@ -7,6 +7,7 @@ import React from 'react'
 export function MenuButton() {
     const [open, setOpen] = React.useState(false)
     const { state } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -28,14 +29,14 @@ export function MenuButton() {
                     <YStack gap="$4" padding="$4">
                         <Text onPress={() => { navigate('/games'); setOpen(false); }}>Discover</Text>
                         {!state.user && window.location.pathname !== '/login' && (
-                            <Text onPress={() => { navigate('/login'); setOpen(false); }}>Login</Text>
+                            <Text onPress={() => { logout(); setOpen(false); window.location.href = "/login"; }}>Login</Text>
                         )}
                         {state.user &&
                             <>
                                 <Text onPress={() => { navigate('/profile'); setOpen(false); }}>Profile</Text>
                                 <Text onPress={() => { navigate('/friends'); setOpen(false); }}>Friends</Text>
                                 <Text onPress={() => {
-                                    fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload());
+                                    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload());
                                 }}>Logout</Text></>
                         }
                     </YStack>

@@ -13,6 +13,8 @@ import { useMedia } from 'tamagui';
 
 export default function Navbar(theme: string) {
     const { state } = useAuth();
+    const { logout } = useAuth();
+
     const navigate = useNavigate();
     const media = useMedia();
     const isSmallScreen = media.sm;
@@ -68,9 +70,9 @@ export default function Navbar(theme: string) {
                                         Profile
                                     </PrimaryButton><PrimaryButton
                                         size="$2"
-                                        onPress={() => {
-                                            fetch('/api/logout', { method: 'POST', credentials: 'include' }).then(() => location.reload()
-                                            );
+                                        onPress={async () => {
+                                            await logout();
+                                            window.location.href = "/login";
                                         }}
                                     >
                                         Logout
