@@ -133,3 +133,29 @@ export async function dbGetUserGameSaveStatus(userId: string, gameId: string): P
         collection: entries.some((e) => e.category === 'collection'),
     };
 }
+
+export async function dbGetSavedGamesWithDetails(userId: string) {
+    return db('saved_games as sg')
+        .join('user_games as g', 'sg.game_id', 'g.id')
+        .where('sg.user_id', userId)
+        .select([
+            'sg.category',
+            'g.id as gameId',
+            'g.title',
+            'g.thumbnail',
+            'g.description',
+            'g.published_year'
+        ])
+        .then((rows) =>
+            rows.map((row) => ({
+                category: row.category,
+                game: {
+                    id: row.gameId,
+                    title: row.title,
+                    thumbnail: row.thumbnail,
+                    description: row.description,
+                    publishedYear: row.published_year
+                }
+            }))
+        );
+}

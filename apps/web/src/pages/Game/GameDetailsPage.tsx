@@ -12,7 +12,8 @@ import {
 import {
     useSaveGame,
     useRemoveGame,
-    useGameSaveStatus
+    useGameSaveStatus,
+    useGetGameDetails
 } from "@checkmate/hooks"
 
 type Game = {
@@ -32,10 +33,9 @@ export default function GameDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { state } = useAuth();
-    const [game, setGame] = useState<Game | null>(null);
-    const [loading, setLoading] = useState(true);
 
-    const { status, loading: statusLoading } = useGameSaveStatus(id);
+    const { game, loading, error } = useGetGameDetails(id);
+    const { status, loading: statusLoading } = useGameSaveStatus(state.user ? id : undefined);
     const { mutate: save } = useSaveGame();
     const { mutate: remove } = useRemoveGame();
 
@@ -49,24 +49,18 @@ export default function GameDetailsPage() {
         }
     }, [status, statusLoading]);
 
-    useEffect(() => {
-        fetch(`/api/game/${id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('RAW API RESPONSE:', data);
-                setGame(data.game);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, [id]);
-
     if (loading) {
         return (
             <YStack ai="center" jc="center" height="50vh">
                 <Spinner />
+            </YStack>
+        );
+    }
+
+    if (error) {
+        return (
+            <YStack ai="center" jc="center" py="$4">
+                <Text>Error: {error}</Text>
             </YStack>
         );
     }

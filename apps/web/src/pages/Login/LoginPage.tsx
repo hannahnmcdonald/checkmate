@@ -7,7 +7,7 @@ import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../compo
 import { login } from '@checkmate/api';
 
 export default function LoginPage() {
-    const { dispatch } = useAuth()
+    const { refetchUser } = useAuth()
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,36 +16,35 @@ export default function LoginPage() {
     const isFormIncomplete = !email || !password
 
     const handleLogin = async () => {
-        setLoading(true)
-        setError(null)
+        setLoading(true);
+        setError(null);
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address')
-            setLoading(false)
-            return
+            setError('Please enter a valid email address');
+            setLoading(false);
+            return;
         }
 
         try {
-            const { user } = await login({ email, password })
-            dispatch({
-                type: 'LOGIN', payload: {
-                    user
-                }
-            })
+            await login({ email, password });
 
-            navigate('/profile')
+            await refetchUser();
+
+            navigate('/profile');
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message)
+                setError(err.message);
             } else {
-                setError('An unknown error occurred')
+                setError('An unknown error occurred');
             }
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
+
+
 
     return (
         <>

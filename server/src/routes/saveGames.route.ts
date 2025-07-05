@@ -6,7 +6,8 @@ import {
     dbRemoveUserGame,
     dbGetUserGamesWithDetails,
     dbGetUserSavedGames,
-    dbGetUserGameSaveStatus
+    dbGetUserGameSaveStatus,
+    dbGetSavedGamesWithDetails
 } from '../services/saveGames.service'
 
 interface AuthenticatedRequest extends Request {
@@ -103,6 +104,18 @@ saveGamesRoute.get('/saved-games', protectedRoute, async (req: AuthenticatedRequ
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch saved games' });
+    }
+});
+
+saveGamesRoute.get('/saved-games/details', protectedRoute, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const savedGames = await dbGetSavedGamesWithDetails(userId);
+        res.status(200).json(savedGames);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to load saved games' });
     }
 });
 

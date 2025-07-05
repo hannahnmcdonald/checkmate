@@ -57,3 +57,30 @@ export async function getSavedGames(): Promise<{ game_id: string; category: stri
     return data.savedGames;
 }
 
+export async function getSavedGamesWithDetails(): Promise<{ game: object; category: string }[]> {
+    const res = await fetch("/api/saved-games/details", { credentials: "include" });
+
+    console.log("Response status:", res.status);
+
+    if (!res.ok) {
+        const text = await res.text();
+        console.error("Error response body:", text);
+        throw new Error("Failed to load saved games.");
+    }
+
+    const data = await res.json();
+    console.log("Fetched saved games data:", data);
+    return data.savedGames;
+}
+
+export async function getGameById(id: string) {
+    const res = await fetch(`/api/game/${id}`);
+
+    if (!res.ok) {
+        const message = await res.text();
+        throw new Error(`Error ${res.status}: ${message}`);
+    }
+
+    const json = await res.json();
+    return json.game; // Assuming your endpoint wraps the game in `{ game: {...} }`
+}

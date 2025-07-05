@@ -44,6 +44,7 @@ export default function GameCard({
 
     const cleanedDescription = cleanDescription(description)
 
+    console.log('savedGames', savedGames)
     useEffect(() => {
         if (savedGames) {
             setIsWishlisted(

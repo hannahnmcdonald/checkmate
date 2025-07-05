@@ -19,9 +19,8 @@ interface FriendGridProps {
 
 const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
 
-export default function FriendGrid({ users, actionButton, emptyText = "No results", title }: FriendGridProps) {
+export default function FriendGrid({ users, actionButton, emptyText = "No friends yet", title }: FriendGridProps) {
   const noFriends = !users || users.length === 0
-
 
   // TODO: Export this into a separate profile version
   return (

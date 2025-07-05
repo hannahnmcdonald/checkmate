@@ -64,9 +64,6 @@ export async function getUserSessions(userId: string) {
 };
 
 export async function getUserProfile(targetId: string) {
-
-    console.log('targetId', targetId)
-
     const [user, stats, games, sessions, friends, privacy] = await Promise.all([
         db('users').where('id', targetId).first(),
         db('user_stats').where('user_id', targetId).first(),
@@ -78,6 +75,29 @@ export async function getUserProfile(targetId: string) {
 
     const isFriend = getUserFriends !== null;
 
+    // For each saved game, fetch game details from BGG
+    const gameResults = await Promise.allSettled(
+        games.map(async (g) =>
+            getBoardGameDetails(g.game_id).then((details) => ({
+                category: g.category,
+                game: details,
+            }))
+        )
+    );
+
+    const gamesWithDetails = gameResults
+        .filter((r) => r.status === "fulfilled")
+        .map((r) => (r as PromiseFulfilledResult<{ category: string; game: any }>).value);
+
+    gameResults.forEach((r, i) => {
+        if (r.status === "rejected") {
+            console.warn(
+                `Failed to fetch game details for game ID ${games[i].game_id}:`,
+                r.reason
+            );
+        }
+    });
+
     return {
         user: {
             username: user.username,
@@ -87,14 +107,23 @@ export async function getUserProfile(targetId: string) {
         },
         stats: withPrivacy(stats || { wins: 0, losses: 0, ties: 0 }, privacy.stats, targetId, isFriend),
         games: {
-            wishlist: withPrivacy(games.filter((g: { category: string; }) => g.category === 'wishlist'), privacy.games, targetId, isFriend),
-            collection: withPrivacy(games.filter((g: { category: string; }) => g.category === 'collection'), privacy.games, targetId, isFriend)
+            wishlist: withPrivacy(
+                gamesWithDetails.filter((g) => g.category === 'wishlist'),
+                privacy.games,
+                targetId,
+                isFriend
+            ),
+            collection: withPrivacy(
+                gamesWithDetails.filter((g) => g.category === 'collection'),
+                privacy.games,
+                targetId,
+                isFriend
+            ),
         },
         recentSessions: withPrivacy(sessions, privacy.sessions, targetId, isFriend),
-        friends: withPrivacy(friends, privacy.friends, targetId, isFriend)
+        friends: withPrivacy(friends, privacy.friends, targetId, isFriend),
     };
 }
-
 
 export async function getFullUserProfile(userId: string) {
     const [user, stats, games, friends] = await Promise.all([
@@ -110,34 +139,58 @@ export async function getFullUserProfile(userId: string) {
             })
             .andWhere('f.status', 'accepted')
             .join('users as u', function () {
-                this.on('u.id', '=', db.raw(
-                    `(CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END)`,
-                    [userId]
-                ));
+                this.on(
+                    'u.id',
+                    '=',
+                    db.raw(
+                        `(CASE WHEN f.user_id_1 = ? THEN f.user_id_2 ELSE f.user_id_1 END)`,
+                        [userId]
+                    )
+                );
             })
             .select('u.id', 'u.username', 'u.first_name', 'u.last_name'),
     ]);
 
-    // Handle the case where user does not exist
     if (!user) {
         throw new Error(`User with id ${userId} not found`);
     }
 
-    // Now safe to use user.id
-    const userRecentSessions = await getUserSessions(user.id);
+    const userRecentSessions = await getUserSessions(userId);
+
+    const gameResults = await Promise.allSettled(
+        games.map(async (g) =>
+            getBoardGameDetails(g.game_id).then((details) => ({
+                category: g.category,
+                game: details,
+            }))
+        )
+    );
+
+    const gamesWithDetails = gameResults
+        .filter((r) => r.status === "fulfilled")
+        .map((r) => (r as PromiseFulfilledResult<{ category: string; game: any }>).value);
+
+    gameResults.forEach((r, i) => {
+        if (r.status === "rejected") {
+            console.warn(
+                `Failed to fetch game details for game ID ${games[i].game_id}:`,
+                r.reason
+            );
+        }
+    });
+
 
     return {
         user,
         stats: stats || { wins: 0, losses: 0, ties: 0 },
         games: {
-            wishlist: games.filter(g => g.category === 'wishlist'),
-            collection: games.filter(g => g.category === 'collection'),
+            wishlist: gamesWithDetails.filter((g) => g.category === 'wishlist'),
+            collection: gamesWithDetails.filter((g) => g.category === 'collection'),
         },
         recentSessions: userRecentSessions,
         friends,
     };
 }
-
 
 
 export default { getUserProfile, getFullUserProfile };

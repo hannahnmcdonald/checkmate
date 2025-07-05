@@ -17,6 +17,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
+            'react': path.resolve(__dirname, '../../node_modules/react'),
+            'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
             '@checkmate/screens': path.resolve(__dirname, '../../packages/screens'),
             '@checkmate/theme': path.resolve(__dirname, '../../packages/theme'),
             '@checkmate/ui': path.resolve(__dirname, '../../packages/ui'),

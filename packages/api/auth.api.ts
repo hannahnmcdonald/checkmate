@@ -1,3 +1,5 @@
+import { UserProfile } from '@checkmate/types';
+
 type LoginParams = {
     email: string;
     password: string;
@@ -11,17 +13,21 @@ type RegisterParams = {
     password: string;
 };
 
-export async function login({ email, password }: LoginParams) {
+export async function login({ email, password }: LoginParams): Promise<void> {
     const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: "include"
     });
+
     if (!res.ok) {
-        throw new Error('Invalid credentials');
+        const text = await res.text();
+        throw new Error(`Login failed: ${text}`);
     }
-    return res.json();
 }
+
+
 
 export async function register({
     firstName,

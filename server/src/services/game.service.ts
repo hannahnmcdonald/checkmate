@@ -33,6 +33,12 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
     const parsed = parser.parse(xml);
 
     const item = parsed.items?.item;
+
+    if (!item || item.error) {
+      console.warn(`BGG returned invalid item for ID ${gameId}`);
+      throw new Error(`BoardGameGeek returned an invalid item for ID ${gameId}`);
+    }
+
     const links = Array.isArray(item.link) ? item.link : [item.link];
 
     const categories = links
@@ -42,12 +48,6 @@ export async function getBoardGameDetails(gameId: string): Promise<BoardGameDeta
     const mechanics = links
       .filter((l: { [x: string]: string; }) => l["@_type"] === "boardgamemechanic")
       .map((l: { [x: string]: any; }) => l["@_value"]);
-
-
-    if (!item || item.error) {
-      console.warn(`BGG returned invalid item for ID ${gameId}`);
-      throw new Error(`BoardGameGeek returned an invalid item for ID ${gameId}`);
-    }
 
     const details: BoardGameDetails = {
       id: item["@_id"],
