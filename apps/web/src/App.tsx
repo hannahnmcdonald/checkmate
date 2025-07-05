@@ -13,7 +13,9 @@ import {
   ProfilePage,
   RegisterPage,
   LoginPage,
-  MatchStartPage
+  MatchStartPage,
+  MatchDetailsPage,
+  MatchFinalPage
 } from './pages/index'
 
 import React from 'react';
@@ -48,6 +50,26 @@ export default function App() {
                 <ProtectedRoute>
                   <Layout theme="magentaDark">
                     <MatchStartPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/match/:matchId"
+              element={
+                <ProtectedRoute>
+                  <Layout theme="tealDark">
+                    <MatchDetailsPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/match/:matchId/finalize"
+              element={
+                <ProtectedRoute>
+                  <Layout theme="greenDark">
+                    <MatchFinalPage />
                   </Layout>
                 </ProtectedRoute>
               }

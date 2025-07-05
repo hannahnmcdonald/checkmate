@@ -7,6 +7,8 @@ import GameDetailsPage from "./Game/GameDetailsPage";
 import GameDiscoveryPage from "./Game/GameDiscoveryPage";
 import GameSearchResultsPage from "./Game/GameSearchResultsPage";
 import MatchStartPage from "./Match/MatchStartPage";
+import MatchDetailsPage from "./Match/MatchDetailsPage";
+import MatchFinalPage from "./Match/MatchFinalPage";
 
 export {
     FindFriendsPage,
@@ -17,5 +19,7 @@ export {
     GameDetailsPage,
     GameDiscoveryPage,
     GameSearchResultsPage,
-    MatchStartPage
+    MatchStartPage,
+    MatchDetailsPage,
+    MatchFinalPage
 };

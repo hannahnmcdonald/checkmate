@@ -25,7 +25,9 @@ router.post('/match', protectedRoute, async (req: AuthenticatedRequest, res) => 
   }
 
   try {
+    console.log("...creating")
     const sessionId = await createMatch(creatorId, game_id, invited_user_ids);
+    console.log('MatchSession Created', sessionId)
     res.status(201).json({ session_id: sessionId });
   } catch (err) {
     console.error(err);
@@ -38,6 +40,8 @@ router.post('/match/:id/respond', protectedRoute, async (req: AuthenticatedReque
   const { accept }: { accept: boolean } = req.body;
   const userId = req.user?.id;
   const sessionId = req.params.id;
+
+  console.log(userId, sessionId)
 
   if (!accept || typeof accept !== 'boolean' || !userId) {
     return res.status(400).json({ message: 'Invalid payload' });
@@ -56,6 +60,8 @@ router.post('/match/:id/respond', protectedRoute, async (req: AuthenticatedReque
 router.get('/match/:id', protectedRoute, async (req, res) => {
   const sessionId = req.params.id;
 
+  console.log('GETTING SESSION ID', sessionId)
+
   try {
     const match = await db('game_sessions').where({ id: sessionId }).first();
     const participants = await db('game_session_participants')
@@ -73,6 +79,7 @@ router.get('/match/:id', protectedRoute, async (req, res) => {
         'responded_at'
       );
 
+    console.log('GET', match, participants)
     res.json({ match, participants });
   } catch (err) {
     console.error(err);

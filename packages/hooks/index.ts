@@ -12,6 +12,10 @@ import useAcceptFriendRequest from "./useAcceptFriendRequest"
 import useDeclineFriendRequest from "./useDeclineFriendRequest"
 import useSendFriendRequest from "./useSendFriendRequest"
 import useOutgoingFriendRequests from "./useOutgoingFriendRequests";
+import useMatchDetails from "./useMatchDetails";
+import useGameDetails from "./useGameDetails";
+import useFinalizeMatch from "./useFinalizeMatch";
+import useRespondToMatch from "./useRespondToMatch"
 
 export {
     useFriendSearch,
@@ -27,5 +31,9 @@ export {
     useAcceptFriendRequest,
     useDeclineFriendRequest,
     useOutgoingFriendRequests,
-    useSendFriendRequest
+    useSendFriendRequest,
+    useMatchDetails,
+    useGameDetails,
+    useFinalizeMatch,
+    useRespondToMatch
 }

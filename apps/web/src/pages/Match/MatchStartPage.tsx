@@ -43,6 +43,7 @@ export default function MatchStartPage() {
         setCreating(true);
         try {
             const { session_id } = await createMatch(gameId, selectedFriendIds);
+            await new Promise((res) => setTimeout(res, 3000));
             navigate(`/match/${session_id}`);
         } catch (err) {
             console.error(err);
@@ -68,8 +69,17 @@ export default function MatchStartPage() {
         );
     }
 
+    console.log("loadingGame", loadingGame, "friendsLoading", friendsLoading);
+
+
     return (
-        <YStack p="$4" gap="$4">
+        <YStack
+            p="$4"
+            gap="$4"
+            maxWidth={600}
+            width="100%"
+            mx="auto"
+        >
             <XStack ai="center" gap="$3">
                 <Image
                     src={game?.thumbnail || ""}
