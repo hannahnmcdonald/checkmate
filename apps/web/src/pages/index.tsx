@@ -6,6 +6,7 @@ import HomePage from "./Home/HomePage";
 import GameDetailsPage from "./Game/GameDetailsPage";
 import GameDiscoveryPage from "./Game/GameDiscoveryPage";
 import GameSearchResultsPage from "./Game/GameSearchResultsPage";
+import MatchStartPage from "./Match/MatchStartPage";
 
 export {
     FindFriendsPage,
@@ -15,5 +16,6 @@ export {
     HomePage,
     GameDetailsPage,
     GameDiscoveryPage,
-    GameSearchResultsPage
+    GameSearchResultsPage,
+    MatchStartPage
 };

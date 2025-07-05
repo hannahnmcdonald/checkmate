@@ -12,7 +12,8 @@ import {
   GameSearchResultsPage,
   ProfilePage,
   RegisterPage,
-  LoginPage
+  LoginPage,
+  MatchStartPage
 } from './pages/index'
 
 import React from 'react';
@@ -37,6 +38,16 @@ export default function App() {
                 <ProtectedRoute>
                   <Layout theme="blueDark">
                     <ProfilePage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/game/:gameId/start-match"
+              element={
+                <ProtectedRoute>
+                  <Layout theme="magentaDark">
+                    <MatchStartPage />
                   </Layout>
                 </ProtectedRoute>
               }
