@@ -38,6 +38,8 @@ export default function ProfilePage() {
     console.log("DATA IN PROFILE PAGE:", data);
     console.log("Wishlist in data:", data.games?.wishlist);
     console.log("Collection in data:", data.games?.collection);
+    console.log("Profile page friends:", friends, data.friends);
+
 
     return (
         <YStack p="$4">

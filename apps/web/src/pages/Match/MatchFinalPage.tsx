@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { YStack, XStack, Text, Image } from "tamagui";
 import { useMatchDetails, useGameDetails } from "@checkmate/hooks";
+import { getAvatarUrl } from "../../utils";
 
 export default function MatchFinalPage() {
     const { matchId } = useParams<{ matchId: string }>();
@@ -51,7 +52,7 @@ export default function MatchFinalPage() {
                     <Text>Winners:</Text>
                     <YStack gap="$2">
                         {winners.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={p.avatar} />
+                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
                         ))}
                     </YStack>
                 </>
@@ -62,7 +63,7 @@ export default function MatchFinalPage() {
                     <Text>Tied:</Text>
                     <YStack gap="$2">
                         {ties.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={p.avatar} />
+                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
                         ))}
                     </YStack>
                 </>
@@ -73,7 +74,7 @@ export default function MatchFinalPage() {
                     <Text>Losers:</Text>
                     <YStack gap="$2">
                         {losers.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={p.avatar} />
+                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
                         ))}
                     </YStack>
                 </>
@@ -93,7 +94,7 @@ function ParticipantRow({ username, avatar }: { username: string; avatar?: strin
             borderRadius="$2"
         >
             <Image
-                src={avatar || ""}
+                src={getAvatarUrl(avatar)}
                 width={32}
                 height={32}
                 borderRadius={9999}

@@ -18,6 +18,7 @@ import {
     CircleCheckBig,
     CircleCheck
 } from '@tamagui/lucide-icons';
+import { getAvatarUrl } from "../../utils";
 
 //TODO: Break a lot of these components out into separate components
 export default function MatchDetailsPage() {
@@ -141,7 +142,7 @@ export default function MatchDetailsPage() {
                     >
                         <XStack ai="center" gap="$2">
                             <Image
-                                src={p.avatar || ""}
+                                src={getAvatarUrl(p.avatar)}
                                 width={32}
                                 height={32}
                                 borderRadius={9999}

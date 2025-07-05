@@ -148,7 +148,7 @@ export async function getFullUserProfile(userId: string) {
                     )
                 );
             })
-            .select('u.id', 'u.username', 'u.first_name', 'u.last_name'),
+            .select('u.id', 'u.username', 'u.first_name', 'u.last_name', 'u.avatar'),
     ]);
 
     if (!user) {

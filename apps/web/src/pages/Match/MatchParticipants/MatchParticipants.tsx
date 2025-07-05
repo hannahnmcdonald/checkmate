@@ -1,6 +1,7 @@
 import React from 'react';
 import { XStack, Text, Checkbox, Avatar } from "tamagui";
 import { Check } from '@tamagui/lucide-icons';
+import { getAvatarUrl } from '../../../utils';
 
 type Props = {
     friend: {
@@ -30,7 +31,7 @@ export default function StartMatchFriendCard({ friend, checked, onChange }: Prop
                 <Avatar
                     circular
                     size="$3"
-                    src={friend.avatar || ""}
+                    src={getAvatarUrl(friend.avatar)}
                 />
                 <Text>{friend.username}</Text>
             </XStack>

@@ -4,7 +4,7 @@ import { FriendGrid } from '../../../Friends/components';
 export interface Friend {
     id: string;
     username: string;
-    avatarUrl?: string;
+    avatar?: string;
     joinedDate?: string;
     mutualFriendsCount?: number;
 }
@@ -17,6 +17,8 @@ type ProfileFriendsProps = {
 };
 
 export default function ProfileFriends({ users, title }: ProfileFriendsProps) {
+    console.log('USERS', users)
+
     return (
         <FriendGrid
             users={users}
