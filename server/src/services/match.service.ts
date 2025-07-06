@@ -181,6 +181,6 @@ export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
     }
   });
 }
-
+// TODO: Need to add status canceled for matches
 
 export default { createMatch, respondToMatch, finalizeMatch }

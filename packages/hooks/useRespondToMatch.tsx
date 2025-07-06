@@ -11,6 +11,7 @@ export default function useRespondToMatch() {
         try {
             await respondToMatch(matchId, accept);
         } catch (err) {
+            console.log(err)
             setError((err as Error).message);
             throw err;
         } finally {

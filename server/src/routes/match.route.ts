@@ -41,9 +41,7 @@ router.post('/match/:id/respond', protectedRoute, async (req: AuthenticatedReque
   const userId = req.user?.id;
   const sessionId = req.params.id;
 
-  console.log(userId, sessionId)
-
-  if (!accept || typeof accept !== 'boolean' || !userId) {
+  if (accept === null || typeof accept !== 'boolean' || !userId) {
     return res.status(400).json({ message: 'Invalid payload' });
   }
 

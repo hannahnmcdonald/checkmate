@@ -39,11 +39,12 @@ export default function ProfilePage() {
     console.log("Wishlist in data:", data.games?.wishlist);
     console.log("Collection in data:", data.games?.collection);
     console.log("Profile page friends:", friends, data.friends);
+    console.log('name', typeof data.user.first_name)
 
 
     return (
         <YStack p="$4">
-            <ProfileHeader />
+            <ProfileHeader name={data.user?.first_name} />
             <ProfileGames
                 wishlist={data.games.wishlist ?? []}
                 collection={data.games.collection ?? []}

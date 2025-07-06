@@ -129,7 +129,7 @@ export async function getFullUserProfile(userId: string) {
     const [user, stats, games, friends] = await Promise.all([
         db('users')
             .where('id', userId)
-            .select('username', 'first_name', 'last_name', 'avatar')
+            .select('username', 'first_name', 'last_name', 'avatar', 'id')
             .first(),
         db('user_stats').where('user_id', userId).first(),
         db('user_games').where('user_id', userId),
