@@ -6,32 +6,15 @@ import {
     GameCarousel,
     GameSearchBar
 } from "./components";
-
-// export class ErrorBoundary extends React.Component {
-//     state = { hasError: false, error: null };
-
-//     static getDerivedStateFromError(error) {
-//         return { hasError: true, error };
-//     }
-
-//     render() {
-//         if (this.state.hasError) {
-//             return <Text color="red">Error: {this.state.error?.message}</Text>;
-//         }
-//         return this.props.children;
-//     }
-// }
+import { useAuth } from "@checkmate/state"
 
 export default function GameSearchResultsPage() {
-    console.log("GameSearchResults mounted!");
-
+    const { state } = useAuth();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const query = params.get("q") || "";
 
     const { results, loading } = useGameSearch(query);
-
-    console.log(results, typeof results)
 
     return (
         <>
@@ -46,7 +29,7 @@ export default function GameSearchResultsPage() {
                     // TODO: swap to grid, add pagiation
                     // <Text>{results.length} results found.</Text>
                     // <GameGrid games={results} />
-                    <GameCarousel games={results} header={<Text fontSize="$5" mt="$2">
+                    <GameCarousel isLoggedIn={!!state.user} games={results} header={<Text fontSize="$5" mt="$2">
                         Results for "{query}"
                     </Text>} />
                 )}

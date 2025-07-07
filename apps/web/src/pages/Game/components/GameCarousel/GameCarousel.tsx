@@ -41,6 +41,8 @@ export default function GameCarousel({
         setScrollX(newScrollX);
     };
 
+    console.log(isLoggedIn)
+
     return (
         <YStack gap="$3">
             <XStack ai="center" jc="space-between" mb="$2" px="$4">
