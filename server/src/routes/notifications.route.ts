@@ -22,7 +22,6 @@ notificationRoute.get('/notifications', protectedRoute, async (req: Authenticate
         return res.status(401).json({ error: 'Unauthorized' });
     }
     const userId = req.user.id;
-    console.log('NOTIFICATIONS', userId)
 
     try {
         const notifications = await getAllNotifications(userId)

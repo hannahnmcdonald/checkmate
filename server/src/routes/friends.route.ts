@@ -20,8 +20,6 @@ interface AuthenticatedRequest extends Request {
 friendRoute.get('/friends', protectedRoute, async (req: AuthenticatedRequest, res) => {
   const userId = req.user?.id;
 
-  console.log('userId', userId)
-
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
@@ -36,7 +34,6 @@ friendRoute.get('/friends', protectedRoute, async (req: AuthenticatedRequest, re
 friendRoute.get('/friends/search', protectedRoute, async (req: AuthenticatedRequest, res) => {
   const query = req.query.q as string;
   const userId = req.user?.id || '';
-  console.log('query', query, req.query.q)
 
   if (!query || query.trim().length < 2) {
     return res.status(400).json({ message: 'Search query must be at least 2 characters' });

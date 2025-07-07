@@ -11,10 +11,8 @@ const meRoute = Router();
 
 meRoute.get('/me', protectedRoute, async (req: AuthenticatedRequest, res) => {
     try {
-        console.log('REQ.USER in /me route:', req.user);
         const userId = req.user?.id;
 
-        console.log('USERID', userId)
 
         if (!userId) {
             return res.status(401).json({ message: 'Not authenticated' });

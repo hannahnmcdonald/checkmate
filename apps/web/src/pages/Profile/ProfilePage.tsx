@@ -34,14 +34,6 @@ export default function ProfilePage() {
         );
     }
 
-    // ✅ ONLY LOG HERE, when you are sure `data` is not null
-    console.log("DATA IN PROFILE PAGE:", data);
-    console.log("Wishlist in data:", data.games?.wishlist);
-    console.log("Collection in data:", data.games?.collection);
-    console.log("Profile page friends:", friends, data.friends);
-    console.log('name', typeof data.user.first_name)
-
-
     return (
         <YStack p="$4">
             <ProfileHeader name={data.user?.first_name} />

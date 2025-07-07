@@ -13,8 +13,6 @@ export default function useFriendSearch(query: string) {
             return;
         }
 
-        console.log('SEARCHING')
-
         setLoading(true);
         setError(null);
 

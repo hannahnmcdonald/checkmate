@@ -11,6 +11,5 @@ export async function getCurrentUserProfile(): Promise<UserProfile> {
     }
 
     const data = await res.json();
-    console.log("[API] /api/me response:", data);
     return data;
 }

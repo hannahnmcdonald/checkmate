@@ -81,12 +81,10 @@ export default function MatchDetailsPage() {
     };
 
     const { match, participants } = matchData;
-    const isCreator = match.creator_id === state.user?.id;
+    // const isCreator = match.creator_id === state.user?.id;
     const allAccepted = participants.every((p) => p.approved === true);
     const isCompleted = match.status === "completed";
     const anyDeclined = participants.some(p => p.approved === false);
-
-    console.log(match.status)
 
     if (isCompleted) {
         navigate(`/match/${matchId}/finalize`);

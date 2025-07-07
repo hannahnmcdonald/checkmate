@@ -7,7 +7,6 @@ export async function searchGames(query: string): Promise<Game[]> {
     if (!res.ok) throw new Error("Search failed");
 
     const data = await res.json();
-    console.log("Fetched data:", data);
     return data ?? [];
 }
 
@@ -28,7 +27,6 @@ export async function saveGame(gameId: string, category: string): Promise<void> 
 }
 
 export async function removeGame(gameId: string, category: string): Promise<void> {
-    console.log(gameId, category)
     const res = await fetch("/api/remove-game", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -40,15 +38,12 @@ export async function removeGame(gameId: string, category: string): Promise<void
         throw new Error("Failed to remove game.");
     }
     const data = await res.json();
-    console.log("Removed Saved Game:", data);
     return data.savedGames;
 }
 
 export async function getSavedGames(): Promise<{ game_id: string; category: string }[]> {
     const res = await fetch("/api/saved-games", { credentials: "include" });
 
-    console.log("Response status:", res.status);
-
     if (!res.ok) {
         const text = await res.text();
         console.error("Error response body:", text);
@@ -56,15 +51,12 @@ export async function getSavedGames(): Promise<{ game_id: string; category: stri
     }
 
     const data = await res.json();
-    console.log("Fetched saved games data:", data);
     return data.savedGames;
 }
 
 export async function getSavedGamesWithDetails(): Promise<{ game: object; category: string }[]> {
     const res = await fetch("/api/saved-games/details", { credentials: "include" });
 
-    console.log("Response status:", res.status);
-
     if (!res.ok) {
         const text = await res.text();
         console.error("Error response body:", text);
@@ -72,7 +64,6 @@ export async function getSavedGamesWithDetails(): Promise<{ game: object; catego
     }
 
     const data = await res.json();
-    console.log("Fetched saved games data:", data);
     return data.savedGames;
 }
 
@@ -85,5 +76,5 @@ export async function getGameById(id: string) {
     }
 
     const json = await res.json();
-    return json.game; // Assuming your endpoint wraps the game in `{ game: {...} }`
+    return json.game;
 }

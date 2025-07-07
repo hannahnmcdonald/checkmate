@@ -10,7 +10,6 @@ interface FriendCardProps {
 }
 
 export default function FriendCard({ user, action, theme }: FriendCardProps) {
-    console.log(user.avatar)
 
     return (
         <Card bordered elevate width={160} p="$3" ai="center" theme={theme}>

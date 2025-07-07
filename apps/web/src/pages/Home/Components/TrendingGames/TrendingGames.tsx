@@ -31,9 +31,6 @@ export default function TrendingGames() {
             .catch(console.error);
     }, []);
 
-    console.log('GAMES', games)
-    console.log(state.user, !!state.user)
-
     return (
         <GameCarousel
             games={games}

@@ -35,7 +35,6 @@ export default function FindFriendsPage() {
             await sendFriendRequest(userId);
             setRequestedIds((prev) => [...prev, userId]);
             await refetchOutgoing();
-            console.log("Updated outgoingRequests:", outgoingRequests);
         } catch (err) {
             console.error(err);
         }

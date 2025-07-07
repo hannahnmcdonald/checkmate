@@ -6,7 +6,6 @@ export default function useSaveGame() {
     const [error, setError] = useState<string | null>(null);
 
     const mutate = async (gameId: string, category: string) => {
-        console.log('saving game')
         setLoading(true);
         setError(null);
         try {

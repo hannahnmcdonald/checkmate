@@ -18,7 +18,6 @@ search.get(
 
     try {
       const games = await searchBoardGames(query.q);
-      console.log('games route', games)
       res.json(games);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch data from BoardGameGeek' });

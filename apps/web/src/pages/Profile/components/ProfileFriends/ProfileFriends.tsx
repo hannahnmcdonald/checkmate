@@ -17,7 +17,6 @@ type ProfileFriendsProps = {
 };
 
 export default function ProfileFriends({ users, title }: ProfileFriendsProps) {
-    console.log('USERS', users)
 
     return (
         <FriendGrid

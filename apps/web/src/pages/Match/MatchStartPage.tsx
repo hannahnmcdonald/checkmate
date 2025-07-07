@@ -72,8 +72,6 @@ export default function MatchStartPage() {
         );
     }
 
-    console.log('START', friends)
-
     return (
         <YStack
             p="$4"

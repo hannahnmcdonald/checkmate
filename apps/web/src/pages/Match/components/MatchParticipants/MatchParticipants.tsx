@@ -14,9 +14,6 @@ type Props = {
 };
 
 export default function MatchParticipants({ friend, checked, onChange }: Props) {
-    console.log(friend.username, checked);
-    console.log('friend', friend.avatar)
-    console.log(`Checkbox for ${friend.username}:`, checked);
 
     return (
         <XStack
