@@ -21,7 +21,7 @@ const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']
 
 export default function FriendGrid({ users, actionButton, emptyText = "No friends yet", title }: FriendGridProps) {
   const noFriends = !users || users.length === 0
-
+  console.log('USERS', users)
   // TODO: Export this into a separate profile version
   return (
     <YStack gap="$4" py="$4">

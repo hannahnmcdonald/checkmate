@@ -10,11 +10,13 @@ interface AuthenticatedRequest extends Request {
 const profileRoute = Router();
 
 profileRoute.get('/profile/:userId', protectedRoute, async (req: AuthenticatedRequest, res) => {
+    console.log('PROFILE PARAMS', req.params)
     const targetUserId = req.params.userId;
 
     try {
         const profile = await getUserProfile(targetUserId);
-        res.json({ profile });
+        console.log(profile)
+        res.json(profile);
     } catch (err) {
         console.error('Error fetching profile:', err);
         res.status(500).json({ message: 'Internal server error' });

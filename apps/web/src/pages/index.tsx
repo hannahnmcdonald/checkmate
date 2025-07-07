@@ -9,6 +9,7 @@ import GameSearchResultsPage from "./Game/GameSearchResultsPage";
 import MatchStartPage from "./Match/MatchStartPage";
 import MatchDetailsPage from "./Match/MatchDetailsPage";
 import MatchFinalPage from "./Match/MatchFinalPage";
+import PublicProfilePage from "./Profile/PublicProfilePage";
 
 export {
     FindFriendsPage,
@@ -21,5 +22,6 @@ export {
     GameSearchResultsPage,
     MatchStartPage,
     MatchDetailsPage,
-    MatchFinalPage
+    MatchFinalPage,
+    PublicProfilePage
 };

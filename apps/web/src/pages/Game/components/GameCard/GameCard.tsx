@@ -19,7 +19,7 @@ export default function GameCard({
     minPlayers,
     maxPlayers,
     savedGames,
-    isLoggedIn,
+    isOwner,
 }: {
     id: string;
     imageUrl: string;
@@ -28,7 +28,7 @@ export default function GameCard({
     minPlayers: number;
     maxPlayers: number;
     savedGames: { game_id: string; category: string }[];
-    isLoggedIn: boolean;
+    isOwner: boolean;
 }) {
     const navigate = useNavigate()
 
@@ -90,7 +90,7 @@ export default function GameCard({
                 Players: {minPlayers} - {maxPlayers}
             </Text>
 
-            {isLoggedIn ? (
+            {isOwner ? (
                 <XStack gap="$2" mt="auto">
                     <IconButton
                         selected={isWishlisted}

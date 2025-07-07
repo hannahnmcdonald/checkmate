@@ -40,7 +40,7 @@ export default function TrendingGames() {
                 </Text>
             }
             savedGames={savedGames}
-            isLoggedIn={!!state.user}
+            isOwner={!!state.user}
         />
     );
 }

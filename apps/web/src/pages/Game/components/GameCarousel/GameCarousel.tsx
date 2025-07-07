@@ -16,12 +16,12 @@ export default function GameCarousel({
     games,
     header,
     savedGames,
-    isLoggedIn
+    isOwner
 }: {
     games: Game[];
     header?: React.ReactNode;
     savedGames: { game_id: string; category: string }[];
-    isLoggedIn: boolean;
+    isOwner: boolean;
 }) {
     const scrollRef = useRef<ScrollView>(null);
     const [scrollX, setScrollX] = useState(0);
@@ -72,7 +72,7 @@ export default function GameCarousel({
                                 key={game.id}
                                 {...game}
                                 savedGames={savedGames}
-                                isLoggedIn={isLoggedIn}
+                                isOwner={isOwner}
                             />
                         ))}
                     </XStack>
@@ -84,7 +84,7 @@ export default function GameCarousel({
                             <GameCard
                                 {...game}
                                 savedGames={savedGames}
-                                isLoggedIn={isLoggedIn}
+                                isOwner={isOwner}
                             />
                         </YStack>
                     ))}
@@ -96,7 +96,7 @@ export default function GameCarousel({
                             <GameCard
                                 {...game}
                                 savedGames={savedGames}
-                                isLoggedIn={isLoggedIn}
+                                isOwner={isOwner}
                             />
                         </YStack>
                     ))}

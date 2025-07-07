@@ -9,25 +9,24 @@ import {
 } from "@checkmate/hooks"
 
 type ProfileGamesProps = {
-    wishlist: {
-        category: string;
-        game: Record<string, any> | null;
-    }[];
-    collection: {
-        category: string;
-        game: Record<string, any> | null;
-    }[];
-    isLoggedIn: boolean;
-    refetchProfile: () => Promise<void>;
+    wishlist: any[];
+    collection: any[];
+    isOwner: boolean;
+    isWishlistVisible: boolean;
+    isCollectionVisible: boolean;
+    refetchProfile?: () => Promise<void>;
 };
 
 export default function ProfileGames({
     collection,
     wishlist,
-    isLoggedIn,
+    isOwner,
+    isWishlistVisible,
+    isCollectionVisible,
     refetchProfile
 }: ProfileGamesProps) {
-
+    console.log(isWishlistVisible, wishlist, wishlist.length)
+    console.log('OWNER', isOwner)
     const navigate = useNavigate();
     const { mutate: removeGame } = useRemoveGame();
 
@@ -46,7 +45,6 @@ export default function ProfileGames({
             console.error(err);
         }
     };
-
 
     const handleViewDetails = (gameId: string) => {
         navigate(`/game/${gameId}`);
@@ -69,7 +67,6 @@ export default function ProfileGames({
                 borderRadius="$4"
                 overflow="hidden"
             >
-
                 <XStack ai="center" gap="$2" mb="$2" p="$3">
                     <Heart size="$1" />
                     <Text fontSize="$2" fontWeight="700">
@@ -77,13 +74,25 @@ export default function ProfileGames({
                     </Text>
                 </XStack>
 
-                <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
-                    <SavedGamesList
-                        games={wishlist.filter((g) => g.game)}
-                        onRemove={handleRemove}
-                        onViewDetails={handleViewDetails}
-                    />
-                </ScrollView>
+                {isWishlistVisible || isOwner ? (
+                    wishlist.length > 0 ? (
+                        <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
+                            <SavedGamesList
+                                games={wishlist.filter((g) => g.game)}
+                                onRemove={isOwner ? handleRemove : undefined}
+                                onViewDetails={handleViewDetails}
+                            />
+                        </ScrollView>
+                    ) : (
+                        <YStack p="$4">
+                            <Text fontSize="$2">This wishlist is empty.</Text>
+                        </YStack>
+                    )
+                ) : (
+                    <YStack p="$4">
+                        <Text fontSize="$2">This user's wishlist is private.</Text>
+                    </YStack>
+                )}
             </YStack>
 
             <YStack
@@ -94,20 +103,32 @@ export default function ProfileGames({
                 borderRadius="$4"
                 overflow="hidden"
             >
-
                 <XStack ai="center" gap="$2" mb="$2" p="$3">
-                    <Bookmark size="$1" />
+                    <Heart size="$1" />
                     <Text fontSize="$2" fontWeight="700">
-                        Collection
+                        Wishlist
                     </Text>
                 </XStack>
-                <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
-                    <SavedGamesList
-                        games={collection.filter((g) => g.game)}
-                        onRemove={handleRemove}
-                        onViewDetails={handleViewDetails}
-                    />
-                </ScrollView>
+
+                {isCollectionVisible || isOwner ? (
+                    collection.length > 0 ? (
+                        <ScrollView flexGrow={1} contentContainerStyle={{ padding: 8 }}>
+                            <SavedGamesList
+                                games={collection.filter((g) => g.game)}
+                                onRemove={isOwner ? handleRemove : undefined}
+                                onViewDetails={handleViewDetails}
+                            />
+                        </ScrollView>
+                    ) : (
+                        <YStack p="$4">
+                            <Text fontSize="$2">This collection is empty.</Text>
+                        </YStack>
+                    )
+                ) : (
+                    <YStack p="$4">
+                        <Text fontSize="$2">This user's collection is private.</Text>
+                    </YStack>
+                )}
             </YStack>
         </XStack>
 

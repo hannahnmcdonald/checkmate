@@ -104,6 +104,7 @@ export async function getUserProfile(targetId: string) {
             avatar: withPrivacy(user.avatar, privacy.avatar, targetId, isFriend),
             first_name: withPrivacy(user.first_name, 'private', targetId, isFriend),
             last_name: withPrivacy(user.last_name, 'private', targetId, isFriend),
+            id: user.id
         },
         stats: withPrivacy(stats || { wins: 0, losses: 0, ties: 0 }, privacy.stats, targetId, isFriend),
         games: {

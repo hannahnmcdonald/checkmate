@@ -71,13 +71,15 @@ export default function SavedGamesList({
                         >
                             View
                         </PrimaryButton>
-                        <PrimaryButton
-                            size={isSmall ? "$1" : "$2"}
-                            theme="marronDark"
-                            onPress={() => onRemove(game.id, category)}
-                        >
-                            Remove
-                        </PrimaryButton>
+                        {onRemove &&
+                            <PrimaryButton
+                                size={isSmall ? "$1" : "$2"}
+                                theme="marronDark"
+                                onPress={() => onRemove(game.id, category)}
+                            >
+                                Remove
+                            </PrimaryButton>
+                        }
                     </XStack>
                 </XStack>
             ) : (

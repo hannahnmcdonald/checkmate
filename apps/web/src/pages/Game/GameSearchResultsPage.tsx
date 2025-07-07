@@ -29,7 +29,7 @@ export default function GameSearchResultsPage() {
                     // TODO: swap to grid, add pagiation
                     // <Text>{results.length} results found.</Text>
                     // <GameGrid games={results} />
-                    <GameCarousel isLoggedIn={!!state.user} games={results} header={<Text fontSize="$5" mt="$2">
+                    <GameCarousel isOwner={!!state.user} games={results} header={<Text fontSize="$5" mt="$2">
                         Results for "{query}"
                     </Text>} />
                 )}
