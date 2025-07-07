@@ -62,7 +62,7 @@ export default function ProfileGames({
             width="100%"
         >
             <YStack
-                width={isMedium ? "48%" : "100%"}
+                width={isMedium || isLarge ? "48%" : "100%"}
                 height={400}
                 borderWidth={1}
                 borderColor="$gray6"
@@ -87,7 +87,7 @@ export default function ProfileGames({
             </YStack>
 
             <YStack
-                width={isMedium ? "48%" : "100%"}
+                width={isMedium || isLarge ? "48%" : "100%"}
                 height={400}
                 borderWidth={1}
                 borderColor="$gray6"
