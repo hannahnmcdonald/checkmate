@@ -32,6 +32,7 @@ export default function TrendingGames() {
     }, []);
 
     console.log('GAMES', games)
+    console.log(state.user, !!state.user)
 
     return (
         <GameCarousel

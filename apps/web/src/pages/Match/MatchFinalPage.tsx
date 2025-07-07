@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import { YStack, XStack, Text, Image } from "tamagui";
 import { useMatchDetails, useGameDetails } from "@checkmate/hooks";
 import { getAvatarUrl } from "../../utils";
+import {
+    GameHeader,
+    FinalParticipantRow
+} from "./components"
 
 export default function MatchFinalPage() {
     const { matchId } = useParams<{ matchId: string }>();
@@ -20,7 +24,6 @@ export default function MatchFinalPage() {
 
     const { participants } = matchData;
 
-    // Group participants by result
     const winners = participants.filter(p => p.result === "win");
     const ties = participants.filter(p => p.result === "tie");
     const losers = participants.filter(p => p.result === "loss");
@@ -33,17 +36,7 @@ export default function MatchFinalPage() {
             width="100%"
             mx="auto"
         >
-            <XStack ai="center" gap="$3">
-                <Image
-                    src={game?.thumbnail || ""}
-                    width={80}
-                    aspectRatio={4 / 3}
-                    borderRadius="$2"
-                />
-                <Text fontSize="$6" fontWeight="700">
-                    {game?.name}
-                </Text>
-            </XStack>
+            <GameHeader game={game} />
 
             <Text fontWeight="600">Final Results:</Text>
 
@@ -52,7 +45,12 @@ export default function MatchFinalPage() {
                     <Text>Winners:</Text>
                     <YStack gap="$2">
                         {winners.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
+                            <FinalParticipantRow
+                                key={p.user_id}
+                                username={p.username}
+                                avatar={p.avatar}
+                                result={p.result}
+                            />
                         ))}
                     </YStack>
                 </>
@@ -63,7 +61,12 @@ export default function MatchFinalPage() {
                     <Text>Tied:</Text>
                     <YStack gap="$2">
                         {ties.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
+                            <FinalParticipantRow
+                                key={p.user_id}
+                                username={p.username}
+                                avatar={p.avatar}
+                                result={p.result}
+                            />
                         ))}
                     </YStack>
                 </>
@@ -74,7 +77,12 @@ export default function MatchFinalPage() {
                     <Text>Losers:</Text>
                     <YStack gap="$2">
                         {losers.map(p => (
-                            <ParticipantRow key={p.user_id} username={p.username} avatar={getAvatarUrl(p.avatar)} />
+                            <FinalParticipantRow
+                                key={p.user_id}
+                                username={p.username}
+                                avatar={p.avatar}
+                                result={p.result}
+                            />
                         ))}
                     </YStack>
                 </>

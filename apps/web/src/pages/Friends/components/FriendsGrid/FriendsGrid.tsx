@@ -14,7 +14,7 @@ interface FriendGridProps {
   users: Friend[];
   actionButton?: (user: Friend) => React.ReactNode;
   emptyText?: string;
-  title: string
+  title?: string
 }
 
 const themes = ['maroonDark', 'greenDark', 'medBlueDark', 'magentaDark']

@@ -42,8 +42,6 @@ export default function FindFriendsPage() {
     };
 
     const outgoing = useOutgoingFriendRequests();
-    console.log("Outgoing Hook Return Value:", outgoing);
-
 
     return (
         <YStack gap="$4">
@@ -57,7 +55,7 @@ export default function FindFriendsPage() {
                 <Text>Loading...</Text>
             ) : (
                 <FriendGrid
-                    title="Results:"
+                    // title="Results:"
                     emptyText=""
                     users={results}
                     actionButton={(user) => (

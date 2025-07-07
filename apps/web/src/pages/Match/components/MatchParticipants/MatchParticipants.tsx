@@ -1,7 +1,7 @@
 import React from 'react';
 import { XStack, Text, Checkbox, Avatar } from "tamagui";
 import { Check } from '@tamagui/lucide-icons';
-import { getAvatarUrl } from '../../../utils';
+import { getAvatarUrl } from '../../../../utils';
 
 type Props = {
     friend: {

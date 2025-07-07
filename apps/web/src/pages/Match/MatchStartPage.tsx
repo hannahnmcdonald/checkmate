@@ -3,8 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { YStack, XStack, Text, Image } from "tamagui";
 import { getGameById, createMatch } from "@checkmate/api";
 import { useGetCurrentFriends } from "@checkmate/hooks";
-import MatchParticipants from "./MatchParticipants/MatchParticipants";
+import MatchParticipants from "./components/MatchParticipants/MatchParticipants";
 import { PrimaryButton } from "../../components/Styled";
+import {
+    GameHeader
+} from "./components"
 
 export default function MatchStartPage() {
     const { gameId } = useParams<{ gameId: string }>();
@@ -79,17 +82,7 @@ export default function MatchStartPage() {
             width="100%"
             mx="auto"
         >
-            <XStack ai="center" gap="$3">
-                <Image
-                    src={game?.thumbnail || ""}
-                    width={80}
-                    aspectRatio={4 / 3}
-                    borderRadius="$2"
-                />
-                <Text fontSize="$6" fontWeight="700">
-                    {game?.name}
-                </Text>
-            </XStack>
+            <GameHeader game={game} />
 
             <Text>Select friends to invite:</Text>
 
