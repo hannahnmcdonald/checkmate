@@ -59,7 +59,7 @@ export default function FindFriendsPage() {
                     users={results}
                     actionButton={(user) => (
                         <Button
-                            onPress={() => handleSendRequest(user.id)}
+                            onPress={(e) => { e.stopPropagation(); handleSendRequest(user.id); }}
                             disabled={
                                 sending || isFriend(user.id) || hasPendingRequest(user.id)
                             }
