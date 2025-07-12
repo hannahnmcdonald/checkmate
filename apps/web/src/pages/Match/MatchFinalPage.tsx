@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { YStack, XStack, Text, Image } from "tamagui";
 import { useMatchDetails, useGameDetails } from "@checkmate/hooks";
@@ -12,7 +12,14 @@ export default function MatchFinalPage() {
     const { matchId } = useParams<{ matchId: string }>();
 
     const { data: matchData, loading: matchLoading, error: matchError } = useMatchDetails(matchId);
-    const { game, loading: gameLoading } = useGameDetails(matchData?.match?.game_id);
+    const [gameId, setGameId] = useState<string | undefined>();
+    const { game, loading: gameLoading } = useGameDetails(gameId);
+
+    useEffect(() => {
+        if (matchData?.match?.game_id) {
+            setGameId(matchData.match.game_id);
+        }
+    }, [matchData]);
 
     if (matchLoading || gameLoading) {
         return <Text>Loading...</Text>;
@@ -29,13 +36,7 @@ export default function MatchFinalPage() {
     const losers = participants.filter(p => p.result === "loss");
 
     return (
-        <YStack
-            p="$4"
-            gap="$4"
-            maxWidth={600}
-            width="100%"
-            mx="auto"
-        >
+        <YStack p="$4" gap="$4" maxWidth={600} width="100%" mx="auto">
             <GameHeader game={game} />
 
             <Text fontWeight="600">Final Results:</Text>
@@ -88,26 +89,5 @@ export default function MatchFinalPage() {
                 </>
             )}
         </YStack>
-    );
-}
-
-function ParticipantRow({ username, avatar }: { username: string; avatar?: string | null }) {
-    return (
-        <XStack
-            ai="center"
-            gap="$2"
-            p="$2"
-            borderWidth={1}
-            borderColor="$gray6"
-            borderRadius="$2"
-        >
-            <Image
-                src={getAvatarUrl(avatar)}
-                width={32}
-                height={32}
-                borderRadius={9999}
-            />
-            <Text>{username}</Text>
-        </XStack>
     );
 }
