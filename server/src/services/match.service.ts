@@ -1,19 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { withTransaction } from '../db/withTransaction';
+import { createNotification } from './createNotification';
 
 interface MatchPlayer {
   user_id: string;
   result: 'win' | 'tie' | 'loss';
 }
 
-/**
- * Create a match with invited players
- * 
- * @param creatorId - ID of the match creator
- * @param gameId - Game identifier
- * @param invitedUserIds - List of user IDs to invite
- * @returns Session ID of the newly created match
- */
 export async function createMatch(creatorId: string, gameId: string, invitedUserIds: string[]) {
   const sessionId = uuidv4();
 
@@ -25,7 +18,6 @@ export async function createMatch(creatorId: string, gameId: string, invitedUser
       started_at: trx.fn.now(),
     });
 
-    // Auto-accept creator
     await trx('game_session_participants').insert({
       id: uuidv4(),
       game_session_id: sessionId,
@@ -38,7 +30,6 @@ export async function createMatch(creatorId: string, gameId: string, invitedUser
       updated_at: trx.fn.now(),
     });
 
-    // Insert invited users
     for (const userId of invitedUserIds) {
       await trx('game_session_participants').insert({
         id: uuidv4(),
@@ -50,19 +41,20 @@ export async function createMatch(creatorId: string, gameId: string, invitedUser
         created_at: trx.fn.now(),
         updated_at: trx.fn.now(),
       });
+
+      await createNotification({
+        trx,
+        recipientId: userId,
+        senderId: creatorId,
+        message: `You were invited to a match`,
+        type: 'match_invite',
+      });
     }
   });
 
   return sessionId;
 }
 
-/**
- *  User can certify if they accept a match
- * 
- * @param sessionId : game session identifier
- * @param userId : user that is accepting/decling match
- * @param accept : Boolean if user agrees to match
- */
 export async function respondToMatch(sessionId: string, userId: string, accept: boolean) {
   await withTransaction(async (trx) => {
     await trx('game_session_participants')
@@ -72,6 +64,25 @@ export async function respondToMatch(sessionId: string, userId: string, accept: 
         responded_at: trx.fn.now(),
         updated_at: trx.fn.now(),
       });
+
+    const otherParticipants = await trx('game_session_participants')
+      .where({ game_session_id: sessionId })
+      .whereNot('user_id', userId)
+      .whereNotNull('user_id')
+      .andWhere('is_external', false)
+      .select('user_id');
+
+    const sender = await trx('users').where({ id: userId }).first();
+
+    for (const p of otherParticipants) {
+      await createNotification({
+        trx,
+        recipientId: p.user_id,
+        senderId: userId,
+        message: `${sender?.username ?? 'A player'} has ${accept ? 'accepted' : 'declined'} the match.`,
+        type: 'match_updated',
+      });
+    }
 
     const [allAcceptedRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
@@ -86,7 +97,9 @@ export async function respondToMatch(sessionId: string, userId: string, accept: 
       .andWhere('is_external', false)
       .count('* as count');
 
-    if (allAcceptedRow.count === totalParticipantsRow.count) {
+    const allAccepted = allAcceptedRow.count === totalParticipantsRow.count;
+
+    if (allAccepted) {
       const match = await trx('game_sessions').where({ id: sessionId }).first();
 
       if (match.status === 'completed') {
@@ -114,17 +127,27 @@ export async function respondToMatch(sessionId: string, userId: string, accept: 
         await trx('game_sessions')
           .where({ id: sessionId })
           .update({ status: 'in_progress' });
+
+        const participants = await trx('game_session_participants')
+          .where({ game_session_id: sessionId })
+          .whereNotNull('user_id')
+          .andWhere('is_external', false)
+          .select('user_id');
+
+        for (const p of participants) {
+          await createNotification({
+            trx,
+            recipientId: p.user_id,
+            senderId: userId,
+            message: 'The match has started!',
+            type: 'match_updated',
+          });
+        }
       }
     }
   });
 }
 
-/**
- * Finalizes the results of the game match
- * 
- * @param sessionId : game session in question
- * @param players : users in the match
- */
 export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
   await withTransaction(async (trx) => {
     await trx('game_sessions')
@@ -141,9 +164,16 @@ export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
           result: player.result,
           updated_at: trx.fn.now(),
         });
+
+      await createNotification({
+        trx,
+        recipientId: player.user_id,
+        senderId: undefined,
+        message: `Your match in session ${sessionId} has been finalized with result: ${player.result}`,
+        type: 'match_result',
+      });
     }
 
-    // Fetch total and approved member users only (exclude guests)
     const [approvedCountRow] = await trx('game_session_participants')
       .where({ game_session_id: sessionId })
       .whereNotNull('user_id')
@@ -181,6 +211,5 @@ export async function finalizeMatch(sessionId: string, players: MatchPlayer[]) {
     }
   });
 }
-// TODO: Need to add status canceled for matches
 
-export default { createMatch, respondToMatch, finalizeMatch }
+export default { createMatch, respondToMatch, finalizeMatch };

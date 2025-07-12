@@ -104,9 +104,9 @@ export default function ProfileGames({
                 overflow="hidden"
             >
                 <XStack ai="center" gap="$2" mb="$2" p="$3">
-                    <Heart size="$1" />
+                    <Bookmark size="$1" />
                     <Text fontSize="$2" fontWeight="700">
-                        Wishlist
+                        Collection
                     </Text>
                 </XStack>
 

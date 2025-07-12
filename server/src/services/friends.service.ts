@@ -1,5 +1,7 @@
 import { db } from '../db/knex';
 import { v4 as uuidv4 } from 'uuid';
+import { createNotification } from './createNotification';
+import { withTransaction } from '../db/withTransaction';
 
 export async function getAllFriends(userId: string) {
   try {
@@ -41,28 +43,52 @@ export async function searchUsersByUsername(query: string, currentUserId: string
 };
 
 export async function addFriendRequest(userA: string, userB: string) {
-  const [user_id_1, user_id_2] = [userA, userB].sort(); // enforce order for symmetric model
+  const [user_id_1, user_id_2] = [userA, userB].sort();
 
-  await db('friendships').insert({
-    id: uuidv4(),
-    user_id_1,
-    user_id_2,
-    status: 'pending',
-    created_at: new Date()
-  });
-};
-
-export async function acceptFriendRequest(userA: string, userB: string): Promise<number> {
-  const [user_id_1, user_id_2] = [userA, userB].sort(); // normalize order
-
-  const updatedRows = await db('friendships')
-    .where({ user_id_1, user_id_2, status: 'pending' })
-    .update({
-      status: 'accepted',
-      updated_at: new Date()
+  await withTransaction(async (trx) => {
+    await trx('friendships').insert({
+      id: uuidv4(),
+      user_id_1,
+      user_id_2,
+      status: 'pending',
+      created_at: new Date()
     });
 
-  return updatedRows; // 0 if no row updated, 1 if success
+    const sender = await trx('users').where({ id: user_id_1 }).first();
+
+    await createNotification({
+      trx,
+      recipientId: user_id_2,
+      senderId: user_id_1,
+      message: `${sender?.username ?? 'Someone'} sent you a friend request`,
+      type: 'friend_request',
+    });
+
+  });
+}
+
+export async function acceptFriendRequest(userA: string, userB: string): Promise<number> {
+  const [user_id_1, user_id_2] = [userA, userB].sort();
+
+  return await withTransaction(async (trx) => {
+    const updatedRows = await trx('friendships')
+      .where({ user_id_1, user_id_2, status: 'pending' })
+      .update({
+        status: 'accepted',
+        updated_at: new Date()
+      });
+
+    const sender = await trx('users').where({ id: user_id_2 }).first();
+
+    await createNotification({
+      trx,
+      recipientId: user_id_1,
+      senderId: user_id_2,
+      message: `${sender?.username ?? 'Your friend'} accepted your request`,
+      type: 'friend_accept'
+    });
+    return updatedRows;
+  });
 }
 
 export async function declineFriendRequest(userA: string, userB: string): Promise<number> {
