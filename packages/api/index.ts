@@ -3,3 +3,4 @@ export * from './game.api';
 export * from './friend.api';
 export * from './profile.api';
 export * from './match.api';
+export * from './notifications.api';

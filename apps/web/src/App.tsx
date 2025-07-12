@@ -19,7 +19,8 @@ import {
   MatchStartPage,
   MatchDetailsPage,
   MatchFinalPage,
-  PublicProfilePage
+  PublicProfilePage,
+  NotificationsPage
 } from './pages/index'
 
 import React from 'react';
@@ -69,6 +70,16 @@ export default function App() {
                 <ProtectedRoute>
                   <Layout theme="magentaDark">
                     <MatchStartPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <ProtectedRoute>
+                  <Layout theme="magentaDark">
+                    <NotificationsPage />
                   </Layout>
                 </ProtectedRoute>
               }

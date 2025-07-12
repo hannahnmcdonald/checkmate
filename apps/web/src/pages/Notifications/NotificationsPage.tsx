@@ -1,0 +1,46 @@
+import React from "react";
+import { YStack, XStack, Text, Button, Spinner } from "tamagui";
+import { useNotificationStore } from "@checkmate/store";
+import {
+    useNotifications,
+} from "@checkmate/hooks";
+import { NotificationItem } from "./components";
+
+export default function NotificationsPage() {
+    const {
+        notifications,
+        loading,
+        error,
+        markAll,
+        clearRead,
+    } = useNotifications();
+
+    if (loading) return <Spinner my="$8" />;
+    if (error) return <Text color="$red10">{error}</Text>;
+
+    return (
+        <YStack gap="$4" p="$4" maxWidth={600} mx="auto">
+            <XStack jc="space-between" ai="center">
+                <Text fontSize="$6" fontWeight="700">Notifications</Text>
+                <XStack gap="$2">
+                    <Button size="$2" onPress={markAll}>
+                        Mark all read
+                    </Button>
+                    <Button size="$2" theme="red" onPress={clearRead}>
+                        Clear read
+                    </Button>
+                </XStack>
+            </XStack>
+
+            {notifications.length === 0 ? (
+                <Text>No notifications</Text>
+            ) : (
+                <YStack gap="$2">
+                    {notifications.map((n) => (
+                        <NotificationItem key={n.id} n={n} />
+                    ))}
+                </YStack>
+            )}
+        </YStack>
+    );
+}

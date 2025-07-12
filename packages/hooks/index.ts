@@ -17,6 +17,7 @@ import useGameDetails from "./useGameDetails";
 import useFinalizeMatch from "./useFinalizeMatch";
 import useRespondToMatch from "./useRespondToMatch";
 import useUserProfile from "./useUserProfile";
+import useNotifications from "./useNotifications";
 
 export {
     useFriendSearch,
@@ -37,5 +38,6 @@ export {
     useGameDetails,
     useFinalizeMatch,
     useRespondToMatch,
-    useUserProfile
+    useUserProfile,
+    useNotifications
 }

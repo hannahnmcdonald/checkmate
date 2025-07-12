@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { MenuButton } from './MenuButton';
 import { useMedia } from 'tamagui';
+import { NotificationButton } from '../index'
 
 export default function Navbar(theme: string) {
     const user = useAuthStore((s) => s.user);
@@ -76,7 +77,9 @@ export default function Navbar(theme: string) {
                                         }}
                                     >
                                         Logout
-                                    </PrimaryButton></>
+                                    </PrimaryButton>
+                                    <NotificationButton />
+                                </>
                             )}
 
                             {!user && window.location.pathname !== '/login' && (
