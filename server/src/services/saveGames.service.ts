@@ -165,7 +165,7 @@ export async function dbSaveUserGame(userId: string, game_id: string, category: 
         throw new Error('Invalid category');
     }
 
-    const metadata = await getBoardGameDetails(game_id);
+    // const metadata = await getBoardGameDetails(game_id);
 
     await db("user_games").insert({
         id: uuidv4(),
@@ -173,6 +173,6 @@ export async function dbSaveUserGame(userId: string, game_id: string, category: 
         game_id,
         category,
         created_at: new Date(),
-        metadata: JSON.stringify(metadata)
+        // metadata: JSON.stringify(metadata)
     });
 }

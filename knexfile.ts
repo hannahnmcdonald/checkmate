@@ -33,3 +33,4 @@ export default config;
 
 // npx ts-node ./node_modules/knex/bin/cli.js migrate:latest
 // npx ts-node ./node_modules/knex/bin/cli.js migrate:make add_metadata_to_user_games
+

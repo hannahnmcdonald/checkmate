@@ -9,6 +9,7 @@ import {
     useSaveGame,
     useRemoveGame
 } from "@checkmate/hooks";
+import { useGameStore } from "@checkmate/store";
 import { cleanDescription } from "../../../../utils"
 
 export default function GameCard({
@@ -30,14 +31,20 @@ export default function GameCard({
     savedGames: { game_id: string; category: string }[];
     isOwner: boolean;
 }) {
+
+    const statusMap = useGameStore((s) => s.saveStatus);
+    const setSaveStatus = useGameStore((s) => s.setSaveStatus);
+
+    const currentStatus = statusMap[id];
+
     const navigate = useNavigate()
 
     const media = useMedia();
     const isSmall = media.sm;
     const isLarge = media.lg;
 
-    const [isWishlisted, setIsWishlisted] = useState(false);
-    const [isCollected, setIsCollected] = useState(false);
+    const isWishlisted = currentStatus?.wishlist ?? false;
+    const isCollected = currentStatus?.collection ?? false;
 
     const { mutate: save } = useSaveGame();
     const { mutate: remove } = useRemoveGame();
@@ -45,16 +52,13 @@ export default function GameCard({
     const cleanedDescription = cleanDescription(description)
 
     useEffect(() => {
-        if (savedGames) {
-            setIsWishlisted(
-                savedGames.some((g) => g.game_id === id && g.category === "wishlist")
-            );
-            setIsCollected(
-                savedGames.some((g) => g.game_id === id && g.category === "collection")
-            );
-        }
-    }, [savedGames, id]);
+    if (!(id in statusMap) && savedGames) {
+        const wishlist = savedGames.some(g => g.game_id === id && g.category === "wishlist");
+        const collection = savedGames.some(g => g.game_id === id && g.category === "collection");
 
+        setSaveStatus(id, { wishlist, collection });
+    }
+    }, [statusMap, id, savedGames, setSaveStatus]);
 
     return (
         <Card
@@ -97,11 +101,14 @@ export default function GameCard({
                         Icon={Heart}
                         onToggle={() => {
                             if (isWishlisted) {
-                                remove(id, "wishlist");
-                                setIsWishlisted(false);
+                            remove(id, "wishlist");
+                            setSaveStatus(id, {
+                                wishlist: false,
+                                collection: currentStatus?.collection ?? false,
+                                });
                             } else {
-                                save(id, "wishlist");
-                                setIsWishlisted(true);
+                            save(id, "wishlist");
+                            setSaveStatus(id, { ...currentStatus, wishlist: true });
                             }
                         }}
                     />
@@ -110,11 +117,14 @@ export default function GameCard({
                         Icon={Bookmark}
                         onToggle={() => {
                             if (isCollected) {
-                                remove(id, "collection");
-                                setIsCollected(false);
+                            remove(id, "collection");
+                            setSaveStatus(id, { ...currentStatus, collection: false });
                             } else {
-                                save(id, "collection");
-                                setIsCollected(true);
+                            save(id, "collection");
+                            setSaveStatus(id, {
+                                wishlist: currentStatus?.wishlist ?? false,
+                                collection: true,
+                                });
                             }
                         }}
                     />

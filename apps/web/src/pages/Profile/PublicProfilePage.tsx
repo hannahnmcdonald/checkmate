@@ -12,13 +12,13 @@ import { normalizeArrayField } from "../../utils";
 export default function PublicProfilePage() {
     const { user } = useAuthStore();
     const { userId: paramUserId } = useParams();
-    const userId = paramUserId === "me" ? state.user?.id : paramUserId;
+    const userId = paramUserId === "me" ? user?.id : paramUserId;
 
     if (!userId) {
         return <Text>No user ID found.</Text>;
     }
 
-    const { data, loading, error } = useUserProfile(userId);
+    const { profile, loading, error } = useUserProfile(userId);
 
     if (loading) {
         return <Text>Loading...</Text>;
@@ -28,23 +28,23 @@ export default function PublicProfilePage() {
         return <Text>Error: {error}</Text>;
     }
 
-    if (!data) {
+    if (!profile) {
         return <Text>No profile data found.</Text>;
     }
 
-    const isViewingOwnProfile = user?.id === data.user.id;
-    const isFriendsListPublic = data.friends.privacy === "friends";
-    const isWishlistPublic = data.games.wishlist.privacy === "friends";
-    const isCollectionVisible = data.games.collection.privacy === "friends";
-    const friendsList = normalizeArrayField(data.friends);
-    const wishlist = normalizeArrayField(data.games.wishlist);
-    const collection = normalizeArrayField(data.games.collection)
+    const isViewingOwnProfile = user?.id === profile.user.id;
+    const isFriendsListPublic = profile.friends.privacy === "friends";
+    const isWishlistPublic = profile.games.wishlist.privacy === "friends";
+    const isCollectionVisible = profile.games.collection.privacy === "friends";
+    const friendsList = normalizeArrayField(profile.friends);
+    const wishlist = normalizeArrayField(profile.games.wishlist);
+    const collection = normalizeArrayField(profile.games.collection)
 
     console.log(isWishlistPublic)
     return (
         <YStack p="$4">
 
-            <Text fontWeight="700" textAlign="center">{data.user.username}'s Profile</Text>
+            <Text fontWeight="700" textAlign="center">{profile.user.username}'s Profile</Text>
             <ProfileGames
                 wishlist={wishlist}
                 collection={collection}
@@ -59,7 +59,7 @@ export default function PublicProfilePage() {
                     title="Friends"
                 />
             ) : (
-                <Text>`${data.user.username}'s friends list is private`</Text>
+                <Text>{`${profile.user.username}'s friends list is private`}</Text>
             )}
         </YStack>
     );

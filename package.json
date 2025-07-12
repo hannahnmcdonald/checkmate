@@ -14,16 +14,20 @@
     "dev:web": "turbo run dev --filter=web",
     "dev:mobile": "turbo run dev --filter=mobile",
     "build": "turbo run build",
-    "clean": "rm -rf node_modules yarn.lock && yarn install"
+    "clean": "rm -rf node_modules yarn.lock && yarn install",
+    "seed": "node --loader ts-node/esm ./server/scripts/seed.ts"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/yamljs": "^0.2.34",
     "concurrently": "^9.2.0",
-    "knex": "^3.1.0",
+    "knex": "2.5.1",
     "ts-node": "^10.9.2",
     "turbo": "^2.0.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.6",

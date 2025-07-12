@@ -26,10 +26,13 @@ saveGamesRoute.post('/save-game', protectedRoute, async (req: AuthenticatedReque
 
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
+    console.log(game_id, category, userId)
+
     try {
         await dbSaveUserGame(userId, game_id, category);
         res.status(201).json({ message: 'Game saved' });
     } catch (err: any) {
+        console.log('Error saving game:', err);
         if (err.code === '23505') {
             return res.status(409).json({ error: 'Game already saved in this category' });
         }

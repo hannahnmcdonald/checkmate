@@ -9941,9 +9941,9 @@ var require_VirtualizedList = __commonJS({
   }
 });
 
-// ../../node_modules/react-native-web/node_modules/memoize-one/dist/memoize-one.cjs.js
+// ../../node_modules/memoize-one/dist/memoize-one.cjs.js
 var require_memoize_one_cjs = __commonJS({
-  "../../node_modules/react-native-web/node_modules/memoize-one/dist/memoize-one.cjs.js"(exports2, module2) {
+  "../../node_modules/memoize-one/dist/memoize-one.cjs.js"(exports2, module2) {
     "use strict";
     var safeIsNaN = Number.isNaN || /* @__PURE__ */ __name(function ponyfill(value) {
       return typeof value === "number" && value !== value;
@@ -20862,10 +20862,13 @@ module.exports = __toCommonJS(tamagui_config_exports);
 var React = __toESM(require("react"), 1);
 var import_jsx_runtime = require("react/jsx-runtime");
 var PresenceContext = React.createContext(null);
-var ResetPresence = /* @__PURE__ */ __name((props) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PresenceContext.Provider, {
-  value: null,
-  children: props.children
-}), "ResetPresence");
+var ResetPresence = /* @__PURE__ */ __name((props) => {
+  const parent = React.useContext(PresenceContext);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PresenceContext.Provider, {
+    value: props.disable ? parent : null,
+    children: props.children
+  });
+}, "ResetPresence");
 
 // ../../node_modules/@tamagui/use-presence/dist/esm/usePresence.mjs
 var React2 = __toESM(require("react"), 1);
@@ -23621,7 +23624,7 @@ var animations = createAnimations({
   }
 });
 
-// ../../node_modules/@tamagui/config/node_modules/@tamagui/shorthands/dist/esm/index.mjs
+// ../../node_modules/@tamagui/shorthands/dist/esm/index.mjs
 var shorthands = {
   // web-only
   ussel: "userSelect",

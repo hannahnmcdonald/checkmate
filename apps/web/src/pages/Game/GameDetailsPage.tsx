@@ -8,6 +8,7 @@ import { IconButton, GameBadge } from './components';
 import {
     cleanDescription
 } from "../../utils"
+import { useGameStore } from '@checkmate/store';
 
 import {
     useSaveGame,
@@ -39,8 +40,26 @@ export default function GameDetailsPage() {
     const { mutate: save } = useSaveGame();
     const { mutate: remove } = useRemoveGame();
 
-    const isWishlisted = status?.wishlist;
-    const isCollected = status?.collection;
+    const statusMap = useGameStore((s) => s.saveStatus);
+    const setSaveStatus = useGameStore((s) => s.setSaveStatus);
+    const currentStatus = statusMap[id ?? ""];
+
+    const isWishlisted = currentStatus?.wishlist ?? false;
+    const isCollected = currentStatus?.collection ?? false;
+
+    useEffect(() => {
+    if (!currentStatus && user && id) {
+        fetch(`/api/game/${id}/save-status`)
+        .then((res) => res.json())
+        .then((data) => {
+            setSaveStatus(id, {
+            wishlist: data.wishlist ?? false,
+            collection: data.collection ?? false,
+            });
+        })
+        .catch(console.error);
+    }
+    }, [id, currentStatus, setSaveStatus, user]);
 
     if (loading) {
         return (
@@ -62,6 +81,14 @@ export default function GameDetailsPage() {
         return (
             <YStack ai="center" jc="center" py="$4">
                 <Text>Game not found.</Text>
+            </YStack>
+        );
+    }
+
+    if (!currentStatus) {
+        return (
+            <YStack ai="center" jc="center" py="$4">
+            <Spinner />
             </YStack>
         );
     }
@@ -103,9 +130,14 @@ export default function GameDetailsPage() {
                         Icon={Heart}
                         onToggle={() => {
                             if (isWishlisted) {
-                                remove(id, "wishlist");
+                            remove(id, "wishlist");
+                            setSaveStatus(id, {
+                                wishlist: false,
+                                collection: currentStatus?.collection ?? false,
+                                });
                             } else {
-                                save(id, "wishlist");
+                            save(id, "wishlist");
+                            setSaveStatus(id, { ...currentStatus, wishlist: true });
                             }
                         }}
                     />
@@ -115,9 +147,14 @@ export default function GameDetailsPage() {
                         Icon={Bookmark}
                         onToggle={() => {
                             if (isCollected) {
-                                remove(id, "collection");
+                            remove(id, "collection");
+                            setSaveStatus(id, { ...currentStatus, collection: false });
                             } else {
-                                save(id, "collection");
+                            save(id, "collection");
+                            setSaveStatus(id, {
+                                wishlist: currentStatus?.wishlist ?? false,
+                                collection: true,
+                                });
                             }
                         }}
                     />

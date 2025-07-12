@@ -8,6 +8,12 @@ export default function useSavedGames() {
     const setSavedGames = useUserStore((s) => s.setSavedGames);
     const clearSavedGames = useUserStore((s) => s.clearSavedGames);
 
+    const refreshSavedGames = async () => {
+        const res = await fetch('/api/user/saved');
+        const data = await res.json();
+        setSavedGames(data);
+    };
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -31,5 +37,5 @@ export default function useSavedGames() {
             });
     }, [user]);
 
-    return { savedGames, loading, error };
+    return { savedGames, refreshSavedGames, loading, error };
 }
