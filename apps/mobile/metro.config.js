@@ -20,7 +20,7 @@ config.resolver.extraNodeModules = {
     '@checkmate/theme': path.resolve(workspaceRoot, 'packages/apps/theme'),
     '@checkmate/hooks': path.resolve(workspaceRoot, 'packages/apps/hooks'),
     '@checkmate/screens': path.resolve(workspaceRoot, 'packages/apps/screens'),
-    '@checkmate/state': path.resolve(workspaceRoot, 'packages/apps/state'),
+    '@checkmate/store': path.resolve(workspaceRoot, 'packages/apps/store'),
     '@checkmate/api': path.resolve(workspaceRoot, 'packages/apps/api'),
     '@checkmate/types': path.resolve(workspaceRoot, 'packages/apps/types')
 }

@@ -7,7 +7,7 @@ import {
     useFinalizeMatch,
     useRespondToMatch
 } from "@checkmate/hooks";
-import { useAuth } from "@checkmate/state";
+import { useAuthStore } from "@checkmate/store";
 import {
     Info,
     CircleCheckBig,
@@ -23,7 +23,7 @@ import {
 
 export default function MatchDetailsPage() {
     const { matchId } = useParams<{ matchId: string }>();
-    const { state } = useAuth();
+    const user = useAuthStore((s) => s.user);
     const navigate = useNavigate();
 
     const {
@@ -39,7 +39,8 @@ export default function MatchDetailsPage() {
         error: gameError
     } = useGameDetails(matchData?.match?.game_id);
 
-    const respond = useRespondToMatch();
+    const { mutate: respond, loading: respondLoading, error: respondError } = useRespondToMatch();
+
     const finalize = useFinalizeMatch();
 
     const [results, setResults] = useState<Record<string, "win" | "tie" | "loss">>({});
@@ -59,12 +60,13 @@ export default function MatchDetailsPage() {
     const handleRespond = async (accept: boolean) => {
         if (!matchId) return;
         try {
-            await respond.mutate(matchId, accept);
+            await respond(matchId, accept);
             await refetch();
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
     };
+
 
     const handleFinalize = async () => {
         if (!matchId) return;
@@ -81,10 +83,12 @@ export default function MatchDetailsPage() {
     };
 
     const { match, participants } = matchData;
-    // const isCreator = match.creator_id === state.user?.id;
-    const allAccepted = participants.every((p) => p.approved === true);
+
     const isCompleted = match.status === "completed";
-    const anyDeclined = participants.some(p => p.approved === false);
+    const allAccepted = participants.every((p) => p.approved === true);
+    const anyDeclined = participants.some((p) => p.approved === false);
+    const finalized = allAccepted && !isCompleted && !anyDeclined;
+
 
     if (isCompleted) {
         navigate(`/match/${matchId}/finalize`);
@@ -105,7 +109,7 @@ export default function MatchDetailsPage() {
             width="100%"
             mx="auto"
         >
-            {respond.error && <Text color="red">{respond.error}</Text>}
+            {respondError && <Text color="red">{respondError}</Text>}
             {finalize.error && <Text color="red">{finalize.error}</Text>}
 
             <GameHeader game={game} />
@@ -129,19 +133,19 @@ export default function MatchDetailsPage() {
                     <ParticipantRow
                         key={p.user_id}
                         participant={p}
-                        stateUserId={state.user?.id}
+                        stateUserId={user?.id}
                         allAccepted={allAccepted}
                         isCompleted={isCompleted}
                         anyDeclined={anyDeclined}
                         results={results}
                         setResults={setResults}
                         handleRespond={handleRespond}
-                        respondLoading={respond.loading}
+                        respondLoading={respondLoading}
                     />
                 ))}
             </YStack>
 
-            {allAccepted && !isCompleted && !anyDeclined && (
+            {finalized && (
                 <FinalizeMatchButton
                     onFinalize={handleFinalize}
                     finalizeLoading={finalize.loading}

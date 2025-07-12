@@ -2,11 +2,11 @@ import React from 'react'
 import { YStack, Text } from 'tamagui'
 import { ProfileHeader, ProfileGames, ProfileFriends } from './components'
 import { useGetCurrentFriends, useSavedGames, useCurrentUserProfile } from "@checkmate/hooks";
-import { useAuth } from '@checkmate/state';
+import { useAuthStore } from '@checkmate/store';
 import { normalizeArrayField } from "../../utils";
 
 export default function ProfilePage() {
-    const { state } = useAuth();
+    const { user } = useAuthStore();
     const { friends, loading: friendsLoading } = useGetCurrentFriends();
     const { data, loading, error, refetch } = useCurrentUserProfile();
 
@@ -35,7 +35,7 @@ export default function ProfilePage() {
         );
     }
 
-    const isViewingOwnProfile = state.user?.id === data.user.id;
+    const isViewingOwnProfile = user?.id === data.user.id;
     const friendsList = normalizeArrayField(data.friends);
     const wishlist = normalizeArrayField(data.games.wishlist);
     const collection = normalizeArrayField(data.games.collection)

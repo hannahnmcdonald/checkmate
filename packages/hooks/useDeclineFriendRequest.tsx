@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useFriendsStore } from "@checkmate/store";
 import { declineFriendRequest } from "@checkmate/api";
 
 export default function useDeclineFriendRequest() {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const loading = useFriendsStore((s) => s.declineLoading);
+    const setLoading = useFriendsStore((s) => s.setDeclineLoading);
+
+    const error = useFriendsStore((s) => s.declineError);
+    const setError = useFriendsStore((s) => s.setDeclineError);
 
     const mutate = async (friendId: string) => {
         setLoading(true);
@@ -13,6 +16,7 @@ export default function useDeclineFriendRequest() {
         } catch (err: any) {
             console.error(err);
             setError(err.message || "Error declining friend request");
+            throw err;
         } finally {
             setLoading(false);
         }

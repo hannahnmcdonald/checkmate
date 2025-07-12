@@ -1,13 +1,14 @@
 import { YStack, XStack, Text, Card, Theme } from 'tamagui';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@checkmate/state'
+import { useAuthStore } from '@checkmate/store'
 import React from 'react'
 import { PageContainer, PrimaryButton, FormInput, InlineLink } from '../../components/Styled';
 import { login } from '@checkmate/api';
 
 export default function LoginPage() {
-    const { refetchUser } = useAuth()
+    const refetchUser = useAuthStore((s) => s.refetchUser);
+
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

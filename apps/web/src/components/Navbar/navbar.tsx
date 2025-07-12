@@ -5,15 +5,15 @@ import {
 } from 'tamagui';
 import { PrimaryButton } from '../Styled';
 import logo from '../../images/navbarlogo.png'
-import { useAuth } from '@checkmate/state';
+import { useAuthStore } from '@checkmate/store';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { MenuButton } from './MenuButton';
 import { useMedia } from 'tamagui';
 
 export default function Navbar(theme: string) {
-    const { state } = useAuth();
-    const { logout } = useAuth();
+    const user = useAuthStore((s) => s.user);
+    const logout = useAuthStore((s) => s.logout);
 
     const navigate = useNavigate();
     const media = useMedia();
@@ -63,7 +63,7 @@ export default function Navbar(theme: string) {
                             <PrimaryButton size="$2" onPress={() => navigate('/games')}>
                                 Discover
                             </PrimaryButton>
-                            {state.user && (
+                            {user && (
                                 <><PrimaryButton size="$2" onPress={() => navigate('/friends')}>
                                     Friends
                                 </PrimaryButton><PrimaryButton size="$2" onPress={() => navigate('/profile')}>
@@ -79,7 +79,7 @@ export default function Navbar(theme: string) {
                                     </PrimaryButton></>
                             )}
 
-                            {!state.user && window.location.pathname !== '/login' && (
+                            {!user && window.location.pathname !== '/login' && (
                                 <PrimaryButton size="$2" color="$background" onPress={() => navigate('/login')}>
                                     Login
                                 </PrimaryButton>

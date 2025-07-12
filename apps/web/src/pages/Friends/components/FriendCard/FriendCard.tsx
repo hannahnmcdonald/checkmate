@@ -3,7 +3,7 @@ import React from 'react';
 import { Friend } from "@checkmate/types";
 import { getAvatarUrl } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@checkmate/state";
+import { useAuthStore } from "@checkmate/store";
 
 interface FriendCardProps {
     user: Friend;
@@ -14,8 +14,8 @@ interface FriendCardProps {
 
 export default function FriendCard({ user, action, theme, onPress }: FriendCardProps) {
     const navigate = useNavigate();
-    const { state } = useAuth();
-    const targetRoute = user.id === state.user?.id ? "/profile" : `/profile/${user.id}`;
+    const currentUser = useAuthStore((s) => s.user);
+    const targetRoute = currentUser && currentUser.id === user.id ? "/profile" : `/profile/${user.id}`;
 
     return (
         <Card

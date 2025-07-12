@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { searchGames } from '@checkmate/api';
+import { useGameStore } from '@checkmate/store';
 
-// TODO: move to the types file?
-export type Game = {
-    id: string;
-    name: string;
-    yearPublished?: string;
-    description?: string;
-    image?: string;
-    thumbnail?: string;
-    minPlayers?: number;
-    maxPlayers?: number;
-    playingTime?: number;
-    categories?: string[];
-    mechanics?: string[];
-}
 export default function useGameSearch(query: string) {
-    const [results, setResults] = useState<Game[]>([]);
+    const results = useGameStore((s) => s.searchResults);
+    const setResults = useGameStore((s) => s.setSearchResults);
+    const clearResults = useGameStore((s) => s.clearSearchResults);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!query.trim()) {
-            setResults([]);
+            clearResults();
             return;
         }
 
@@ -33,7 +23,6 @@ export default function useGameSearch(query: string) {
             .then((data) => setResults(data ?? []))
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
-
     }, [query]);
 
     return { results, loading, error };

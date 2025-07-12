@@ -8,7 +8,7 @@ export async function searchFriends(query: string): Promise<Friend[]> {
     return res.json();
 }
 
-export async function getCurrentFriends(): Promise<Friend[]> {
+export async function getCurrentFriends(userId: string): Promise<Friend[]> {
     const res = await fetch("/api/friends", {
         credentials: "include",
     });

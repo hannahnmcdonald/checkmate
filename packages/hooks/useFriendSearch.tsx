@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useFriendsStore } from "@checkmate/store";
 import { searchFriends } from "@checkmate/api";
-import { Friend } from "@checkmate/types";
 
-export default function useFriendSearch(query: string) {
-    const [results, setResults] = useState<Friend[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+export default function useFriendSearch() {
+    const results = useFriendsStore((s) => s.searchResults);
+    const loading = useFriendsStore((s) => s.searchLoading);
+    const error = useFriendsStore((s) => s.searchError);
+
+    const setResults = useFriendsStore((s) => s.setSearchResults);
+    const setLoading = useFriendsStore((s) => s.setSearchLoading);
+    const setError = useFriendsStore((s) => s.setSearchError);
 
     const search = async (query: string) => {
         if (!query.trim()) {

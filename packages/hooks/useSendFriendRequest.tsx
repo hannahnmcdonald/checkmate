@@ -1,4 +1,3 @@
-// packages/hooks/src/useSendFriendRequest.ts
 import { useState } from "react";
 import { sendFriendRequest } from "@checkmate/api";
 

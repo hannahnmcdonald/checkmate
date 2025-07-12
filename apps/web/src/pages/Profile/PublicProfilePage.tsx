@@ -6,11 +6,11 @@ import {
     ProfileFriends,
     ProfileGames
 } from "./components"
-import { useAuth } from '@checkmate/state'
+import { useAuthStore } from '@checkmate/store'
 import { normalizeArrayField } from "../../utils";
 
 export default function PublicProfilePage() {
-    const { state } = useAuth();
+    const { user } = useAuthStore();
     const { userId: paramUserId } = useParams();
     const userId = paramUserId === "me" ? state.user?.id : paramUserId;
 
@@ -32,13 +32,7 @@ export default function PublicProfilePage() {
         return <Text>No profile data found.</Text>;
     }
 
-    const isViewingOwnProfile = state.user?.id === data.user.id;
-    console.log("state.user?.id", state.user?.id);
-    console.log("data.user", data.user);
-
-    console.log("data.user.id", data.user.id);
-
-    console.log('VIEWING', isViewingOwnProfile)
+    const isViewingOwnProfile = user?.id === data.user.id;
     const isFriendsListPublic = data.friends.privacy === "friends";
     const isWishlistPublic = data.games.wishlist.privacy === "friends";
     const isCollectionVisible = data.games.collection.privacy === "friends";

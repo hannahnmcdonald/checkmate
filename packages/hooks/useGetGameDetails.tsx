@@ -1,41 +1,27 @@
 import { useEffect, useState } from 'react';
 import { getGameById } from '@checkmate/api';
-
-export type Game = {
-    id: string;
-    image: string;
-    name: string;
-    description: string;
-    minPlayers: number;
-    maxPlayers: number;
-    playingTime: string;
-    yearPublished: string;
-    categories?: string[];
-    mechanics?: string[];
-};
+import { useGameStore } from '@checkmate/store';
+import { Game } from '@checkmate/types';
 
 export default function useGame(id: string | undefined) {
-    const [game, setGame] = useState<Game | null>(null);
-    const [loading, setLoading] = useState(true);
+    const game = useGameStore((s) => (id ? s.games[id] : undefined));
+    const setGame = useGameStore((s) => s.setGame);
+
+    const [loading, setLoading] = useState(!!id && !game);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!id) {
-            setGame(null);
-            return;
-        }
+        if (!id || game) return;
 
         setLoading(true);
-        setError(null);
-
         getGameById(id)
-            .then((data) => {
+            .then((data: Game) => {
                 setGame(data);
-                setLoading(false);
             })
             .catch((err) => {
-                console.error(err);
                 setError(err.message);
+            })
+            .finally(() => {
                 setLoading(false);
             });
     }, [id]);

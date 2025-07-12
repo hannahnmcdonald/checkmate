@@ -42,7 +42,14 @@ export async function removeGame(gameId: string, category: string): Promise<void
 }
 
 export async function getSavedGames(): Promise<{ game_id: string; category: string }[]> {
-    const res = await fetch("/api/saved-games", { credentials: "include" });
+    const res = await fetch("/api/saved-games", {
+        credentials: "include",
+    });
+
+    if (res.status === 401) {
+        // Treat as unauthenticated user — return empty list
+        return [];
+    }
 
     if (!res.ok) {
         const text = await res.text();
@@ -51,8 +58,9 @@ export async function getSavedGames(): Promise<{ game_id: string; category: stri
     }
 
     const data = await res.json();
-    return data.savedGames;
+    return data.savedGames ?? [];
 }
+
 
 export async function getSavedGamesWithDetails(): Promise<{ game: object; category: string }[]> {
     const res = await fetch("/api/saved-games/details", { credentials: "include" });

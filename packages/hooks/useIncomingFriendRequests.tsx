@@ -1,19 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getIncomingFriendRequests } from "@checkmate/api";
-import { Friend } from "@checkmate/types";
+import { useFriendsStore } from "@checkmate/store";
 
 export default function useIncomingFriendRequests() {
-    const [requests, setRequests] = useState<Friend[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const requests = useFriendsStore((s) => s.incomingRequests);
+    const setRequests = useFriendsStore((s) => s.setIncomingRequests);
+    const clearRequests = useFriendsStore((s) => s.clearIncomingRequests);
+
+    const loading = useFriendsStore((s) => s.loadingIncoming);
+    const setLoading = useFriendsStore((s) => s.setLoadingIncoming);
+
+    const error = useFriendsStore((s) => s.errorIncoming);
+    const setError = useFriendsStore((s) => s.setErrorIncoming);
+
+    const fetchRequests = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await getIncomingFriendRequests();
+            setRequests(data);
+        } catch (err) {
+            setError((err as Error).message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        setLoading(true);
-        getIncomingFriendRequests()
-            .then(setRequests)
-            .catch((err) => setError(err.message))
-            .finally(() => setLoading(false));
+        fetchRequests();
     }, []);
 
-    return { requests, loading, error };
+    return { requests, loading, error, refetch: fetchRequests };
 }

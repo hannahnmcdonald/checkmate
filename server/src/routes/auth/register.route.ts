@@ -12,15 +12,22 @@ register.post('/register', async (req, res) => {
   }
 
   try {
-    const user = await registerUser(req.body);
+    const { user, token } = await registerUser({ email, password, firstName, lastName, username });
 
-    if (!user) {
-      return res.status(500).json({ message: 'User registration failed' });
+    if (!user || !token) {
+      return res.status(500).json({ message: 'Malformed registration data' });
     }
 
-    return res.status(201).json(user);
-  } catch (err: any) {
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60, // 1 hour
+    });
 
+    return res.status(201).json({ user });
+
+  } catch (err: any) {
     const isDuplicateEmail = err instanceof DuplicateEmailError || err.name === 'DuplicateEmailError';
     const isDuplicateUsername = err instanceof DuplicateUsernameError || err.name === 'DuplicateUsernameError';
 

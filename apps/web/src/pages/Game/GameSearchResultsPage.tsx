@@ -6,10 +6,10 @@ import {
     GameCarousel,
     GameSearchBar
 } from "./components";
-import { useAuth } from "@checkmate/state"
+import { useAuthStore } from "@checkmate/store"
 
 export default function GameSearchResultsPage() {
-    const { state } = useAuth();
+    const { user } = useAuthStore();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const query = params.get("q") || "";
@@ -29,7 +29,7 @@ export default function GameSearchResultsPage() {
                     // TODO: swap to grid, add pagiation
                     // <Text>{results.length} results found.</Text>
                     // <GameGrid games={results} />
-                    <GameCarousel isOwner={!!state.user} games={results} header={<Text fontSize="$5" mt="$2">
+                    <GameCarousel isOwner={!!user} games={results} header={<Text fontSize="$5" mt="$2">
                         Results for "{query}"
                     </Text>} />
                 )}

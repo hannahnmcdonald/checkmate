@@ -1,39 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from "react";
+import { getSavedGames } from "@checkmate/api";
+import { useGameStore, useAuthStore } from "@checkmate/store";
 
-export default function useGameSaveStatus(gameId: string | undefined) {
-    const [status, setStatus] = useState<{
-        wishlist: boolean;
-        collection: boolean;
-    }>({ wishlist: false, collection: false });
+export default function useGameSaveStatus(gameId?: string) {
+    const user = useAuthStore((s) => s.user);
+
+    const defaultStatus = useMemo(() => ({ wishlist: false, collection: false }), []);
+    const status = useGameStore((s) =>
+        gameId ? s.saveStatus[gameId] || defaultStatus : defaultStatus
+    );
+
+    const setSaveStatus = useGameStore.getState().setSaveStatus;
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!gameId) return;
+        if (!gameId || !user) return;
 
-        setLoading(true);
-        setError(null);
+        const loadStatus = async () => {
+            try {
+                setLoading(true);
+                const savedGames = await getSavedGames();
 
-        fetch(`/api/saved-games/${gameId}`, {
-            credentials: "include",
-        })
-            .then((res) => {
-                if (!res.ok) throw new Error("Failed to load saved status");
-                return res.json();
-            })
-            .then((data) => {
-                setStatus({
-                    wishlist: data.wishlist,
-                    collection: data.collection,
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-                setError(err.message);
-            })
-            .finally(() => setLoading(false));
-    }, [gameId]);
+                const wishlist = savedGames.some(
+                    (g) => g.game_id === gameId && g.category === "wishlist"
+                );
+                const collection = savedGames.some(
+                    (g) => g.game_id === gameId && g.category === "collection"
+                );
+
+                // Only update if changed
+                const current = useGameStore.getState().saveStatus[gameId];
+                if (!current || current.wishlist !== wishlist || current.collection !== collection) {
+                    setSaveStatus(gameId, { wishlist, collection });
+                }
+            } catch (err: any) {
+                setError(err.message || "Unknown error");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadStatus();
+    }, [gameId, setSaveStatus, user]);
+
 
     return { status, loading, error };
 }

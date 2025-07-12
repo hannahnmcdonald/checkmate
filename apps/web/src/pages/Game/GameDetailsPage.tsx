@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { YStack, XStack, Text, Image, Spinner } from 'tamagui';
 import { Heart, Bookmark } from '@tamagui/lucide-icons';
-import { useAuth } from '@checkmate/state';
+import { useAuthStore } from '@checkmate/store';
 import { PrimaryButton } from '../../components/Styled';
 import { IconButton, GameBadge } from './components';
 import {
@@ -32,22 +32,15 @@ type Game = {
 export default function GameDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { state } = useAuth();
+    const user = useAuthStore((s) => s.user);
 
     const { game, loading, error } = useGetGameDetails(id);
-    const { status, loading: statusLoading } = useGameSaveStatus(state.user ? id : undefined);
+    const { status, loading: statusLoading } = useGameSaveStatus(user ? id : undefined);
     const { mutate: save } = useSaveGame();
     const { mutate: remove } = useRemoveGame();
 
-    const [isWishlisted, setIsWishlisted] = useState(false);
-    const [isCollected, setIsCollected] = useState(false);
-
-    useEffect(() => {
-        if (!statusLoading) {
-            setIsWishlisted(status.wishlist);
-            setIsCollected(status.collection);
-        }
-    }, [status, statusLoading]);
+    const isWishlisted = status?.wishlist;
+    const isCollected = status?.collection;
 
     if (loading) {
         return (
@@ -102,22 +95,18 @@ export default function GameDetailsPage() {
                 {cleanedDescription || "No description"}
             </Text>
 
-            {state.user && !statusLoading && (
+            {user && !statusLoading && (
                 <XStack gap="$2" mt="$2">
                     <IconButton
                         text="Add to Wishlist"
                         selected={isWishlisted}
                         Icon={Heart}
                         onToggle={() => {
-                            setIsWishlisted((prev) => {
-                                if (prev) {
-                                    remove(id, "wishlist");
-                                    return false;
-                                } else {
-                                    save(id, "wishlist");
-                                    return true;
-                                }
-                            });
+                            if (isWishlisted) {
+                                remove(id, "wishlist");
+                            } else {
+                                save(id, "wishlist");
+                            }
                         }}
                     />
                     <IconButton
@@ -125,17 +114,14 @@ export default function GameDetailsPage() {
                         selected={isCollected}
                         Icon={Bookmark}
                         onToggle={() => {
-                            setIsCollected((prev) => {
-                                if (prev) {
-                                    remove(id, "collection");
-                                    return false;
-                                } else {
-                                    save(id, "collection");
-                                    return true;
-                                }
-                            });
+                            if (isCollected) {
+                                remove(id, "collection");
+                            } else {
+                                save(id, "collection");
+                            }
                         }}
                     />
+
                 </XStack>
             )}
 
@@ -155,7 +141,7 @@ export default function GameDetailsPage() {
 
 
             <PrimaryButton
-                disabled={!state.user}
+                disabled={!user}
                 mt="$3"
                 onPress={() => {
                     navigate(`/game/${id}/start-match`);
@@ -163,7 +149,7 @@ export default function GameDetailsPage() {
             >
                 Start a Match
             </PrimaryButton>
-            {!state.user ? (
+            {!user ? (
                 <Text mt="$3" color="$red10" textAlign='center'>
                     You must log in to start a match.
                 </Text>

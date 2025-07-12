@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
 import { register } from '@checkmate/api';
-import { useAuth } from '@checkmate/state';
+import { useAuthStore } from '@checkmate/store';
 import {
     PageContainer,
     PrimaryButton,
@@ -12,7 +12,7 @@ import {
 } from '../../components/Styled';
 
 export default function RegisterPage() {
-    const { dispatch } = useAuth()
+    const setUser = useAuthStore((s) => s.setUser);
     const navigate = useNavigate()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -40,22 +40,25 @@ export default function RegisterPage() {
 
         if (!emailRegex.test(email)) {
             setError('Please enter a valid email address')
+            setLoading(false)
             return
         }
 
         if (password !== confirmPassword) {
             setError('Passwords do not match')
+            setLoading(false)
             return
         }
 
         if (password.length < 8) {
             setError('Password must be at least 8 characters');
+            setLoading(false);
             return;
         }
 
         try {
             const { user } = await register({ email, password, firstName, lastName, username })
-            dispatch({ type: 'LOGIN', payload: { user } })
+            setUser(user);
 
             setSuccessMessage('Account created! Redirecting...')
             setTimeout(() => {

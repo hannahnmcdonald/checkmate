@@ -1,6 +1,9 @@
 import { TamaguiInternalConfig, TamaguiProvider, Theme } from 'tamagui'
 import { config } from '@checkmate/theme';
 
+import { useEffect } from 'react';
+import { useAuthStore } from '@checkmate/store';
+
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -25,8 +28,23 @@ import Layout from './layout/layout';
 
 
 export default function App() {
-
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+
+  const refetchUser = useAuthStore((s) => s.refetchUser);
+  const loading = useAuthStore((s) => s.loading);
+
+  useEffect(() => {
+    refetchUser();
+  }, [refetchUser]);
+
+  if (loading) {
+    return (
+      <div style={{ padding: '2rem' }}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <TamaguiProvider config={config as unknown as TamaguiInternalConfig}>
       <Theme name={theme}>

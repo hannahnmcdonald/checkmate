@@ -6,7 +6,7 @@
         "@checkmate/hooks": ["packages/hooks"],
         "@checkmate/screens": ["packages/screens"],
         "@checkmate/theme": ["packages/theme"],
-        "@checkmate/state": ["packages/state"],
+        "@checkmate/store": ["packages/store"],
         "@checkmate/api": ["packages/api"],
         "@checkmate/types": ["packages/types"]
       },

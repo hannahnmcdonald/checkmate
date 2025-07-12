@@ -16,7 +16,12 @@ interface RegisterPayload {
   username: string;
 }
 
-export async function registerUser(payload: RegisterPayload): Promise<User> {
+type AuthResponse = {
+  user: User;
+  token: string;
+};
+
+export async function registerUser(payload: RegisterPayload): Promise<AuthResponse> {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
   const id = uuidv4();
 
@@ -47,7 +52,8 @@ export async function registerUser(payload: RegisterPayload): Promise<User> {
         throw new Error('User registration failed');
       }
 
-      return user;
+      const token = signAccessToken({ id: user.id, email: user.email });
+      return { user, token };
     });
   } catch (error) {
     console.error('Error during user registration:', error);

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { getMatchDetails } from "@checkmate/api";
+import { useMatchStore } from "@checkmate/store";
 
 export default function useMatchDetails(matchId?: string) {
-    const [data, setData] = useState<{
-        match: any;
-        participants: any[];
-    } | null>(null);
-    const [loading, setLoading] = useState(!!matchId);
+    const matchData = useMatchStore((s) => (matchId ? s.matches[matchId] : null));
+    const setMatchDetails = useMatchStore((s) => s.setMatchDetails);
+
+    const [loading, setLoading] = useState(!matchData && !!matchId);
     const [error, setError] = useState<string | null>(null);
 
     const fetchMatch = async () => {
@@ -15,7 +15,7 @@ export default function useMatchDetails(matchId?: string) {
         setError(null);
         try {
             const res = await getMatchDetails(matchId);
-            setData(res);
+            setMatchDetails(matchId, res);
         } catch (err) {
             setError("Failed to load match details.");
         } finally {
@@ -24,8 +24,9 @@ export default function useMatchDetails(matchId?: string) {
     };
 
     useEffect(() => {
+        if (!matchId || matchData) return;
         fetchMatch();
     }, [matchId]);
 
-    return { data, loading, error, refetch: fetchMatch };
+    return { data: matchData, loading, error, refetch: fetchMatch };
 }

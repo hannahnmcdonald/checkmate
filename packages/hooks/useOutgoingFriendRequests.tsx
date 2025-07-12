@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { getOutgoingFriendRequests } from "@checkmate/api";
-import { Friend } from "@checkmate/types";
+import { useFriendsStore } from "@checkmate/store";
 
 export default function useOutgoingFriendRequests() {
-    const [requests, setRequests] = useState<Friend[]>([]);
+    const requests = useFriendsStore((s) => s.outgoingRequests);
+    const setRequests = useFriendsStore((s) => s.setOutgoingRequests);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -21,9 +22,10 @@ export default function useOutgoingFriendRequests() {
     };
 
     useEffect(() => {
-        fetchRequests();
+        if (!requests.length) {
+            fetchRequests();
+        }
     }, []);
 
     return { requests, loading, error, refetch: fetchRequests };
 }
-

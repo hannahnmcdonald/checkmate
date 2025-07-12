@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getGameById } from "@checkmate/api";
+import { useGameStore } from "@checkmate/store";
 
 export default function useGameDetails(gameId?: string) {
-    const [game, setGame] = useState<any>(null);
-    const [loading, setLoading] = useState(!!gameId);
+    const game = useGameStore((s) => (gameId ? s.gameDetails[gameId] : null));
+    const setGameDetails = useGameStore((s) => s.setGameDetails);
+
+    const [loading, setLoading] = useState(!game);
     const [error, setError] = useState<string | null>(null);
 
     const fetchGame = async () => {
@@ -11,8 +14,8 @@ export default function useGameDetails(gameId?: string) {
         setLoading(true);
         setError(null);
         try {
-            const res = await getGameById(gameId);
-            setGame(res);
+            const data = await getGameById(gameId);
+            setGameDetails(gameId, data);
         } catch (err) {
             setError("Failed to load game details.");
         } finally {
@@ -21,7 +24,9 @@ export default function useGameDetails(gameId?: string) {
     };
 
     useEffect(() => {
-        fetchGame();
+        if (!game && gameId) {
+            fetchGame();
+        }
     }, [gameId]);
 
     return { game, loading, error, refetch: fetchGame };

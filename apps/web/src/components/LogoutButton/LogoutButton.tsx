@@ -1,10 +1,10 @@
-import { useAuth } from "@checkmate/state";
+import { useAuthStore } from "@checkmate/store";
 import { useNavigate } from "react-router-dom";
 import { PrimaryButton } from "../Styled";
 import React from 'react';
 
 export function LogoutButton() {
-    const { logout } = useAuth();
+    const logout = useAuthStore((s) => s.logout);
     const navigate = useNavigate();
 
     const handleLogout = async () => {

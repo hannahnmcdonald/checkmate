@@ -3,12 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import '@fontsource/jetbrains-mono'
 import "./init";
-import { AuthProvider } from "@checkmate/state";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
+        <App />
     </React.StrictMode>
 );

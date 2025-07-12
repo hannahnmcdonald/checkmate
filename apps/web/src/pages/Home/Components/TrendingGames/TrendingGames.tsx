@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GameCarousel } from '../../../Game/components';
 import { Text } from 'tamagui';
-import { useAuth } from '@checkmate/state';
+import { useAuthStore } from '@checkmate/store';
 import { useSavedGames } from "@checkmate/hooks";
 
 type Game = {
@@ -15,7 +15,7 @@ type Game = {
 
 export default function TrendingGames() {
     const [games, setGames] = useState<Game[]>([]);
-    const { state } = useAuth();
+    const { user } = useAuthStore();
     const { savedGames } = useSavedGames();
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function TrendingGames() {
                 </Text>
             }
             savedGames={savedGames}
-            isOwner={!!state.user}
+            isOwner={!!user}
         />
     );
 }
