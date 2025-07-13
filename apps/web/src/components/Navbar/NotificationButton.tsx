@@ -18,13 +18,16 @@ export default function NotificationButton() {
             onPress={() => navigate("/notifications")}
             icon={Bell}
             size="$2"
+            width="$5"
+            jc="space-evenly"
+            px="$1"
         >
             {unread > 0 && (
                 <YStack
                     position="absolute"
                     top={2}
                     right={2}
-                    bg="$red10"
+                    bg="$color2"
                     br={999}
                     p="$1"
                     minWidth={18}

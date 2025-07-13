@@ -6,7 +6,7 @@ export default function useGameDetails(gameId?: string) {
     const game = useGameStore((s) => (gameId ? s.gameDetails[gameId] : null));
     const setGameDetails = useGameStore((s) => s.setGameDetails);
 
-    const [loading, setLoading] = useState(!game);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const fetchGame = async () => {
@@ -27,7 +27,7 @@ export default function useGameDetails(gameId?: string) {
         if (!game && gameId) {
             fetchGame();
         }
-    }, [gameId]);
+    }, [gameId, game]);
 
-    return { game, loading, error, refetch: fetchGame };
+    return { game, loading: !game && gameId !== undefined, error, refetch: fetchGame };
 }

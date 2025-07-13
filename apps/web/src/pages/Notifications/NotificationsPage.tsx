@@ -5,6 +5,7 @@ import {
     useNotifications,
 } from "@checkmate/hooks";
 import { NotificationItem } from "./components";
+import { PrimaryButton } from "../../components/Styled";
 
 export default function NotificationsPage() {
     const {
@@ -18,17 +19,19 @@ export default function NotificationsPage() {
     if (loading) return <Spinner my="$8" />;
     if (error) return <Text color="$red10">{error}</Text>;
 
+    console.log("Notifications:", notifications);
+
     return (
         <YStack gap="$4" p="$4" maxWidth={600} mx="auto">
             <XStack jc="space-between" ai="center">
-                <Text fontSize="$6" fontWeight="700">Notifications</Text>
+                <Text fontSize="1.5rem" fontWeight="700">Notifications</Text>
                 <XStack gap="$2">
-                    <Button size="$2" onPress={markAll}>
+                    <PrimaryButton size="$2" onPress={markAll}>
                         Mark all read
-                    </Button>
-                    <Button size="$2" theme="red" onPress={clearRead}>
+                    </PrimaryButton>
+                    <PrimaryButton size="$2" theme="red" onPress={clearRead}>
                         Clear read
-                    </Button>
+                    </PrimaryButton>
                 </XStack>
             </XStack>
 

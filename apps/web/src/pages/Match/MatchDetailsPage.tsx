@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { YStack, XStack, Text } from "tamagui";
 import {
@@ -37,10 +37,9 @@ export default function MatchDetailsPage() {
         game,
         loading: gameLoading,
         error: gameError
-    } = useGameDetails(matchData?.match?.game_id);
+    } = useGameDetails(matchData?.match?.game_id ?? undefined);
 
     const { mutate: respond, loading: respondLoading, error: respondError } = useRespondToMatch();
-
     const finalize = useFinalizeMatch();
 
     const [results, setResults] = useState<Record<string, "win" | "tie" | "loss">>({});
@@ -89,11 +88,17 @@ export default function MatchDetailsPage() {
     const anyDeclined = participants.some((p) => p.approved === false);
     const finalized = allAccepted && !isCompleted && !anyDeclined;
 
-
-    if (isCompleted) {
+    useEffect(() => {
+    if (isCompleted && matchId) {
         navigate(`/match/${matchId}/finalize`);
-        return null;
     }
+}, [isCompleted, matchId, navigate]);
+
+
+    // if (isCompleted) {
+    //     navigate(`/match/${matchId}/finalize`);
+    //     return null;
+    // }
 
     function getStatusIcon() {
         if (isCompleted) return <CircleCheckBig color="$background" size={16} />;
