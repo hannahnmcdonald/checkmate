@@ -1,11 +1,11 @@
-import { TamaguiInternalConfig, TamaguiProvider, Theme } from 'tamagui'
-import { config } from '@checkmate/theme';
+import { TamaguiInternalConfig, TamaguiProvider, Theme } from "tamagui";
+import { config } from "@checkmate/theme";
 
-import { useEffect } from 'react';
-import { useAuthStore } from '@checkmate/store';
+import { useEffect } from "react";
+import { useAuthStore } from "@checkmate/store";
 
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import {
   HomePage,
@@ -20,16 +20,15 @@ import {
   MatchDetailsPage,
   MatchFinalPage,
   PublicProfilePage,
-  NotificationsPage
-} from './pages/index'
+  NotificationsPage,
+} from "./pages/index";
 
-import React from 'react';
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './layout/layout';
-
+import React from "react";
+import ProtectedRoute from "./components/protectedRoute";
+import Layout from "./layout/layout";
 
 export default function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const refetchUser = useAuthStore((s) => s.refetchUser);
   const loading = useAuthStore((s) => s.loading);
@@ -40,7 +39,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div style={{ padding: '2rem' }}>
+      <div style={{ padding: "2rem" }}>
         <p>Loading...</p>
       </div>
     );
@@ -51,9 +50,14 @@ export default function App() {
       <Theme name={theme}>
         <Router>
           <Routes>
-            <Route path="/" element={<Layout theme="blueDark">
-              <HomePage />
-            </Layout>} />
+            <Route
+              path="/"
+              element={
+                <Layout theme="blueDark">
+                  <HomePage />
+                </Layout>
+              }
+            />
             <Route
               path="/profile"
               element={
@@ -148,15 +152,25 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/login" element={<Layout theme="tealDark">
-              <LoginPage />
-            </Layout>} />
-            <Route path="/register" element={<Layout theme="magentaDark">
-              <RegisterPage />
-            </Layout>} />
+            <Route
+              path="/login"
+              element={
+                <Layout theme="tealDark">
+                  <LoginPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <Layout theme="magentaDark">
+                  <RegisterPage />
+                </Layout>
+              }
+            />
           </Routes>
         </Router>
       </Theme>
     </TamaguiProvider>
-  )
-};
+  );
+}

@@ -1,6 +1,6 @@
-import { Sheet, Button, YStack, Text } from 'tamagui';
+import { Sheet, Button, YStack, Text, XStack } from 'tamagui';
 import { Menu } from '@tamagui/lucide-icons';
-import { useAuthStore } from '@checkmate/store';
+import { useAuthStore, useNotificationStore } from '@checkmate/store';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
@@ -10,8 +10,11 @@ export function MenuButton() {
     const logout = useAuthStore((s) => s.logout);
     const navigate = useNavigate();
 
+    const unreadCount = useNotificationStore(
+        (s) => s.notifications.filter((n) => !n.read).length
+    );
     const handleLogout = async () => {
-        await logout(); // clears Zustand store + hits /logout
+        await logout();
         setOpen(false);
         navigate('/login');
     };
@@ -48,6 +51,22 @@ export function MenuButton() {
                                 <Text onPress={() => { navigate('/friends'); setOpen(false); }}>
                                     Friends
                                 </Text>
+                                <XStack
+                                    jc="space-between"
+                                    onPress={() => { navigate('/notifications'); setOpen(false); }}
+                                    cursor="pointer"
+                                >
+                                    <Text>Notifications</Text>
+                                    {unreadCount > 0 && (
+                                        <Text
+                                            color="$color2"
+                                            fontWeight="bold"
+                                            fontSize="$2"
+                                        >
+                                            {unreadCount}
+                                        </Text>
+                                    )}
+                                </XStack>       
                                 <Text onPress={handleLogout}>
                                     Logout
                                 </Text>

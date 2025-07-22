@@ -6,10 +6,10 @@ import MatchParticipants from "./MatchParticipants/MatchParticipants";
 import FinalParticipantRow from "./FinalParticipantRow/FinalParticipantRow";
 
 export {
-    FinalizeMatchButton,
-    ParticipantRow,
-    MatchStatusBanner,
-    GameHeader,
-    MatchParticipants,
-    FinalParticipantRow
-}
+  FinalizeMatchButton,
+  ParticipantRow,
+  MatchStatusBanner,
+  GameHeader,
+  MatchParticipants,
+  FinalParticipantRow,
+};
