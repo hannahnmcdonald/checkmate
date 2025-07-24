@@ -14,7 +14,7 @@ A board game stats app with a social component, mobile and web friendly. A great
 ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![Playwright](https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+![Storybook](https://img.shields.io/badge/-Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white)
 ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
@@ -31,12 +31,12 @@ A board game stats app with a social component, mobile and web friendly. A great
 - Tamagui UI Library
 - `zxcvbn` for password strength checking
 - Zustand for state management
-- Playwright for UI testing 🚧 Coming Soon
+- Storybook for UI testing 🚧 Coming Soon
 
 #### Backend
 
 - Node/Typescript Backend that utilizes Axios to make requests to [Board Game Geek API](https://boardgamegeek.com/wiki/page/BGG_XML_API2).
-- Database is Postgres with Knex, hosted through AWS RDS
+- Database is Postgres with Knex, hosted through AWS RDS 🚧 Coming Soon
 - Backend utilizes `Jest` and `Supertest` for acceptance tests along with a Test Database 🚧 Coming soon
 - Swagger API Docs 🚧 Coming soon
 - Python/ AWS S3 for Stats & Graphs 🚧 Coming Soon
