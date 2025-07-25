@@ -82,9 +82,19 @@ export default function NotificationItem({ n }: Props) {
       pressStyle={{ scale: 0.97 }}
       cursor="pointer"
     >
-      <XStack jc="space-between" ai="center" gap="$4">
+      <XStack
+        jc="space-between"
+        ai="center"
+        gap="$4"
+        $sm={{ flexDirection: "column", alignItems: "flex-start", gap: "$2" }}
+      >
         {!n.read && <Text color="$color2">●</Text>}
-        <Text fontWeight={n.read ? "400" : "800"} fontSize="$3">
+        <Text
+          fontWeight={n.read ? "400" : "800"}
+          fontSize="$3"
+          flex={1}
+          flexShrink={1}
+        >
           {n.message}
         </Text>
         <XStack gap="$2">
