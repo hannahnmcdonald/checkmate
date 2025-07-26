@@ -1,6 +1,7 @@
-# 🚧 Under Construction 🚧
+> [!NOTE]  
+>  🚧 Under Construction - Experience coming soon!
 
-# Checkmate
+![](./apps/web/src/images/navbarlogo.png)
 
 A board game stats app with a social component, mobile and web friendly. A great place to research board games, track your stats, and compete with your friends. You can also make wishlists and keep track of your collection.
 
