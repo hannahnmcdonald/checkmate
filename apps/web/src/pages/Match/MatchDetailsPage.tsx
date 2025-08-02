@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { YStack, XStack, Text } from "tamagui";
 import {
   useMatchDetails,
@@ -14,7 +14,6 @@ import {
   GameHeader,
   ParticipantRow,
   MatchStatusBanner,
-  // MatchParticipants
 } from "./components";
 
 export default function MatchDetailsPage() {
@@ -29,11 +28,12 @@ export default function MatchDetailsPage() {
     refetch,
   } = useMatchDetails(matchId);
 
+  const matchGameId = matchData?.match?.game_id;
   const {
     game,
     loading: gameLoading,
     error: gameError,
-  } = useGameDetails(matchData?.match?.game_id ?? undefined);
+  } = useGameDetails(matchGameId);
 
   const {
     mutate: respond,
@@ -42,11 +42,13 @@ export default function MatchDetailsPage() {
   } = useRespondToMatch();
   const finalize = useFinalizeMatch();
 
+  // ✅ This must be declared above any conditional return
   const [results, setResults] = useState<
     Record<string, "win" | "tie" | "loss">
   >({});
 
-  if (matchLoading || gameLoading) {
+  // Early exits after all hooks
+  if (matchLoading) {
     return <Text>Loading...</Text>;
   }
 
@@ -89,21 +91,14 @@ export default function MatchDetailsPage() {
   const anyDeclined = participants.some((p) => p.approved === false);
   const finalized = allAccepted && !isCompleted && !anyDeclined;
 
-  useEffect(() => {
-    if (isCompleted && matchId) {
-      navigate(`/match/${matchId}/finalize`);
-    }
-  }, [isCompleted, matchId, navigate]);
-
-  // if (isCompleted) {
-  //     navigate(`/match/${matchId}/finalize`);
-  //     return null;
-  // }
-
   function getStatusIcon() {
     if (isCompleted) return <CircleCheckBig color="$background" size={16} />;
     if (allAccepted) return <CircleCheck color="$background" size={16} />;
     return <Info color="$background" size={16} />;
+  }
+
+  if (isCompleted && matchId) {
+    return <Navigate to={`/match/${matchId}/finalize`} replace />;
   }
 
   return (
