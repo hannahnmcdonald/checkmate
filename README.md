@@ -40,6 +40,7 @@ A board game stats app with a social component, mobile and web friendly. A great
 - Backend utilizes `Jest` and `Supertest` for acceptance tests along with a Test Database 🚧 Coming soon
 - Swagger API Docs 🚧 Coming soon
 - Python/ AWS S3 for Stats & Graphs 🚧 Coming Soon
+- AWS SQS for Notifcations Service 🚧 Coming Soon
 
 ## Database Design
 
