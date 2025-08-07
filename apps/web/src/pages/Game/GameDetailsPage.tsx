@@ -1,199 +1,298 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { YStack, XStack, Text, Image, Spinner } from 'tamagui';
-import { Heart, Bookmark } from '@tamagui/lucide-icons';
-import { useAuthStore } from '@checkmate/store';
-import { PrimaryButton } from '../../components/Styled';
-import { IconButton, GameBadge } from './components';
-import {
-    cleanDescription
-} from "../../utils"
-import { useGameStore } from '@checkmate/store';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { YStack, XStack, Text, Image, Spinner, Tooltip } from "tamagui";
+import { Heart, Bookmark } from "@tamagui/lucide-icons";
+import { useAuthStore } from "@checkmate/store";
+import { PrimaryButton } from "../../components/Styled";
+import { IconButton, GameBadge } from "./components";
+import { cleanDescription } from "../../utils";
+import { useGameStore } from "@checkmate/store";
 
 import {
-    useSaveGame,
-    useRemoveGame,
-    useGameSaveStatus,
-    useGetGameDetails
-} from "@checkmate/hooks"
+  useSaveGame,
+  useRemoveGame,
+  useGameSaveStatus,
+  useGetGameDetails,
+} from "@checkmate/hooks";
 
 type Game = {
-    id: string;
-    image: string;
-    name: string;
-    description: string;
-    minPlayers: number;
-    maxPlayers: number;
-    playingTime: string;
-    yearPublished: string;
-    categories?: [],
-    mechanics?: []
+  id: string;
+  image: string;
+  name: string;
+  description: string;
+  minPlayers: number;
+  maxPlayers: number;
+  playingTime: string;
+  yearPublished: string;
+  categories?: [];
+  mechanics?: [];
 };
 
 export default function GameDetailsPage() {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
-    const user = useAuthStore((s) => s.user);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
 
-    const { game, loading, error } = useGetGameDetails(id);
-    const { status, loading: statusLoading } = useGameSaveStatus(user ? id : undefined);
-    const { mutate: save } = useSaveGame();
-    const { mutate: remove } = useRemoveGame();
+  const { game, loading, error } = useGetGameDetails(id);
+  const { status, loading: statusLoading } = useGameSaveStatus(
+    user ? id : undefined
+  );
+  const { mutate: save } = useSaveGame();
+  const { mutate: remove } = useRemoveGame();
 
-    const statusMap = useGameStore((s) => s.saveStatus);
-    const setSaveStatus = useGameStore((s) => s.setSaveStatus);
-    const currentStatus = statusMap[id ?? ""];
+  const statusMap = useGameStore((s) => s.saveStatus);
+  const setSaveStatus = useGameStore((s) => s.setSaveStatus);
+  const currentStatus = statusMap[id ?? ""];
 
-    const isWishlisted = currentStatus?.wishlist ?? false;
-    const isCollected = currentStatus?.collection ?? false;
+  const isWishlisted = currentStatus?.wishlist ?? false;
+  const isCollected = currentStatus?.collection ?? false;
 
-    useEffect(() => {
+  useEffect(() => {
     if (!currentStatus && user && id) {
-        fetch(`/api/game/${id}/save-status`)
+      fetch(`/api/game/${id}/save-status`)
         .then((res) => res.json())
         .then((data) => {
-            setSaveStatus(id, {
+          setSaveStatus(id, {
             wishlist: data.wishlist ?? false,
             collection: data.collection ?? false,
-            });
+          });
         })
         .catch(console.error);
     }
-    }, [id, currentStatus, setSaveStatus, user]);
+  }, [id, currentStatus, setSaveStatus, user]);
 
-    if (loading) {
-        return (
-            <YStack ai="center" jc="center" height="50vh">
-                <Spinner />
-            </YStack>
-        );
-    }
-
-    if (error) {
-        return (
-            <YStack ai="center" jc="center" py="$4">
-                <Text>Error: {error}</Text>
-            </YStack>
-        );
-    }
-
-    if (!game) {
-        return (
-            <YStack ai="center" jc="center" py="$4">
-                <Text>Game not found.</Text>
-            </YStack>
-        );
-    }
-
-    if (!currentStatus) {
-        return (
-            <YStack ai="center" jc="center" py="$4">
-            <Spinner />
-            </YStack>
-        );
-    }
-
-    const { name, description, minPlayers, maxPlayers, image, playingTime, yearPublished } = game;
-
-    const cleanedDescription = cleanDescription(description)
-
+  if (loading) {
     return (
-        <YStack width="100%" gap="$4" px="$4" py="$4" maxWidth={700} mx="auto">
-            {image ? (<Image
+      <YStack ai="center" jc="center" height="50vh">
+        <Spinner />
+      </YStack>
+    );
+  }
+
+  if (error) {
+    return (
+      <YStack ai="center" jc="center" py="$4">
+        <Text>Error: {error}</Text>
+      </YStack>
+    );
+  }
+
+  if (!game) {
+    return (
+      <YStack ai="center" jc="center" py="$4">
+        <Text>Game not found.</Text>
+      </YStack>
+    );
+  }
+
+  if (!currentStatus) {
+    return (
+      <YStack ai="center" jc="center" py="$4">
+        <Spinner />
+      </YStack>
+    );
+  }
+
+  const {
+    name,
+    description,
+    minPlayers,
+    maxPlayers,
+    image,
+    playingTime,
+    yearPublished,
+  } = game;
+
+  const cleanedDescription = cleanDescription(description);
+
+  return (
+    <YStack width="100%" maxWidth={1200} mx="auto" px="$4" py="$4">
+      {/* Image for small/medium */}
+      <YStack display="flex" $gtLg={{ display: "none" }}>
+        {image ? (
+          <Image
+            source={{ uri: image }}
+            width="100%"
+            height={220}
+            borderRadius="$3"
+            resizeMode="cover"
+          />
+        ) : (
+          <Text textAlign="center" color="grey">
+            No image found
+          </Text>
+        )}
+      </YStack>
+
+      {/* Description block for small/medium */}
+      <YStack display="flex" $gtLg={{ display: "none" }} gap="$2" mt="$4">
+        <Text fontSize="1.25rem" fontWeight="700">
+          {name}
+        </Text>
+        <Text color="$gray10" fontSize="$2">
+          {yearPublished} • {playingTime && `${playingTime} minutes`} •{" "}
+          {minPlayers && maxPlayers && `Players: ${minPlayers}-${maxPlayers}`}
+        </Text>
+        {user && !statusLoading && (
+          <XStack gap="$2" flexWrap="wrap" mt="$2">
+            <IconButton
+              text="Add to Wishlist"
+              label="Add to Wishlist"
+              selected={isWishlisted}
+              Icon={Heart}
+              onToggle={() => {
+                if (isWishlisted) {
+                  remove(id, "wishlist");
+                  setSaveStatus(id, {
+                    wishlist: false,
+                    collection: currentStatus?.collection ?? false,
+                  });
+                } else {
+                  save(id, "wishlist");
+                  setSaveStatus(id, { ...currentStatus, wishlist: true });
+                }
+              }}
+            />
+            <IconButton
+              text="Add to Collection"
+              label="Add to Collection"
+              selected={isCollected}
+              Icon={Bookmark}
+              onToggle={() => {
+                if (isCollected) {
+                  remove(id, "collection");
+                  setSaveStatus(id, { ...currentStatus, collection: false });
+                } else {
+                  save(id, "collection");
+                  setSaveStatus(id, {
+                    wishlist: currentStatus?.wishlist ?? false,
+                    collection: true,
+                  });
+                }
+              }}
+            />
+          </XStack>
+        )}
+        <Text fontSize="$3" mt="$2" wordWrap="break-word">
+          {cleanedDescription || "No description"}
+        </Text>
+      </YStack>
+
+      {/* Responsive columns on large screens */}
+      <XStack flexDirection="column" gap="$6" $gtLg={{ flexDirection: "row" }}>
+        {/* LEFT COLUMN */}
+        <YStack width="100%" $gtLg={{ width: "50%" }} gap="$4">
+          {/* Image for large */}
+          <YStack display="none" $gtLg={{ display: "flex" }}>
+            {image ? (
+              <Image
                 source={{ uri: image }}
                 width="100%"
-                maxWidth="100%"
-                aspectRatio={4 / 3}
+                height={280}
                 borderRadius="$3"
-                height='auto'
-            />) : (
-                <Text textAlign='center' color="grey">No image found</Text>
+                resizeMode="cover"
+              />
+            ) : (
+              <Text textAlign="center" color="grey">
+                No image found
+              </Text>
             )}
+          </YStack>
 
+          <Text fontSize="$3" mt="$3" mb="$1">
+            Categories:
+          </Text>
+          <XStack flexWrap="wrap" gap="$2">
+            {game.categories?.map((category) => (
+              <GameBadge key={category} label={category} type="category" />
+            ))}
+          </XStack>
 
-            <Text fontSize="$6" fontWeight="700">{name}</Text>
+          <Text fontSize="$3" mt="$4" mb="$1">
+            Mechanics:
+          </Text>
+          <XStack flexWrap="wrap" gap="$2">
+            {game.mechanics?.map((m) => (
+              <GameBadge key={m} label={m} type="mechanic" />
+            ))}
+          </XStack>
 
-            <Text color="$gray10" fontSize="$2">
-                {yearPublished || null} • {playingTime ? `${playingTime} minutes` : null} • {minPlayers && maxPlayers ? `Players: ${minPlayers}-${maxPlayers}` : null}
+          <PrimaryButton
+            disabled={!user}
+            mt="$3"
+            onPress={() => navigate(`/game/${id}/start-match`)}
+          >
+            Start a Match
+          </PrimaryButton>
+
+          {!user && (
+            <Text mt="$3" color="$red10" textAlign="center">
+              You must log in to start a match.
             </Text>
-
-
-            <Text whiteSpace="pre-wrap" fontSize="$3" mt="$2">
-                {cleanedDescription || "No description"}
-            </Text>
-
-            {user && !statusLoading && (
-                <XStack gap="$2" mt="$2">
-                    <IconButton
-                        text="Add to Wishlist"
-                        selected={isWishlisted}
-                        Icon={Heart}
-                        onToggle={() => {
-                            if (isWishlisted) {
-                            remove(id, "wishlist");
-                            setSaveStatus(id, {
-                                wishlist: false,
-                                collection: currentStatus?.collection ?? false,
-                                });
-                            } else {
-                            save(id, "wishlist");
-                            setSaveStatus(id, { ...currentStatus, wishlist: true });
-                            }
-                        }}
-                    />
-                    <IconButton
-                        text="Add to Collection"
-                        selected={isCollected}
-                        Icon={Bookmark}
-                        onToggle={() => {
-                            if (isCollected) {
-                            remove(id, "collection");
-                            setSaveStatus(id, { ...currentStatus, collection: false });
-                            } else {
-                            save(id, "collection");
-                            setSaveStatus(id, {
-                                wishlist: currentStatus?.wishlist ?? false,
-                                collection: true,
-                                });
-                            }
-                        }}
-                    />
-
-                </XStack>
-            )}
-
-            <Text fontSize="$3" mt="$3" mb="$1">Categories:</Text>
-            <XStack flexWrap="wrap" mt="$2">
-                {game.categories?.map((category) => (
-                    <GameBadge key={category} label={category} type="category" />
-                ))}
-            </XStack>
-
-            <Text fontSize="$3" mt="$4" mb="$1">Mechanics:</Text>
-            <XStack flexWrap="wrap">
-                {game.mechanics?.map((m) => (
-                    <GameBadge key={m} label={m} type="mechanic" />
-                ))}
-            </XStack>
-
-
-            <PrimaryButton
-                disabled={!user}
-                mt="$3"
-                onPress={() => {
-                    navigate(`/game/${id}/start-match`);
-                }}
-            >
-                Start a Match
-            </PrimaryButton>
-            {!user ? (
-                <Text mt="$3" color="$red10" textAlign='center'>
-                    You must log in to start a match.
-                </Text>
-            )
-                : null
-            }
-
+          )}
         </YStack>
-    );
+
+        {/* RIGHT COLUMN — visible only on large */}
+        <YStack
+          display="none"
+          $gtLg={{ display: "flex", width: "50%" }}
+          gap="$2"
+        >
+          <Text fontSize="2rem" fontWeight="700">
+            {name}
+          </Text>
+          <Text color="$gray10" fontSize="$2">
+            {yearPublished} • {playingTime && `${playingTime} minutes`} •{" "}
+            {minPlayers && maxPlayers && `Players: ${minPlayers}-${maxPlayers}`}
+          </Text>
+          {user && !statusLoading && (
+            <XStack gap="$2" flexWrap="wrap" mt="$2">
+              <IconButton
+                text="Add to Wishlist"
+                label="Add to Wishlist"
+                selected={isWishlisted}
+                Icon={Heart}
+                onToggle={() => {
+                  if (isWishlisted) {
+                    remove(id, "wishlist");
+                    setSaveStatus(id, {
+                      wishlist: false,
+                      collection: currentStatus?.collection ?? false,
+                    });
+                  } else {
+                    save(id, "wishlist");
+                    setSaveStatus(id, { ...currentStatus, wishlist: true });
+                  }
+                }}
+              />
+              <IconButton
+                text="Add to Collection"
+                label="Add to Collection"
+                selected={isCollected}
+                Icon={Bookmark}
+                onToggle={() => {
+                  if (isCollected) {
+                    remove(id, "collection");
+                    setSaveStatus(id, {
+                      ...currentStatus,
+                      collection: false,
+                    });
+                  } else {
+                    save(id, "collection");
+                    setSaveStatus(id, {
+                      wishlist: currentStatus?.wishlist ?? false,
+                      collection: true,
+                    });
+                  }
+                }}
+              />
+            </XStack>
+          )}
+          <Text fontSize="$3" mt="$2" wordWrap="break-word">
+            {cleanedDescription || "No description"}
+          </Text>
+        </YStack>
+      </XStack>
+    </YStack>
+  );
 }
