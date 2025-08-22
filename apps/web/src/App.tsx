@@ -19,7 +19,7 @@ import {
   MatchDetailsPage,
   MatchFinalPage,
   NotificationsPage,
-  ProfilePageUnified,
+  ProfilePage,
 } from "./pages/index";
 
 import React from "react";
@@ -107,7 +107,7 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Layout theme="tealDark">
-                    <ProfilePageUnified />
+                    <ProfilePage />
                   </Layout>
                 </ProtectedRoute>
               }

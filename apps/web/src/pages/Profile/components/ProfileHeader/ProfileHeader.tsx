@@ -31,7 +31,7 @@ export default function ProfileHeader({
           <Avatar.Fallback backgroundColor="$gray6" />
         </Avatar>
         <YStack>
-          <Text fontSize="$7" fontWeight="700">
+          <Text fontSize="1.5rem" fontWeight="700">
             {title}
           </Text>
           {!isOwner && username ? (
