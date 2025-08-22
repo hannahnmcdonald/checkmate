@@ -8,7 +8,7 @@ import {
   useGetCurrentFriends,
 } from "@checkmate/hooks";
 import { useAuthStore } from "@checkmate/store";
-import { normalizeArrayField } from "../../utils";
+import { normalizeArrayField, getProfileField } from "../../utils";
 
 function canSee(
   privacy: "public" | "friends" | "private" | string | undefined,
@@ -89,10 +89,22 @@ export default function ProfilePageUnified() {
     );
   }
 
+  const displayName =
+    getProfileField(profile.user?.first_name, { isOwner }) ||
+    getProfileField(profile.user?.username, { isOwner });
+
+  const usernameStr = getProfileField(profile.user?.username, {
+    isOwner,
+    fallback: "",
+  });
+
   return (
     <YStack p="$4" gap="$4">
       <ProfileHeader
-        name={profile.user?.first_name ?? profile.user?.username}
+        isOwner={isOwner}
+        displayName={displayName}
+        username={usernameStr || undefined}
+        avatarUrl={profile.user?.avatar_url as string | undefined}
       />
       <ProfileGames
         wishlist={wishlist}
