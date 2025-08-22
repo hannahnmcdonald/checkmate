@@ -157,5 +157,5 @@ function Badge({ children }: { children: React.ReactNode }) {
 }
 
 function SeparatorLine() {
-  return <YStack my="$2" h={1} w="100%" bc="$color6" opacity={0.5} />;
+  return <YStack my="$2" h={1} w="100%" bc="$color2" opacity={0.5} />;
 }
