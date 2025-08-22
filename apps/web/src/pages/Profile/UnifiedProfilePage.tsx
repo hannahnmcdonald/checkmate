@@ -8,7 +8,11 @@ import {
   useGetCurrentFriends,
 } from "@checkmate/hooks";
 import { useAuthStore } from "@checkmate/store";
-import { normalizeArrayField, getProfileField } from "../../utils";
+import {
+  normalizeArrayField,
+  getProfileField,
+  resolveAvatar,
+} from "../../utils";
 
 function canSee(
   privacy: "public" | "friends" | "private" | string | undefined,
@@ -98,13 +102,14 @@ export default function ProfilePageUnified() {
     fallback: "",
   });
 
+  const avatarUrl = resolveAvatar(profile.user, isOwner);
   return (
     <YStack p="$4" gap="$4">
       <ProfileHeader
         isOwner={isOwner}
         displayName={displayName}
         username={usernameStr || undefined}
-        avatarUrl={profile.user?.avatar_url as string | undefined}
+        avatarUrl={avatarUrl}
       />
       <ProfileGames
         wishlist={wishlist}
