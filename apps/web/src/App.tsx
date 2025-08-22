@@ -13,19 +13,19 @@ import {
   GameDetailsPage,
   GameDiscoveryPage,
   GameSearchResultsPage,
-  ProfilePage,
   RegisterPage,
   LoginPage,
   MatchStartPage,
   MatchDetailsPage,
   MatchFinalPage,
-  PublicProfilePage,
   NotificationsPage,
+  ProfilePageUnified,
 } from "./pages/index";
 
 import React from "react";
 import ProtectedRoute from "./components/protectedRoute";
 import Layout from "./layout/layout";
+import { Navigate } from "react-router-dom";
 
 export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -60,13 +60,7 @@ export default function App() {
             />
             <Route
               path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Layout theme="blueDark">
-                    <ProfilePage />
-                  </Layout>
-                </ProtectedRoute>
-              }
+              element={<Navigate to="/profile/me" replace />}
             />
             <Route
               path="/game/:gameId/start-match"
@@ -113,7 +107,7 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Layout theme="tealDark">
-                    <PublicProfilePage />
+                    <ProfilePageUnified />
                   </Layout>
                 </ProtectedRoute>
               }
