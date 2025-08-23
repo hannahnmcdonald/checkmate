@@ -10,6 +10,7 @@ import MatchDetailsPage from "./Match/MatchDetailsPage";
 import MatchFinalPage from "./Match/MatchFinalPage";
 import NotificationsPage from "./Notifications/NotificationsPage";
 import ProfilePage from "./Profile/ProfilePage";
+import SettingsPage from "./Profile/ProfileSettings";
 
 export {
   FindFriendsPage,
@@ -24,4 +25,5 @@ export {
   MatchFinalPage,
   NotificationsPage,
   ProfilePage,
+  SettingsPage,
 };

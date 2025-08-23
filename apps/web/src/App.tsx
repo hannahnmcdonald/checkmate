@@ -20,6 +20,7 @@ import {
   MatchFinalPage,
   NotificationsPage,
   ProfilePage,
+  SettingsPage,
 } from "./pages/index";
 
 import React from "react";
@@ -142,6 +143,16 @@ export default function App() {
                 <ProtectedRoute>
                   <Layout theme="tealDark">
                     <FindFriendsPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Layout theme="maroonDark">
+                    <SettingsPage />
                   </Layout>
                 </ProtectedRoute>
               }
