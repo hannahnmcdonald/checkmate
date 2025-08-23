@@ -228,7 +228,7 @@ export default function GameDetailsPage() {
           gap="$2"
         >
           <Text fontSize="2rem" fontWeight="700">
-            {name}
+            {cleanDescription(name)}
           </Text>
           <Text color="$gray10" fontSize="$2">
             {yearPublished} • {playingTime && `${playingTime} minutes`} •{" "}
