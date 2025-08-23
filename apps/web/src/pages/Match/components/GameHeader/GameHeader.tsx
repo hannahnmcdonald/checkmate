@@ -14,7 +14,6 @@ type GameHeaderProps = {
 };
 
 export default function GameHeader({ game }: GameHeaderProps) {
-  console.log("GameHeader game:", game);
   return (
     <XStack ai="center" gap="$3">
       <GameImage src={game.thumbnail || undefined} rounded={true} />

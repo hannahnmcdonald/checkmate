@@ -3,5 +3,6 @@ export default function cleanDescription(description: string) {
     .replace(/&#10;/g, "\n")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
-    .replace(/&mdash;/g, "—");
+    .replace(/&mdash;/g, "—")
+    .replace(/&#039;/g, "'");
 }
