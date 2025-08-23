@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { YStack, XStack, Text, Image, Spinner, Tooltip } from "tamagui";
+import { YStack, XStack, Text, Image, Spinner } from "tamagui";
 import { Heart, Bookmark } from "@tamagui/lucide-icons";
 import { useAuthStore } from "@checkmate/store";
 import { PrimaryButton } from "../../components/Styled";
@@ -14,6 +14,7 @@ import {
   useGameSaveStatus,
   useGetGameDetails,
 } from "@checkmate/hooks";
+import { GameImage } from "./components";
 
 type Game = {
   id: string;
@@ -110,13 +111,7 @@ export default function GameDetailsPage() {
       {/* Image for small/medium */}
       <YStack display="flex" $gtLg={{ display: "none" }}>
         {image ? (
-          <Image
-            source={{ uri: image }}
-            width="100%"
-            height={220}
-            borderRadius="$3"
-            resizeMode="cover"
-          />
+          <GameImage src={image} />
         ) : (
           <Text textAlign="center" color="grey">
             No image found
@@ -185,13 +180,7 @@ export default function GameDetailsPage() {
           {/* Image for large */}
           <YStack display="none" $gtLg={{ display: "flex" }}>
             {image ? (
-              <Image
-                source={{ uri: image }}
-                width="100%"
-                height={280}
-                borderRadius="$3"
-                resizeMode="cover"
-              />
+              <GameImage src={image} />
             ) : (
               <Text textAlign="center" color="grey">
                 No image found
