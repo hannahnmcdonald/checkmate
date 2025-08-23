@@ -12,6 +12,7 @@ import notificationRoute from "./routes/notifications.route";
 import passwordRoute from "./routes/auth/password.route";
 import saveGamesRoute from "./routes/saveGames.route";
 import settingsRoute from "./routes/settings.route";
+import avatarRoute from "./routes/avatar.route";
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.use("/", saveGamesRoute);
 router.use("/", notificationRoute);
 router.use("/", passwordRoute);
 router.use("/", settingsRoute);
+router.use("/", avatarRoute);
 router.use("/auth", register);
 router.use("/auth", login);
 router.use("/auth", logout);
