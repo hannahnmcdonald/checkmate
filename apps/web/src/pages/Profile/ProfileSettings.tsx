@@ -1,7 +1,8 @@
 import React from "react";
 import { YStack, XStack, Card, Text, Select } from "tamagui";
-import { usePrivacySettings } from "@checkmate/hooks";
+import { usePrivacySettings, useCurrentUserProfile } from "@checkmate/hooks";
 import { PrimaryButton } from "../../components/Styled";
+import { AvatarUploader } from "./components";
 
 type Vis = "public" | "friends" | "private";
 
@@ -80,6 +81,7 @@ function Row({
 
 export default function SettingsPage() {
   const { values, load, update, saving, error } = usePrivacySettings();
+  const { data: profile } = useCurrentUserProfile();
 
   React.useEffect(() => {
     load();
@@ -87,11 +89,23 @@ export default function SettingsPage() {
 
   return (
     <YStack p="$4" gap="$4" maw={720} mx="auto">
-      <Text fontSize="$8" fontWeight="800">
+      <Text fontSize="2rem" fontWeight="800" textAlign="center" mb="$4">
         Settings
       </Text>
 
-      <Card p="$4" bordered>
+      <Card p="$5" bordered background="rgba(255,255,255,0.05)">
+        <Text fontSize="1.5rem" fontWeight="700" mb="$4">
+          Avatar
+        </Text>
+        <AvatarUploader
+          currentUrl={profile?.user.avatar ?? undefined}
+          onSaved={(url) => {
+            console.log("new avatar URL", url);
+          }}
+        />
+      </Card>
+
+      <Card p="$5" bordered background="rgba(255,255,255,0.05)">
         <YStack gap="$3">
           <Text fontWeight="700" fontSize="1.5rem">
             Privacy

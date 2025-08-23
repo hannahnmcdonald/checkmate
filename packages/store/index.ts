@@ -5,3 +5,4 @@ export * from "./useGameStore";
 export * from "./useMatchStore";
 export * from "./useNotificationStore";
 export * from "./usePrivacyStore";
+export * from "./useAvatarStore";

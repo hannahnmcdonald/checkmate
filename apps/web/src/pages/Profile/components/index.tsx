@@ -1,13 +1,15 @@
-import ProfileStats from './ProfileStats/ProfileStats';
-import ProfileGames from './ProfileGames/ProfileGames';
-import ProfileMatches from './ProfileMatches/ProfileMatches';
-import ProfileHeader from './ProfileHeader/ProfileHeader';
-import ProfileFriends from './ProfileFriends/ProfileFriends';
+import ProfileStats from "./ProfileStats/ProfileStats";
+import ProfileGames from "./ProfileGames/ProfileGames";
+import ProfileMatches from "./ProfileMatches/ProfileMatches";
+import ProfileHeader from "./ProfileHeader/ProfileHeader";
+import ProfileFriends from "./ProfileFriends/ProfileFriends";
+import AvatarUploader from "./AvatarUploader/AvatarUploader";
 
 export {
-    ProfileGames,
-    ProfileHeader,
-    ProfileMatches,
-    ProfileStats,
-    ProfileFriends
-}
+  ProfileGames,
+  ProfileHeader,
+  ProfileMatches,
+  ProfileStats,
+  ProfileFriends,
+  AvatarUploader,
+};

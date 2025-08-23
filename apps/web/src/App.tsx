@@ -151,7 +151,7 @@ export default function App() {
               path="/settings"
               element={
                 <ProtectedRoute>
-                  <Layout theme="maroonDark">
+                  <Layout theme="purpleDark">
                     <SettingsPage />
                   </Layout>
                 </ProtectedRoute>

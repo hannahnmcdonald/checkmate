@@ -19,6 +19,7 @@ import useRespondToMatch from "./useRespondToMatch";
 import useUserProfile from "./useUserProfile";
 import useNotifications from "./useNotifications";
 import usePrivacySettings from "./usePrivacySettings";
+import useAvatar from "./useAvatar";
 
 export {
   useFriendSearch,
@@ -42,4 +43,5 @@ export {
   useUserProfile,
   useNotifications,
   usePrivacySettings,
+  useAvatar,
 };
